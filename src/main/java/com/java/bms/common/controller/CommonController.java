@@ -3,7 +3,6 @@ package com.java.bms.common.controller;
 
 import com.java.bms.other.DO.UserDO;
 import com.java.bms.common.mapper.CommonMapper;
-import com.java.bms.other.config.AllConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -12,8 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
+/**
+ * 对普通用户登录注册的控制
+ */
 @Controller
-public class LoginController {
+public class CommonController {
 
     @Autowired
     CommonMapper commonMapper;
@@ -23,7 +25,6 @@ public class LoginController {
                               @RequestParam("password") String password,
                               Map<String,Object> map, HttpSession session){
         if(StringUtils.isEmpty(username)||StringUtils.isEmpty(password)){
-
             map.put("msg","请输入用户名密码");
             return "index";
         }
@@ -36,12 +37,6 @@ public class LoginController {
             map.put("msg","用户名密码错误");
             return "index";
         }
-    }
-
-    @RequestMapping("/zenglin/zneglin")
-    @ResponseBody
-    public String hello(){
-        return "hello";
     }
 
 }

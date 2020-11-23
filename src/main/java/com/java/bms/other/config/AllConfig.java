@@ -18,6 +18,7 @@ import java.util.List;
 @Configuration
 public class AllConfig implements WebMvcConfigurer {
 
+    //不拦截的url
     private static List<String> excludeUrl = new ArrayList<String>(Arrays.asList("/index.html","/","/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg",
             "/**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/**/*.svg","/common/login"));
 
