@@ -31,3 +31,4 @@ mvc:
   hiddenmethod:
     filter:
       enabled: true
+

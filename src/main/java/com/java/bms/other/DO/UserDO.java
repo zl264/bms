@@ -1,6 +1,12 @@
-package com.java.bms.bean;
+package com.java.bms.other.DO;
 
-public class User {
+
+/**
+ * 不管什么类型的用户注册后都可以只有用户名和密码，其他信息可以之后填写
+ * 所以设置这个UserVO类用来登录和注册
+ */
+
+public class UserDO {
     private String username;
     private String password;
     private Integer id;
