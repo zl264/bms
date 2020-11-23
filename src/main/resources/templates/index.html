@@ -3,19 +3,19 @@
 <head>
     <meta charset="utf-8">
     <title></title>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
     <style>
         img{
             width: 100%;
         }
-        .biaoqian{
+        .outContainer{
             margin-top: 200px;
         }
     </style>
 </head>
 
 <body>
-<div class="container biaoqian">
+<div class="container outContainer">
 
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
@@ -28,6 +28,27 @@
     <!-- Tab panes -->
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="common">
+            <div class="row">
+                <div class="col-lg-4 col-lg-offset-2">
+                    <form class="form-signin" action="" th:action="@{common/login}" method="post">
+                        <input type="hidden" name="url" id="url" th:value="'/common/login'">
+                        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+                        <p style="color:red;" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+                        <label class="sr-only">用户名:</label>
+                        <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
+                        <label class="sr-only">密码:</label>
+                        <input type="password" name="password" class="form-control" placeholder="Password" required="">
+
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+                        <button class="btn btn-lg btn-primary btn-block" type="button">注册</button>
+
+                        <p class="mt-5 mb-3 text-muted">© One Time</p>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="hotel">
             <div class="row">
                 <div class="col-lg-4 col-lg-offset-2">
                     <form class="form-signin" action="" th:action="@{common/login}" method="post">
@@ -48,50 +69,23 @@
                 </div>
             </div>
         </div>
-        <div role="tabpanel" class="tab-pane" id="hotel">
-            <div class="row">
-                <div class="col-lg-4 col-lg-offset-2">
-                    <form class="form-signin" action="dashboard.html" th:action="@{common/login}" method="post">
-
-                        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-
-                        <label class="sr-only">Username</label>
-                        <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
-                        <label class="sr-only">Password</label>
-                        <input type="password" name="password" class="form-control" placeholder="Password" required="">
-                        <div class="checkbox mb-3">
-                            <label>
-                                <input type="checkbox" value="remember-me"> Remember me
-                            </label>
-                        </div>
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                        <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
-                        <a class="btn btn-sm">中文</a>
-                        <a class="btn btn-sm">English</a>
-                    </form>
-                </div>
-            </div>
-        </div>
         <div role="tabpanel" class="tab-pane" id="driver">
             <div class="row">
                 <div class="col-lg-4 col-lg-offset-2">
-                    <form class="form-signin" action="dashboard.html" th:action="@{common/login}" method="post">
+                    <form class="form-signin" action="" th:action="@{common/login}" method="post">
 
                         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-
-                        <label class="sr-only">Username</label>
+                        <p style="color:red;" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+                        <label class="sr-only">用户名:</label>
                         <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
-                        <label class="sr-only">Password</label>
+                        <label class="sr-only">密码:</label>
                         <input type="password" name="password" class="form-control" placeholder="Password" required="">
-                        <div class="checkbox mb-3">
-                            <label>
-                                <input type="checkbox" value="remember-me"> Remember me
-                            </label>
-                        </div>
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                        <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
-                        <a class="btn btn-sm">中文</a>
-                        <a class="btn btn-sm">English</a>
+
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+                        <button class="btn btn-lg btn-primary btn-block" type="button">注册</button>
+
+                        <p class="mt-5 mb-3 text-muted">© One Time</p>
+
                     </form>
                 </div>
             </div>
@@ -99,23 +93,20 @@
         <div role="tabpanel" class="tab-pane" id="manager">
             <div class="row">
                 <div class="col-lg-4 col-lg-offset-2">
-                    <form class="form-signin" action="dashboard.html" th:action="@{common/login}" method="post">
+                    <form class="form-signin" action="" th:action="@{common/login}" method="post">
 
                         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-
-                        <label class="sr-only">Username</label>
+                        <p style="color:red;" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+                        <label class="sr-only">用户名:</label>
                         <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
-                        <label class="sr-only">Password</label>
+                        <label class="sr-only">密码:</label>
                         <input type="password" name="password" class="form-control" placeholder="Password" required="">
-                        <div class="checkbox mb-3">
-                            <label>
-                                <input type="checkbox" value="remember-me"> Remember me
-                            </label>
-                        </div>
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                        <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
-                        <a class="btn btn-sm">中文</a>
-                        <a class="btn btn-sm">English</a>
+
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+                        <button class="btn btn-lg btn-primary btn-block" type="button">注册</button>
+
+                        <p class="mt-5 mb-3 text-muted">© One Time</p>
+
                     </form>
                 </div>
             </div>
@@ -125,7 +116,7 @@
 </div>
 </body>
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-<script src="js/jquery.min.js"></script>
+<script src="/js/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-<script src="js/bootstrap.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 </html>

@@ -1,4 +1,4 @@
-package com.java.bms.config;
+package com.java.bms.other.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
@@ -14,7 +14,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * 这是Druid的数据库连接池的配置类
+ */
 @Configuration
 public class DruidConfig {
     @ConfigurationProperties("spring.datasource")
@@ -24,8 +26,11 @@ public class DruidConfig {
     }
 
 
-    //配置Druid监控
-    //1.配置一个管理后台的Servlet
+    /**
+     * 配置Druid监控
+     * 配置一个管理后台的Servlet
+     * @return
+     */
     @Bean
     public ServletRegistrationBean statViewServlet(){
         ServletRegistrationBean bean = new ServletRegistrationBean(new StatViewServlet(),"/druid/*");
@@ -33,16 +38,20 @@ public class DruidConfig {
 
         map.put("loginUsername","root");
         map.put("loginPassword","123456");
-        map.put("allow","");//默认就是允许所有访问
-        map.put("deny","192.168.15.21");//拒绝谁访问
+        //默认就是允许所有访问
+        map.put("allow","");
+        //拒绝谁访问
+        map.put("deny","192.168.15.21");
 
         bean.setInitParameters(map);
         return bean;
     }
 
 
-    //2.配置一个web监控的filter
-
+    /**
+     * 配置一个web监控的filter
+     * @return
+     */
     public FilterRegistrationBean webStatFilter(){
         FilterRegistrationBean bean = new FilterRegistrationBean();
         bean.setFilter(new WebStatFilter());

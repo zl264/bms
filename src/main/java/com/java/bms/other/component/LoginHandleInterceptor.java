@@ -1,5 +1,7 @@
-package com.java.bms.component;
+package com.java.bms.other.component;
 
+import com.java.bms.other.config.AllConfig;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 登录检查
+ * 检查用户有没有登录，如果没有登录则不允许访问其他的界面，并跳转会登录界面
  */
 public class LoginHandleInterceptor implements HandlerInterceptor {
 
