@@ -1,7 +1,6 @@
 package com.java.bms.other.config;
 
 import com.java.bms.other.component.LoginHandleInterceptor;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -20,7 +19,8 @@ public class AllConfig implements WebMvcConfigurer {
 
     //不拦截的url
     private static List<String> excludeUrl = new ArrayList<String>(Arrays.asList("/index.html","/","/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg",
-            "/**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/**/*.svg","/common/login"));
+            "/**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/**/*.svg","/common/login","/register.html","/common/register",
+            "/driver/login","/driver/register","/hotel/login","/hotel/register","/manage/login"));
 
     @Bean
     public WebMvcConfigurer webMvcConfigurer(){
@@ -38,6 +38,10 @@ public class AllConfig implements WebMvcConfigurer {
                 registry.addViewController("/").setViewName("index");
                 registry.addViewController("/index.html").setViewName("index");
                 registry.addViewController("/commonMain").setViewName("common/main");
+                registry.addViewController("/driverMain").setViewName("driver/main");
+                registry.addViewController("/hotelMain").setViewName("hotel/main");
+                registry.addViewController("/manageMain").setViewName("manage/main");
+                registry.addViewController("/register.html").setViewName("register");
 
             }
         };
