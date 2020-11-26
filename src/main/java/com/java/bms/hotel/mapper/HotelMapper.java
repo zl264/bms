@@ -1,4 +1,4 @@
-package com.java.bms.common.mapper;
+package com.java.bms.hotel.mapper;
 
 import com.java.bms.other.DO.UserDO;
 import org.apache.ibatis.annotations.Insert;
@@ -6,18 +6,17 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 /**
- * 对于普通用户登录注册的数据库访问的控制
+ * 对于酒店用户登录注册的数据库访问的控制
  */
 @Mapper
-public interface CommonMapper {
-
+public interface HotelMapper {
     /**
      * 通过用户名和密码来查找输入的用户名密码是否正确
      * @param username 用户名
      * @param password 密码
      * @return 返回按照用户名和密码得到的用户
      */
-    @Select("select * from commonUser where username=#{username} and password=#{password}")
+    @Select("select * from hotelUser where username=#{username} and password=#{password}")
     UserDO commonLogin(String username, String password);
 
 
@@ -26,7 +25,7 @@ public interface CommonMapper {
      * @param username 用户名
      * @return 返回用户名或者NULL
      */
-    @Select("select * from commonUser where username=#{username}")
+    @Select("select * from hotelUser where username=#{username}")
     String isRegister(String username);
 
     /**
@@ -35,8 +34,6 @@ public interface CommonMapper {
      * @param password 密码
      * @return 返回1或者0
      */
-    @Insert("insert into commonUser(username,password) values(#{username},#{password})")
+    @Insert("insert into hotelUser(username,password) values(#{username},#{password})")
     int commonRegister(String username,String password);
-
-
 }

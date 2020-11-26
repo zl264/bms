@@ -1,35 +1,35 @@
-package com.java.bms.common.controller;
+package com.java.bms.hotel.controller;
 
-
+import com.java.bms.hotel.mapper.HotelMapper;
 import com.java.bms.other.DO.UserDO;
-import com.java.bms.common.mapper.CommonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
+
 /**
- * 对普通用户登录注册的控制
+ * 对酒店用户登录注册的控制
  */
 @Controller
-public class CommonController {
-
+public class HotelController {
     @Autowired
-    CommonMapper commonMapper;
+    HotelMapper hotelMapper;
 
 
     /**
-     * 对普通用户的登录进行控制
+     * 对酒店用户的登录进行控制
      * @param username 用户名
      * @param password 密码
      * @param map 存储msg信息
      * @param session session
      * @return
      */
-    @PostMapping(value = "/common/login")
+    @PostMapping(value = "/hotel/login")
     public String commonLogin(@RequestParam("username") String username,
                               @RequestParam("password") String password,
                               Map<String,Object> map, HttpSession session){
@@ -37,7 +37,7 @@ public class CommonController {
             map.put("msg","请输入用户名密码");
             return "index";
         }
-        UserDO userDo = commonMapper.commonLogin(username,password);
+        UserDO userDo = hotelMapper.commonLogin(username,password);
         if(userDo==null){
             map.put("msg","用户名密码错误");
             return "index";
@@ -45,20 +45,20 @@ public class CommonController {
         if(username.equals(userDo.getUsername())&&password.equals(userDo.getPasword())) {
 //            登录成功以后，防止表单重复提交，可以重定向到主页
             session.setAttribute("loginUser", username);
-            return "redirect:/commonMain";
+            return "redirect:/hotelMain";
         }
         return "index";
     }
 
     /**
-     * 对普通用户的注册进行控制
+     * 对酒店用户的注册进行控制
      * @param username 用户名
      * @param password 密码
      * @param map 存储msg信息
      * @param session session
      * @return
      */
-    @PostMapping(value = "/common/register")
+    @PostMapping(value = "/hotel/register")
     public String commonRegister(@RequestParam("username") String username,
                                  @RequestParam("password") String password,
                                  Map<String,Object> map, HttpSession session){
@@ -66,11 +66,11 @@ public class CommonController {
             map.put("msg","请输入要注册的用户名密码");
             return "register";
         }
-        if(commonMapper.isRegister(username)!=null){
+        if(hotelMapper.isRegister(username)!=null){
             map.put("msg","该用户名已经被注册了");
             return "register";
         }
-        int result = commonMapper.commonRegister(username,password);
+        int result = hotelMapper.commonRegister(username,password);
         if(result==1){
             map.put("msg","注册成功，请登录");
             return "index";
@@ -79,5 +79,4 @@ public class CommonController {
             return "register";
         }
     }
-
 }
