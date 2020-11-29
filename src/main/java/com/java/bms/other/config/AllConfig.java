@@ -37,11 +37,11 @@ public class AllConfig implements WebMvcConfigurer {
             public void addViewControllers(ViewControllerRegistry registry) {
                 registry.addViewController("/").setViewName("index");
                 registry.addViewController("/index.html").setViewName("index");
-                registry.addViewController("/commonMain").setViewName("common/main");
-                registry.addViewController("/driverMain").setViewName("driver/main");
-                registry.addViewController("/hotelMain").setViewName("hotel/main");
-                registry.addViewController("/manageMain").setViewName("manage/main");
-                registry.addViewController("/register.html").setViewName("register");
+                registry.addViewController("/commonMain").setViewName("/common/main");
+                registry.addViewController("/driverMain").setViewName("/driver/main");
+                registry.addViewController("/hotelMain").setViewName("/hotel/main");
+                registry.addViewController("/managerMain").setViewName("/manager/main");
+                registry.addViewController("/register.html").setViewName("/register");
 
             }
         };
