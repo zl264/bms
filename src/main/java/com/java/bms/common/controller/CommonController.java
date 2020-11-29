@@ -1,14 +1,17 @@
 package com.java.bms.common.controller;
 
 
+import com.java.bms.common.bean.CongressVO;
 import com.java.bms.other.DO.UserDO;
 import com.java.bms.common.mapper.CommonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,7 +35,7 @@ public class CommonController {
     @PostMapping(value = "/common/login")
     public String commonLogin(@RequestParam("username") String username,
                               @RequestParam("password") String password,
-                              Map<String,Object> map, HttpSession session){
+                              Map<String,Object> map, HttpSession session, Model model){
         if(StringUtils.isEmpty(username)||StringUtils.isEmpty(password)){
             map.put("msg","请输入用户名密码");
             return "index";
@@ -45,6 +48,8 @@ public class CommonController {
         if(username.equals(userDo.getUsername())&&password.equals(userDo.getPasword())) {
 //            登录成功以后，防止表单重复提交，可以重定向到主页
             session.setAttribute("loginUser", username);
+            List<CongressVO> allCongress = commonMapper.getAllCongress();
+            session.setAttribute("allCongress",allCongress);
             return "redirect:/commonMain";
         }
         return "index";
@@ -79,6 +84,13 @@ public class CommonController {
             return "register";
         }
     }
+
+    @RequestMapping("/congress/{id}")
+    public String getCongressByID(@PathVariable("id") Integer id,Model model){
+        model.addAttribute("congress",commonMapper.getCongressById(id));
+        return "/common/congress";
+    }
+
 
 
 }
