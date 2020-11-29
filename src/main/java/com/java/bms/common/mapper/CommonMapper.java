@@ -1,9 +1,12 @@
 package com.java.bms.common.mapper;
 
+import com.java.bms.common.bean.CongressVO;
 import com.java.bms.other.DO.UserDO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * 对于普通用户登录注册的数据库访问的控制
@@ -38,5 +41,13 @@ public interface CommonMapper {
     @Insert("insert into commonLogin(username,password) values(#{username},#{password})")
     int commonRegister(String username,String password);
 
+    /**
+     * 查询数据库中的所有会议
+     * @return 查询得到的所有会议的List
+     */
+    @Select("select * from congress")
+    List<CongressVO> getAllCongress();
 
+    @Select("select * from congress where congressId = #{congressId}")
+    CongressVO getCongressById(int congressId);
 }

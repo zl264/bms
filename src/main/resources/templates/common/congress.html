@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>普通用户登录之后的主界面</title>
+    <title th:text="${congress.getTitle()}"></title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -16,23 +16,8 @@
 
 </head>
 <body>
-<div class="container">
-    <div class="row" >
-        <div class="col-sm-6 col-md-4 col-lg-3 " th:each="congress:${session.allCongress}">
-            <div class="thumbnail" style="height: 360px;">
-                <a th:href="@{/congress/}+${congress.getCongressId()}" >
-                    <img class="lazy" th:src="'img/'+${congress.getImage()}+'.jpg'" alt="会议图片" width="300" height="150">
-                </a>
-                <div class="caption">
-                    <h3>
-                        <a href="https://www.youzhan.org/" th:text="${congress.getTitle()}"></a>
-                    </h3>
-                    <p th:text="${#strings.substring(congress.getDescribe(),0,20)}"></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<h1 th:text="${congress.getCongressId()}"></h1>
+
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 <script src="js/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
