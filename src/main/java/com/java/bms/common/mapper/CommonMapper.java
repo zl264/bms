@@ -17,7 +17,7 @@ public interface CommonMapper {
      * @param password 密码
      * @return 返回按照用户名和密码得到的用户
      */
-    @Select("select * from commonUser where username=#{username} and password=#{password}")
+    @Select("select * from commonLogin where username=#{username} and password=#{password}")
     UserDO commonLogin(String username, String password);
 
 
@@ -26,7 +26,7 @@ public interface CommonMapper {
      * @param username 用户名
      * @return 返回用户名或者NULL
      */
-    @Select("select * from commonUser where username=#{username}")
+    @Select("select * from commonLogin where username=#{username}")
     String isRegister(String username);
 
     /**
@@ -35,7 +35,7 @@ public interface CommonMapper {
      * @param password 密码
      * @return 返回1或者0
      */
-    @Insert("insert into commonUser(username,password) values(#{username},#{password})")
+    @Insert("insert into commonLogin(username,password) values(#{username},#{password})")
     int commonRegister(String username,String password);
 
 

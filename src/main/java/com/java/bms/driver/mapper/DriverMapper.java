@@ -16,7 +16,7 @@ public interface DriverMapper {
      * @param password 密码
      * @return 返回按照用户名和密码得到的用户
      */
-    @Select("select * from driverUser where username=#{username} and password=#{password}")
+    @Select("select * from driverLogin where username=#{username} and password=#{password}")
     UserDO commonLogin(String username, String password);
 
 
@@ -25,7 +25,7 @@ public interface DriverMapper {
      * @param username 用户名
      * @return 返回用户名或者NULL
      */
-    @Select("select * from driverUser where username=#{username}")
+    @Select("select * from driverLogin where username=#{username}")
     String isRegister(String username);
 
     /**
@@ -34,6 +34,6 @@ public interface DriverMapper {
      * @param password 密码
      * @return 返回1或者0
      */
-    @Insert("insert into driverUser(username,password) values(#{username},#{password})")
+    @Insert("insert into driverLogin(username,password) values(#{username},#{password})")
     int commonRegister(String username,String password);
 }

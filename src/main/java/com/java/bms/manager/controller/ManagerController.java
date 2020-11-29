@@ -1,6 +1,6 @@
-package com.java.bms.manage.controller;
+package com.java.bms.manager.controller;
 
-import com.java.bms.manage.mapper.ManageMapper;
+import com.java.bms.manager.mapper.ManagerMapper;
 import com.java.bms.other.DO.UserDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,9 +16,9 @@ import java.util.Map;
  * 对管理员登录的控制
  */
 @Controller
-public class ManageController {
+public class ManagerController {
     @Autowired
-    ManageMapper manageMapper;
+    ManagerMapper manageMapper;
 
 
     /**
@@ -29,7 +29,7 @@ public class ManageController {
      * @param session session
      * @return
      */
-    @PostMapping(value = "/manage/login")
+    @PostMapping(value = "/manager/login")
     public String commonLogin(@RequestParam("username") String username,
                               @RequestParam("password") String password,
                               Map<String,Object> map, HttpSession session){
@@ -45,7 +45,7 @@ public class ManageController {
         if(username.equals(userDo.getUsername())&&password.equals(userDo.getPasword())) {
 //            登录成功以后，防止表单重复提交，可以重定向到主页
             session.setAttribute("loginUser", username);
-            return "redirect:/manageMain";
+            return "redirect:/managerMain";
         }
         return "index";
     }
