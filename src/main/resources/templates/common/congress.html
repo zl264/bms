@@ -9,14 +9,87 @@
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
+    <style>
+        .td1{
+            width: 300px;
+        }
+        table{
+            width: 50%;
+            text-align: center;
+            margin-top: 150px;
+        }
+    </style>
 
     <script src="js/html5shiv.min.js"></script>
     <script src="js/respond.min.js"></script>
 
 </head>
 <body>
-<h1 th:text="${congress.getCongressId()}"></h1>
+
+<!--判断进入这个会议的是不是会议组织者-->
+<div th:if="${session.loginUser} eq ${organizerName}">
+    <form style="text-align: left;margin-top: 150px;margin-left: 300px">
+        会议名称:<input type="text" name="title" th:value="${congress.getTitle()}"/><br>
+        组织者:<input type="text" name="organizerName" th:value="${organizerName}"/><br>
+        内容:<textarea name="describe" th:text="${congress.getDescribe()}"></textarea><br>
+        地点:<input type="text" name="place" th:value="${congress.getPlace()}"/><br>
+        开始时间:
+        <input type="text" name="startTimeYear" th:value="${congress.getStartTime().getYear()}"/>年
+        <input type="text" name="startTimeMonth" th:value="${congress.getStartTime().getMonthValue()}"/>月
+        <input type="text" name="startTimeDay" th:value="${congress.getStartTime().getDayOfMonth()}"/>日
+        <input type="text" name="startTimeHour" th:value="${congress.getStartTime().getHour()}"/>点
+        <input type="text" name="startTimeMinute" th:value="${congress.getStartTime().getMinute()}"/>分<br>
+        结束时间:
+        <input type="text" name="endTimeYear" th:value="${congress.getEndTime().getYear()}"/>年
+        <input type="text" name="endTimeMonth" th:value="${congress.getEndTime().getMonthValue()}"/>月
+        <input type="text" name="endTimeDay" th:value="${congress.getEndTime().getDayOfMonth()}"/>日
+        <input type="text" name="endTimeHour" th:value="${congress.getEndTime().getHour()}"/>点
+        <input type="text" name="endTimeMinute" th:value="${congress.getEndTime().getMinute()}"/>分<br>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">保存</button>
+    </form>
+</div>
+
+<!--判断进入这个会议的是不是非会议组织者-->
+<div th:unless="${session.loginUser} eq ${organizerName}">
+    <div>
+        <table>
+            <caption th:text="${congress.getTitle()}"></caption>
+            <tr>
+                <td class="td1">组织者:</td>
+                <td th:text="${organizerName}"></td>
+            </tr>
+            <tr>
+                <td class="td1">内容:</td>
+                <td th:text="${congress.getDescribe()}"></td>
+            </tr>
+            <tr>
+                <td class="td1">地点:</td>
+                <td th:text="${congress.getPlace()}"></td>
+            </tr>
+            <tr>
+                <td class="td1">开始时间:</td>
+                <td th:text="${congress.getStartTime()}"></td>
+            </tr>
+            <tr>
+                <td class="td1">结束时间:</td>
+                <td th:text="${congress.getEndTime()}"></td>
+            </tr>
+        </table>
+    </div>
+    <input th:if="${error}" th:text="${error}"/>
+<!--    当前用户是否已经参加会议-->
+    <form th:if="${record}" style="margin-top: 50px;">
+        <input type="hidden" name="congressId" th:value="${congress.getCongressId()}">
+        <button class="btn btn-lg btn-primary btn-block" style="text-align: center">退出会议</button>
+    </form>
+
+    <form th:unless="${record}" style="margin-top: 50px;" th:action="@{/participant/attend}">
+        <input type="hidden" name="congressId" th:value="${congress.getCongressId()}">
+        <button class="btn btn-lg btn-primary btn-block" style="text-align: center">参加会议</button>
+    </form>
+</div>
+
+<!--用户名<p th:text="${session.loginUser}"></p>-->
 
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 <script src="js/jquery.min.js"></script>

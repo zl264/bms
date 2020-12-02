@@ -7,6 +7,14 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <title>普通用户登录之后的主界面</title>
 
+    <style>
+        .showCongress{
+            margin-top: 100px;
+        }
+        .search{
+            margin: 0 30px;
+        }
+    </style>
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -16,7 +24,61 @@
 
 </head>
 <body>
-<div class="container">
+
+
+<!--导航条-->
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse myNav">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+<!--        <div class="navbar-header">-->
+<!--            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">-->
+<!--                <span class="sr-only">Toggle navigation</span>-->
+<!--                <span class="icon-bar"></span>-->
+<!--                <span class="icon-bar"></span>-->
+<!--                <span class="icon-bar"></span>-->
+<!--            </button>-->
+<!--        </div>-->
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+<!--            显示搜索框左边的四个选项-->
+            <ul class="nav navbar-nav vMiddle" style="margin-left: 50px">
+                <li><a href="#" th:href="@{/organizer/congress}">创建会议</a></li>
+                <li><a href="#" th:href="@{/participant/congress}">查看会议</a></li>
+                <li><a href="#" th:href="@{/participant/driver}">查看司机</a></li>
+                <li><a href="#" th:href="@{/participant/hotel}">查看酒店</a></li>
+<!--                <li><a></a></li>-->
+<!--                <li><a></a></li>-->
+<!--                <li><a></a></li>-->
+<!--                <li><a></a></li>-->
+<!--                <li><a></a></li>-->
+<!--                <li><a></a></li>-->
+            </ul>
+<!--            这个表单是搜索框-->
+            <form class="navbar-form navbar-left search vMiddle" th:action="@{/common/search}" method="post" style="margin-left: 200px;">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">搜索</button>
+            </form>
+<!--            右边的个人信息-->
+            <ul class="nav navbar-nav navbar-right vMiddle">
+                <li>
+                    <a href="#" th:href="@{/participant/information}" style="margin-right: 50px;">
+                        <img class="img-circle" src="img/0.jpg" th:alt="${session.loginUser}" width="30" height="30">
+                    </a>
+                </li>
+<!--                <li><a></a></li>-->
+<!--                <li><a></a></li>-->
+<!--                <li><a></a></li>-->
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+<!--显示每一个会议-->
+<div class="container showCongress">
     <div class="row" >
         <div class="col-sm-6 col-md-4 col-lg-3 " th:each="congress:${session.allCongress}">
             <div class="thumbnail" style="height: 360px;">
@@ -25,7 +87,7 @@
                 </a>
                 <div class="caption">
                     <h3>
-                        <a href="https://www.youzhan.org/" th:text="${congress.getTitle()}"></a>
+                        <a th:href="@{/congress/}+${congress.getCongressId()}" th:text="${congress.getTitle()}"></a>
                     </h3>
                     <p th:text="${#strings.substring(congress.getDescribe(),0,20)}"></p>
                 </div>

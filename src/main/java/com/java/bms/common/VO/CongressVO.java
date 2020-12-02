@@ -1,10 +1,10 @@
-package com.java.bms.common.bean;
+package com.java.bms.common.VO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +14,8 @@ public class CongressVO {
     private int organizerId;
     private String title;
     private String describe;
-    private Date time;
     private String place;
     private long image;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 }

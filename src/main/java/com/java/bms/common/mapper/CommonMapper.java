@@ -1,6 +1,7 @@
 package com.java.bms.common.mapper;
 
-import com.java.bms.common.bean.CongressVO;
+import com.java.bms.common.DO.CongressNoteVO;
+import com.java.bms.common.VO.CongressVO;
 import com.java.bms.other.DO.UserDO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -48,6 +49,38 @@ public interface CommonMapper {
     @Select("select * from congress")
     List<CongressVO> getAllCongress();
 
+    /**
+     * 通过会议ID获得会议全部信息
+     * @param Id 会议ID
+     * @return 会议全部信息
+     */
     @Select("select * from congress where congressId = #{congressId}")
     CongressVO getCongressById(int congressId);
+
+
+    /**
+     * 通过用户名获得用户ID
+     * @param username 用户名
+     * @return 用户ID
+     */
+    @Select("select id from commonLogin where username = #{username}")
+    int getCommonIdByUsername(String username);
+
+    /**
+     * 通过用户ID获得用户名
+     * @param id 用户ID
+     * @return 用户名
+     */
+    @Select("select username from commonLogin where id = #{id}")
+    String getUsernameById(int id);
+
+    /**
+     * 通过用户ID和会议ID获取用户参加会议记录
+     * @param commonId 用户ID
+     * @param congressId 会议ID
+     * @return 用户参加会议记录
+     */
+    @Select("select * from congressNote where commonId = #{commonId} and congressId = #{congressId}")
+    CongressNoteVO getCongressNoteByCommonIdAndCongressId(int commonId,int congressId);
+
 }

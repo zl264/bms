@@ -33,7 +33,7 @@
                     <form class="form-signin" action="" th:action="@{/common/login}" method="post">
 
                         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                        <p style="color:red;" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+                        <p style="color:red;" th:text="${session.msg}" th:if="${not #strings.isEmpty(session.msg)}"></p>
                         <label class="sr-only">用户名:</label>
                         <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
                         <label class="sr-only">密码:</label>
@@ -54,7 +54,7 @@
                     <form class="form-signin" action="" th:action="@{/hotel/login}" method="post">
 
                         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                        <p style="color:red;" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+                        <p style="color:red;" th:text="${session.msg}" th:if="${not #strings.isEmpty(session.msg)}"></p>
                         <label class="sr-only">用户名:</label>
                         <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
                         <label class="sr-only">密码:</label>
@@ -75,7 +75,7 @@
                     <form class="form-signin" action="" th:action="@{/driver/login}" method="post">
 
                         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                        <p style="color:red;" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+                        <p style="color:red;" th:text="${session.msg}" th:if="${not #strings.isEmpty(session.msg)}"></p>
                         <label class="sr-only">用户名:</label>
                         <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
                         <label class="sr-only">密码:</label>
@@ -96,7 +96,7 @@
                     <form class="form-signin" action="" th:action="@{/manager/login}" method="post">
 
                         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                        <p style="color:red;" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+                        <p style="color:red;" th:text="${session.msg}" th:if="${not #strings.isEmpty(session.msg)}"></p>
                         <label class="sr-only">用户名:</label>
                         <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
                         <label class="sr-only">密码:</label>
