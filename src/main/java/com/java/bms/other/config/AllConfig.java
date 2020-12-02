@@ -42,6 +42,7 @@ public class AllConfig implements WebMvcConfigurer {
                 registry.addViewController("/hotelMain").setViewName("/hotel/main");
                 registry.addViewController("/managerMain").setViewName("/manager/main");
                 registry.addViewController("/register.html").setViewName("/register");
+                registry.addViewController("/index").setViewName("/index");
 
             }
         };

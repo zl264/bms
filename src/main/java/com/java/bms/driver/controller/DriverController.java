@@ -4,6 +4,7 @@ import com.java.bms.driver.mapper.DriverMapper;
 import com.java.bms.other.DO.UserDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,15 +33,16 @@ public class DriverController {
     @PostMapping(value = "/driver/login")
     public String commonLogin(@RequestParam("username") String username,
                               @RequestParam("password") String password,
-                              Map<String,Object> map, HttpSession session){
+                              Map<String,Object> map, HttpSession session, Model model){
         if(StringUtils.isEmpty(username)||StringUtils.isEmpty(password)){
-            map.put("msg","请输入用户名密码");
-            return "index";
+            session.setAttribute("msg","请输入用户名密码");
+            return "redirect:/index";
         }
         UserDO userDo = driverMapper.commonLogin(username,password);
         if(userDo==null){
             map.put("msg","用户名密码错误");
-            return "index";
+            session.setAttribute("msg","用户名密码错误");
+            return "redirect:/index";
         }
         if(username.equals(userDo.getUsername())&&password.equals(userDo.getPassword())) {
 //            登录成功以后，防止表单重复提交，可以重定向到主页

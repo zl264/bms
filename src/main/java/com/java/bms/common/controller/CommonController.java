@@ -1,7 +1,8 @@
 package com.java.bms.common.controller;
 
 
-import com.java.bms.common.bean.CongressVO;
+import com.java.bms.common.DO.CongressNoteVO;
+import com.java.bms.common.VO.CongressVO;
 import com.java.bms.other.DO.UserDO;
 import com.java.bms.common.mapper.CommonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -37,13 +39,14 @@ public class CommonController {
                               @RequestParam("password") String password,
                               Map<String,Object> map, HttpSession session, Model model){
         if(StringUtils.isEmpty(username)||StringUtils.isEmpty(password)){
-            map.put("msg","请输入用户名密码");
-            return "index";
+            model.addAttribute("msg","请输入用户名密码");
+            return "redirect:/index";
         }
         UserDO userDo = commonMapper.commonLogin(username,password);
         if(userDo==null){
-            map.put("msg","用户名密码错误");
-            return "index";
+//            map.put("msg","用户名密码错误");
+            model.addAttribute("msg","用户名密码错误");
+            return "redirect:/index";
         }
         if(username.equals(userDo.getUsername())&&password.equals(userDo.getPassword())) {
 //            登录成功以后，防止表单重复提交，可以重定向到主页
@@ -85,12 +88,37 @@ public class CommonController {
         }
     }
 
+    /**
+     * 通过会议ID查找会议
+     * @param id 会议ID
+     * @param model 传递相关信息
+     * @return 会议界面
+     */
     @RequestMapping("/congress/{id}")
-    public String getCongressByID(@PathVariable("id") Integer id,Model model){
-        model.addAttribute("congress",commonMapper.getCongressById(id));
+    public String getCongressByID(@PathVariable("id") Integer id,Model model,HttpSession session){
+        int userId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
+        CongressVO congress = commonMapper.getCongressById(id);
+        String organizerName = commonMapper.getUsernameById((int)congress.getOrganizerId());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        CongressNoteVO record = commonMapper.getCongressNoteByCommonIdAndCongressId(userId,congress.getOrganizerId());
+
+        model.addAttribute("congress",congress);
+        model.addAttribute("organizerName",organizerName);
+        model.addAttribute("formatter",formatter);
+        model.addAttribute("record",record);
+//        if(congress.getStartTime().isBefore(congress.getEndTime())) {
+//
+//            System.out.println(1);
+//        }else{
+//            System.out.println(0);
+//        }
         return "/common/congress";
     }
 
 
 
+    @RequestMapping("/common/search")
+    public String searchCongress(Model model,HttpSession session){
+        return "/common/search";
+    }
 }
