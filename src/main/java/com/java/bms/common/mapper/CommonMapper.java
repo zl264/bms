@@ -51,7 +51,7 @@ public interface CommonMapper {
 
     /**
      * 通过会议ID获得会议全部信息
-     * @param Id 会议ID
+     * @param congressId 会议ID
      * @return 会议全部信息
      */
     @Select("select * from congress where congressId = #{congressId}")
@@ -81,6 +81,6 @@ public interface CommonMapper {
      * @return 用户参加会议记录
      */
     @Select("select * from congressNote where commonId = #{commonId} and congressId = #{congressId}")
-    CongressNoteVO getCongressNoteByCommonIdAndCongressId(int commonId,int congressId);
+    CongressNoteVO getCongressNoteByCommonIdAndCongressId(int commonId,long congressId);
 
 }

@@ -31,7 +31,7 @@
     <form style="text-align: left;margin-top: 150px;margin-left: 300px">
         会议名称:<input type="text" name="title" th:value="${congress.getTitle()}"/><br>
         组织者:<input type="text" name="organizerName" th:value="${organizerName}"/><br>
-        内容:<textarea name="describe" th:text="${congress.getDescribe()}"></textarea><br>
+        内容:<textarea name="describe" th:text="${congress.getContent()}"></textarea><br>
         地点:<input type="text" name="place" th:value="${congress.getPlace()}"/><br>
         开始时间:
         <input type="text" name="startTimeYear" th:value="${congress.getStartTime().getYear()}"/>年
@@ -60,7 +60,7 @@
             </tr>
             <tr>
                 <td class="td1">内容:</td>
-                <td th:text="${congress.getDescribe()}"></td>
+                <td th:text="${congress.getContent()}"></td>
             </tr>
             <tr>
                 <td class="td1">地点:</td>
@@ -78,12 +78,12 @@
     </div>
     <input th:if="${error}" th:text="${error}"/>
 <!--    当前用户是否已经参加会议-->
-    <form th:if="${record}" style="margin-top: 50px;">
+    <form th:if="${record}!=null" style="margin-top: 50px;">
         <input type="hidden" name="congressId" th:value="${congress.getCongressId()}">
         <button class="btn btn-lg btn-primary btn-block" style="text-align: center">退出会议</button>
     </form>
 
-    <form th:unless="${record}" style="margin-top: 50px;" th:action="@{/participant/attend}">
+    <form th:unless="${record}!=null" style="margin-top: 50px;" th:action="@{/participant/attend}">
         <input type="hidden" name="congressId" th:value="${congress.getCongressId()}">
         <button class="btn btn-lg btn-primary btn-block" style="text-align: center">参加会议</button>
     </form>
