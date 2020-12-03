@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Controller
 public class ParticipantController {
@@ -23,13 +24,16 @@ public class ParticipantController {
     CommonMapper commonMapper;
 
     @RequestMapping("/participant/information")
-    public String participantInformation(){
+    public String Information(){
 
         return "common/participant/information";
     }
 
     @RequestMapping("/participant/congress")
-    public String lookCongress(){
+    public String lookCongress(Model model,HttpSession session){
+        int commonId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
+        List<CongressVO> allCongresses = participantMapper.getCongressByCommonId(commonId);
+        model.addAttribute("allCongress",allCongresses);
 
         return "/common/participant/lookCongress";
     }
@@ -46,6 +50,13 @@ public class ParticipantController {
         return "/common/participant/lookDriver";
     }
 
+    /**
+     * 加入会议
+     * @param congressId 会议ID
+     * @param session session
+     * @param model 存储信息的结构
+     * @return 会议界面
+     */
     @RequestMapping("/participant/attend")
     public String attendCongress(@RequestParam("congressId")int congressId,
                                  HttpSession session, Model model){

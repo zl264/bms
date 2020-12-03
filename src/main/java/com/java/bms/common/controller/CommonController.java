@@ -100,7 +100,8 @@ public class CommonController {
         CongressVO congress = commonMapper.getCongressById(id);
         String organizerName = commonMapper.getUsernameById((int)congress.getOrganizerId());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        CongressNoteVO record = commonMapper.getCongressNoteByCommonIdAndCongressId(userId,congress.getOrganizerId());
+        CongressNoteVO record = commonMapper.getCongressNoteByCommonIdAndCongressId(userId,congress.getCongressId());
+
 
         model.addAttribute("congress",congress);
         model.addAttribute("organizerName",organizerName);

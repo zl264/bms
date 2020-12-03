@@ -43,7 +43,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 <!--            显示搜索框左边的四个选项-->
             <ul class="nav navbar-nav vMiddle" style="margin-left: 50px">
-                <li><a href="#" th:href="@{/organizer/congress}">创建会议</a></li>
+                <li><a href="#" th:href="@{/organizer/manage}">创建会议</a></li>
                 <li><a href="#" th:href="@{/participant/congress}">查看会议</a></li>
                 <li><a href="#" th:href="@{/participant/driver}">查看司机</a></li>
                 <li><a href="#" th:href="@{/participant/hotel}">查看酒店</a></li>
@@ -89,7 +89,7 @@
                     <h3>
                         <a th:href="@{/congress/}+${congress.getCongressId()}" th:text="${congress.getTitle()}"></a>
                     </h3>
-                    <p th:text="${#strings.substring(congress.getDescribe(),0,20)}"></p>
+                    <p th:text="${#strings.substring(congress.getContent(),0,20)}"></p>
                 </div>
             </div>
         </div>

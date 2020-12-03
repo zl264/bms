@@ -13,7 +13,7 @@ public class CongressVO {
     private long congressId;
     private int organizerId;
     private String title;
-    private String describe;
+    private String content;
     private String place;
     private long image;
     private LocalDateTime startTime;
