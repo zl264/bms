@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor  //这三个注释会自动补全构造方法，get set和toString方法
 public class UserDO {
     private String username;
     private String password;
