@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -106,7 +107,39 @@ public class CommonController {
             return "/common/commonRegister";
         }
     }
+    /**
+     * 对普通用户的信息进行控制
+     * @param username 用户名
+     * @param name 用户姓名
+     * @param sex 用户性别
+     * @param age 用户年龄
+     * @param idCardNo 身份证号
+     * @param identity 身份
+     * @param map 信息
+     * @param session session
+     * @return
+     */
+    @PostMapping(value = "/common/information")
+    public String commonInformation(@RequestParam("username") String username, @RequestParam("name") String name,
+                                    @RequestParam("age") int age,@RequestParam("idCardNo") long idCardNo,
+                                 @RequestParam("identity") String identity,@RequestParam("sex") String sex,
+                                 Map<String,Object> map, HttpSession session) throws UnsupportedEncodingException {
+        int commonId=commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
+        if(StringUtils.isEmpty(username)||StringUtils.isEmpty(name)||StringUtils.isEmpty(sex)||StringUtils.isEmpty(age)
+        ||StringUtils.isEmpty(idCardNo)||StringUtils.isEmpty(identity)){
+            map.put("msg","请填写完整信息");
+            return "/common/participant/information";
+        }
+        int result = commonMapper.commonInformation(username,name,age,idCardNo,identity,sex,commonId);
+        if(result==1){
+            map.put("msg","填写或修改信息成功！");
+            return "/common/participant/information";
+        } else{
+            map.put("msg","出现错误，修改信息失败，请再次尝试或联系管理员");
+            return "/common/participant/information";
+        }
 
+    }
     /**
      * 通过会议ID查找会议
      * @param id 会议ID

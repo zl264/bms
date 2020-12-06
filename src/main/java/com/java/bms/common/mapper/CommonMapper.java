@@ -3,6 +3,7 @@ package com.java.bms.common.mapper;
 import com.java.bms.common.DO.CongressNoteVO;
 import com.java.bms.common.VO.CommonUserVO;
 import com.java.bms.common.VO.CongressVO;
+import com.java.bms.common.VO.CommonUserVO;
 import com.java.bms.other.DO.UserDO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -43,6 +44,19 @@ public interface CommonMapper {
     @Insert("insert into commonLogin(username,password) values(#{username},#{password})")
     int commonRegister(String username,String password);
 
+    /**
+     * 提交用户输入的个人信息
+     * @param username 用户名
+     * @param name 用户姓名
+     * @param sex 用户性别
+     * @param age 用户年龄
+     * @param commonId 用户id
+     * @param idCardNo 身份证号
+     * @param identity 身份
+     */
+    @Insert("insert into commonUser(username,name,age,idCardNo,identity,sex,commonId) values(#{username}," +
+            "#{name},#{age},#{idCardNo},#{identity},#{sex},#{commonId})")
+    int commonInformation(String username,String name,int age,long idCardNo,String identity,String sex,long commonId);
     /**
      * 查询数据库中的所有会议
      * @return 查询得到的所有会议的List
