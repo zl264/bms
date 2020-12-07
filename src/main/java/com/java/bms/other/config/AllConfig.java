@@ -19,8 +19,11 @@ public class AllConfig implements WebMvcConfigurer {
 
     //不拦截的url
     private static List<String> excludeUrl = new ArrayList<String>(Arrays.asList("/index.html","/","/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg",
-            "/**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/**/*.svg","/common/login","/register.html","/common/register",
-            "/driver/login","/driver/register","/hotel/login","/hotel/register","/manage/login"));
+            "/**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/**/*.svg","/common/login","/common/register",
+            "/driver/login","/driver/register","/hotel/login","/hotel/register","/manager/login",
+            "/common/enter","/common/enterRegister","/hotel/enter","/hotel/enterRegister","/manager/enter","/driver/enter","/driver/enterRegister",
+            "/common/commonLogin","/common/commonRegister","/hotel/hotelLogin","/hotel/hotelRegister","/manager/managerLogin","/driver/driverLogin","/driver/driverRegister"
+    ));
 
     @Bean
     public WebMvcConfigurer webMvcConfigurer(){
@@ -41,7 +44,6 @@ public class AllConfig implements WebMvcConfigurer {
                 registry.addViewController("/driverMain").setViewName("/driver/main");
                 registry.addViewController("/hotelMain").setViewName("/hotel/main");
                 registry.addViewController("/managerMain").setViewName("/manager/main");
-                registry.addViewController("/register.html").setViewName("/register");
                 registry.addViewController("/index").setViewName("/index");
 
             }

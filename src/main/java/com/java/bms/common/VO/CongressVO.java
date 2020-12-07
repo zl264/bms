@@ -18,4 +18,5 @@ public class CongressVO {
     private long image;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+
 }
