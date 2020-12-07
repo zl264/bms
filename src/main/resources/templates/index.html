@@ -5,123 +5,37 @@
     <title>会务管理系统</title>
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        img{
-            width: 100%;
+        body {
+            background-color: black;
         }
-        .outContainer{
-            margin-top: 200px;
+        a:hover{
+            font-size: 5em;
+            color: white;
+            text-decoration: none
+        }
+        a:active, a:link, a:visited{
+            color: white;
+            text-decoration: none
+        }
+        a {
+            color: white;
+            font-size: 3em;
+            text-decoration: none
         }
     </style>
 </head>
 
 <body>
-<div class="container outContainer">
-
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#common" aria-controls="common" role="tab" data-toggle="tab">普通用户</a></li>
-        <li role="presentation"><a href="#hotel" aria-controls="hotel" role="tab" data-toggle="tab">酒店</a></li>
-        <li role="presentation"><a href="#driver" aria-controls="driver" role="tab" data-toggle="tab">司机</a></li>
-        <li role="presentation"><a href="#manager" aria-controls="manager" role="tab" data-toggle="tab">管理员</a></li>
-    </ul>
-
-    <!-- Tab panes -->
-    <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="common">
-            <div class="row">
-                <div class="col-lg-4 col-lg-offset-2">
-                    <form class="form-signin" action="" th:action="@{/common/login}" method="post">
-
-                        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                        <p style="color:red;" th:text="${session.msg}" th:if="${not #strings.isEmpty(session.msg)}"></p>
-                        <label class="sr-only">用户名:</label>
-                        <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
-                        <label class="sr-only">密码:</label>
-                        <input type="password" name="password" class="form-control" placeholder="Password" required="">
-
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
-                        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="login()">注册</button>
-
-                        <p class="mt-5 mb-3 text-muted">© One Time</p>
-
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="hotel">
-            <div class="row">
-                <div class="col-lg-4 col-lg-offset-2">
-                    <form class="form-signin" action="" th:action="@{/hotel/login}" method="post">
-
-                        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                        <p style="color:red;" th:text="${session.msg}" th:if="${not #strings.isEmpty(session.msg)}"></p>
-                        <label class="sr-only">用户名:</label>
-                        <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
-                        <label class="sr-only">密码:</label>
-                        <input type="password" name="password" class="form-control" placeholder="Password" required="">
-
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
-                        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="login()">注册</button>
-
-                        <p class="mt-5 mb-3 text-muted">© One Time</p>
-
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="driver">
-            <div class="row">
-                <div class="col-lg-4 col-lg-offset-2">
-                    <form class="form-signin" action="" th:action="@{/driver/login}" method="post">
-
-                        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                        <p style="color:red;" th:text="${session.msg}" th:if="${not #strings.isEmpty(session.msg)}"></p>
-                        <label class="sr-only">用户名:</label>
-                        <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
-                        <label class="sr-only">密码:</label>
-                        <input type="password" name="password" class="form-control" placeholder="Password" required="">
-
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
-                        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="login()">注册</button>
-
-                        <p class="mt-5 mb-3 text-muted">© One Time</p>
-
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="manager">
-            <div class="row">
-                <div class="col-lg-4 col-lg-offset-2">
-                    <form class="form-signin" action="" th:action="@{/manager/login}" method="post">
-
-                        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                        <p style="color:red;" th:text="${session.msg}" th:if="${not #strings.isEmpty(session.msg)}"></p>
-                        <label class="sr-only">用户名:</label>
-                        <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
-                        <label class="sr-only">密码:</label>
-                        <input type="password" name="password" class="form-control" placeholder="Password" required="">
-
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
-                        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="login()">注册</button>
-
-                        <p class="mt-5 mb-3 text-muted">© One Time</p>
-
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
+<div class="links span8" style="text-align: center;margin-top: 250px;">
+    <a th:href="@{/manager/enter}">administrator user</a><br>
+    <a th:href="@{/common/enter}">ordinary user</a><br>
+    <a th:href="@{/driver/enter}">driver user</a><br>
+    <a th:href="@{hotel/enter}">hotel user</a><br>
 </div>
-<script>
-    function login() {
-        window.location.href = "register.html";
-    }
-</script>
 </body>
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 <script src="/js/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="/js/bootstrap.min.js"></script>
+<script src="js/mouse.js"></script>
 </html>

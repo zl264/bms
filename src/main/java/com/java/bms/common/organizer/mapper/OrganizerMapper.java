@@ -30,9 +30,24 @@ public interface OrganizerMapper {
      * @param endTime 结束时间
      * @return
      */
-    @Insert("insert into congress(organizerId,title,content,startTime,endTime) " +
-            "values(#{organizerId},#{title},#{content},#{startTime},#{endTime})")
+    @Insert("insert into congress(organizerId,title,content,place,startTime,endTime) " +
+            "values(#{organizerId},#{title},#{content},#{place},#{startTime},#{endTime})")
     int createCongress(int organizerId, String title, String content,String place, LocalDateTime startTime,LocalDateTime endTime);
+
+
+    /**
+     * 修改会议信息
+     * @param congressId 会议ID
+     * @param title 会议标题
+     * @param content 会议内容
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     * @return
+     */
+    @Update("update congress set title = #{title} , content = #{content} , place = #{place} , " +
+            "startTime = #{startTime} , endTime = #{endTime} where congressId = #{congressId}")
+    int alterCongress(int congressId, String title, String content,String place, LocalDateTime startTime,LocalDateTime endTime);
+
 
     /**
      * 通过会议Id修改会议的图像
