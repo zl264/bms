@@ -26,7 +26,7 @@ public class ParticipantController {
     @RequestMapping("/participant/information")
     public String Information(){
 
-        return "/common/participant/information";
+        return "creatinformation";
     }
 
     @RequestMapping("/participant/congress")

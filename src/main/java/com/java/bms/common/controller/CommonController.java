@@ -29,50 +29,53 @@ public class CommonController {
 
     /**
      * 主页点击连接进入普通用户登录界面
+     *
      * @return
      */
     @RequestMapping("/common/enter")
-    public String commonEnter(){
+    public String commonEnter() {
         return "/common/commonLogin";
     }
 
     /**
      * 进入普通用户注册界面
+     *
      * @return
      */
     @RequestMapping("/common/enterRegister")
-    public String commonEnterRegister(){
+    public String commonEnterRegister() {
         return "/common/commonRegister";
     }
 
 
     /**
      * 对普通用户的登录进行控制
+     *
      * @param username 用户名
      * @param password 密码
-     * @param map 存储msg信息
-     * @param session session
+     * @param map      存储msg信息
+     * @param session  session
      * @return
      */
     @PostMapping(value = "/common/login")
     public String commonLogin(@RequestParam("username") String username,
                               @RequestParam("password") String password,
-                              Map<String,Object> map, HttpSession session, Model model){
-        if(StringUtils.isEmpty(username)||StringUtils.isEmpty(password)){
-            session.setAttribute("msg","请输入用户名密码");
+                              Map<String, Object> map, HttpSession session, Model model) {
+        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
+            session.setAttribute("msg", "请输入用户名密码");
             return "redirect:/common/commonLogin";
         }
-        UserDO userDo = commonMapper.commonLogin(username,password);
-        if(userDo==null){
+        UserDO userDo = commonMapper.commonLogin(username, password);
+        if (userDo == null) {
 //            map.put("msg","用户名密码错误");
-            session.setAttribute("msg","用户名密码错误");
+            session.setAttribute("msg", "用户名密码错误");
             return "redirect:/common/commonLogin";
         }
-        if(username.equals(userDo.getUsername())&&password.equals(userDo.getPassword())) {
+        if (username.equals(userDo.getUsername()) && password.equals(userDo.getPassword())) {
 //            登录成功以后，防止表单重复提交，可以重定向到主页
             session.setAttribute("loginUser", username);
             List<CongressVO> allCongress = commonMapper.getAllCongress();
-            session.setAttribute("allCongress",allCongress);
+            session.setAttribute("allCongress", allCongress);
             return "redirect:/commonMain";
         }
         return "/common/commonLogin";
@@ -80,87 +83,57 @@ public class CommonController {
 
     /**
      * 对普通用户的注册进行控制
+     *
      * @param username 用户名
      * @param password 密码
-     * @param map 存储msg信息
-     * @param session session
+     * @param map      存储msg信息
+     * @param session  session
      * @return
      */
-    @PostMapping(value = "/common/register")
+    @RequestMapping(value = "/common/register")
     public String commonRegister(@RequestParam("username") String username,
                                  @RequestParam("password") String password,
-                                 Map<String,Object> map, HttpSession session){
-        if(StringUtils.isEmpty(username)||StringUtils.isEmpty(password)){
-            map.put("msg","请输入要注册的用户名密码");
+                                 Map<String, Object> map, HttpSession session) {
+        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
+            map.put("msg", "请输入要注册的用户名密码");
             return "/common/commonRegister";
         }
-        if(commonMapper.isRegister(username)!=null){
-            map.put("msg","该用户名已经被注册了");
+        if (commonMapper.isRegister(username) != null) {
+            map.put("msg", "该用户名已经被注册了");
             return "/common/commonRegister";
         }
-        int result = commonMapper.commonRegister(username,password);
-        if(result==1){
-            map.put("msg","注册成功，请登录");
+        int result = commonMapper.commonRegister(username, password);
+        if (result == 1) {
+            map.put("msg", "注册成功，请登录");
             return "/common/commonLogin";
-        } else{
-            map.put("msg","出现错误，注册失败，请再次尝试或联系管理员");
+        } else {
+            map.put("msg", "出现错误，注册失败，请再次尝试或联系管理员");
             return "/common/commonRegister";
         }
     }
-    /**
-     * 对普通用户的信息进行控制
-     * @param username 用户名
-     * @param name 用户姓名
-     * @param sex 用户性别
-     * @param age 用户年龄
-     * @param idCardNo 身份证号
-     * @param identity 身份
-     * @param map 信息
-     * @param session session
-     * @return
-     */
-    @PostMapping(value = "/common/information")
-    public String commonInformation(@RequestParam("username") String username, @RequestParam("name") String name,
-                                    @RequestParam("age") int age,@RequestParam("idCardNo") long idCardNo,
-                                 @RequestParam("identity") String identity,@RequestParam("sex") String sex,
-                                 Map<String,Object> map, HttpSession session) throws UnsupportedEncodingException {
-        int commonId=commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
-        if(StringUtils.isEmpty(username)||StringUtils.isEmpty(name)||StringUtils.isEmpty(sex)||StringUtils.isEmpty(age)
-        ||StringUtils.isEmpty(idCardNo)||StringUtils.isEmpty(identity)){
-            map.put("msg","请填写完整信息");
-            return "/common/participant/information";
-        }
-        int result = commonMapper.commonInformation(username,name,age,idCardNo,identity,sex,commonId);
-        if(result==1){
-            map.put("msg","填写或修改信息成功！");
-            return "/common/participant/information";
-        } else{
-            map.put("msg","出现错误，修改信息失败，请再次尝试或联系管理员");
-            return "/common/participant/information";
-        }
 
-    }
     /**
      * 通过会议ID查找会议
-     * @param id 会议ID
+     *
+     * @param id    会议ID
      * @param model 传递相关信息
      * @return 会议界面
      */
     @RequestMapping("/congress/{id}")
-    public String getCongressByID(@PathVariable("id") Integer id,Model model,HttpSession session){
-        int userId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
+    public String getCongressByID(@PathVariable("id") Integer id, Model model, HttpSession session) {
+        int userId = commonMapper.getCommonIdByUsername((String) session.getAttribute("loginUser"));
         CongressVO congress = commonMapper.getCongressById(id);
-        String organizerName = commonMapper.getUsernameById((int)congress.getOrganizerId());
+        String organizerName = commonMapper.getUsernameById((int) congress.getOrganizerId());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        CongressNoteVO record = commonMapper.getCongressNoteByCommonIdAndCongressId(userId,congress.getCongressId());
+        CongressNoteVO record = commonMapper.getCongressNoteByCommonIdAndCongressId(userId, congress.getCongressId());
         List<CommonUserVO> participants = commonMapper.getParticipantIdByCongressId(congress.getOrganizerId());
 
 
-        model.addAttribute("congress",congress);
-        model.addAttribute("organizerName",organizerName);
-        model.addAttribute("formatter",formatter);
-        model.addAttribute("record",record);
-        model.addAttribute("participants",participants);
+        model.addAttribute("congress", congress);
+        model.addAttribute("organizerName", organizerName);
+        model.addAttribute("formatter", formatter);
+        model.addAttribute("record", record);
+        model.addAttribute("participants", participants);
 //        if(congress.getStartTime().isBefore(congress.getEndTime())) {
 //
 //            System.out.println(1);
@@ -171,11 +144,63 @@ public class CommonController {
     }
 
 
-
     @RequestMapping("/common/search")
-    public String searchCongress(@RequestParam("title") String title, Model model,HttpSession session){
-        
+    public String searchCongress(@RequestParam("title") String title, Model model, HttpSession session) {
+
 
         return "/common/search";
+    }
+
+
+    /**
+     * 对普通用户的信息进行控制
+     *
+     * @param map     信息
+     * @param session session
+     * @return
+     */
+    @RequestMapping(value = "/common/information")
+    public String commonInformation(Map<String, Object> map, HttpSession session) throws UnsupportedEncodingException {
+        int commonId = commonMapper.getCommonIdByUsername((String) session.getAttribute("loginUser"));
+        CommonUserVO user = commonMapper.HaveInfomation(commonMapper.getUsernameById(commonId));
+        map.put("user", user);
+        return "/common/participant/information";
+    }
+    @RequestMapping(value = "/common/createinformation")
+    public String createInformation( @RequestParam("name") String name,
+                                    @RequestParam("age") int age, @RequestParam("idCardNo") long idCardNo,
+                                    @RequestParam("identity") String identity, @RequestParam("sex") String sex, @RequestParam("tel") String tel,
+                                    Map<String, Object> map, HttpSession session) {
+        int commonId = commonMapper.getCommonIdByUsername((String) session.getAttribute("loginUser"));
+        CommonUserVO visit = commonMapper.HaveInfomation(commonMapper.getUsernameById(commonId));
+        if (StringUtils.isEmpty(name) || StringUtils.isEmpty(sex) || StringUtils.isEmpty(age)
+                || StringUtils.isEmpty(idCardNo) || StringUtils.isEmpty(identity) || StringUtils.isEmpty(tel)) {
+            map.put("msg", "请填写完整信息");
+            return "/common/participant/information";
+        }
+        if(visit==null){
+            int result = commonMapper.createInformation((String)session.getAttribute("loginUser"), name, age, idCardNo, identity, sex, commonId, tel);
+            CommonUserVO user = commonMapper.HaveInfomation(commonMapper.getUsernameById(commonId));
+            map.put("user", user);
+            if (result == 1) {
+                map.put("msg", "填写或修改信息成功！");
+                return "/common/participant/information";
+            } else {
+                map.put("msg", "出现错误，修改信息失败，请再次尝试或联系管理员");
+                return "/common/participant/information";
+            }
+        }else{
+            int result = commonMapper.updateInformation((String)session.getAttribute("loginUser"), name, age, idCardNo, identity, sex, commonId, tel);
+            CommonUserVO user = commonMapper.HaveInfomation(commonMapper.getUsernameById(commonId));
+            map.put("user", user);
+            if (result == 1) {
+                map.put("msg", "填写或修改信息成功！");
+                return "/common/participant/information";
+            } else {
+                map.put("msg", "出现错误，修改信息失败，请再次尝试或联系管理员");
+                return "/common/participant/information";
+            }
+        }
+
     }
 }

@@ -15,5 +15,6 @@ public class CommonUserVO {
     private long idCardNo;
     private String identity;
     private int commonId;
+    private String tel;
 
 }

@@ -8,7 +8,9 @@ import com.java.bms.other.DO.UserDO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -43,7 +45,6 @@ public interface CommonMapper {
      */
     @Insert("insert into commonLogin(username,password) values(#{username},#{password})")
     int commonRegister(String username,String password);
-
     /**
      * 提交用户输入的个人信息
      * @param username 用户名
@@ -54,9 +55,17 @@ public interface CommonMapper {
      * @param idCardNo 身份证号
      * @param identity 身份
      */
-    @Insert("insert into commonUser(username,name,age,idCardNo,identity,sex,commonId) values(#{username}," +
-            "#{name},#{age},#{idCardNo},#{identity},#{sex},#{commonId})")
-    int commonInformation(String username,String name,int age,long idCardNo,String identity,String sex,long commonId);
+    @Insert("insert into commonUser(username,name,age,idCardNo,identity,sex,commonId,tel) values(#{username}," +
+            "#{name},#{age},#{idCardNo},#{identity},#{sex},#{commonId},#{tel})")
+    int createInformation(String username,String name,int age,long idCardNo,String identity,String sex,long commonId,String tel);
+
+    @Update("update commonUser set username = #{username} , name= #{name} ,  age= #{age} , idCardNo=#{idCardNo}," +
+            " identity= #{identity} , sex= #{sex} ,tel=#{tel} where commonId = #{commonId}")
+    int updateInformation(String username,String name,int age, long idCardNo, String identity,String sex, long commonId,String tel);
+
+    @Select("select * from commonUser where username=#{username}")
+    CommonUserVO HaveInfomation(String username);
+
     /**
      * 查询数据库中的所有会议
      * @return 查询得到的所有会议的List
