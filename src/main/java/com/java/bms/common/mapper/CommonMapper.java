@@ -70,7 +70,7 @@ public interface CommonMapper {
      * 查询数据库中的所有会议
      * @return 查询得到的所有会议的List
      */
-    @Select("select * from congress")
+    @Select("select * from congress order by startTime desc")
     List<CongressVO> getAllCongress();
 
     /**
@@ -113,7 +113,17 @@ public interface CommonMapper {
      * @param congressId
      * @return
      */
-    @Select("select * from congressNote,commonUser where congressNote.congressId = #{congressId} and congressNote.commonId = commonUser.commonId")
+    @Select("select commonUser.* from congressNote,commonUser where congressNote.congressId = #{congressId} and congressNote.commonId = commonUser.commonId")
     List<CommonUserVO> getParticipantIdByCongressId(int congressId);
 
+
+
+    /**
+     * 通过会议ID获取参与者信息
+     * @param congressId
+     * @return
+     */
+    @Select("select commonUser.* from congressNote,commonUser where congressNote.congressId " +
+            "= #{congressId} and congressNote.commonId = commonUser.commonId and congressNote.arrivalPlace is not null")
+    List<CommonUserVO> getAllInformationParticipantIdByCongressId(int congressId);
 }

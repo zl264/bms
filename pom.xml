@@ -70,6 +70,12 @@
             <version>1.18.10</version>
             <scope>provided</scope>
         </dependency>
+<!--        thymeleaf的localDateTime的格式化操作-->
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-java8time</artifactId>
+            <version>3.0.1.RELEASE</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -54,16 +54,17 @@ public class HotelController {
                               Map<String,Object> map, HttpSession session, Model model){
         if(StringUtils.isEmpty(username)||StringUtils.isEmpty(password)){
             session.setAttribute("msg","请输入用户名密码");
-            return "redirect:/hotel/hotelLogin";
+            return "redirect:/hotel/enter";
         }
         UserDO userDo = hotelMapper.commonLogin(username,password);
         if(userDo==null){
             session.setAttribute("msg","用户名密码错误");
-            return "redirect:/hotel/hotelLogin";
+            return "redirect:/hotel/enter";
         }
         if(username.equals(userDo.getUsername())&&password.equals(userDo.getPassword())) {
 //            登录成功以后，防止表单重复提交，可以重定向到主页
             session.setAttribute("loginUser", username);
+            session.removeAttribute("msg");
             return "redirect:/hotelMain";
         }
         return "/hotel/hotelLogin";
