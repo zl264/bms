@@ -1,9 +1,12 @@
 package com.java.bms.common.controller;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.java.bms.common.DO.CongressNoteVO;
 import com.java.bms.common.VO.CommonUserVO;
 import com.java.bms.common.VO.CongressVO;
+import com.java.bms.common.organizer.mapper.OrganizerMapper;
+import com.java.bms.driver.VO.DriverVO;
 import com.java.bms.other.DO.UserDO;
 import com.java.bms.common.mapper.CommonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +30,9 @@ public class CommonController {
 
     @Autowired
     CommonMapper commonMapper;
+
+    @Autowired
+    OrganizerMapper organizerMapper;
 
     /**
      * 主页点击连接进入普通用户登录界面
@@ -63,19 +70,20 @@ public class CommonController {
                               Map<String, Object> map, HttpSession session, Model model) {
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             session.setAttribute("msg", "请输入用户名密码");
-            return "redirect:/common/commonLogin";
+            return "redirect:/common/enter";
         }
         UserDO userDo = commonMapper.commonLogin(username, password);
         if (userDo == null) {
 //            map.put("msg","用户名密码错误");
             session.setAttribute("msg", "用户名密码错误");
-            return "redirect:/common/commonLogin";
+            return "redirect:/common/enter";
         }
         if (username.equals(userDo.getUsername()) && password.equals(userDo.getPassword())) {
 //            登录成功以后，防止表单重复提交，可以重定向到主页
             session.setAttribute("loginUser", username);
             List<CongressVO> allCongress = commonMapper.getAllCongress();
             session.setAttribute("allCongress", allCongress);
+            session.removeAttribute("msg");
             return "redirect:/commonMain";
         }
         return "/common/commonLogin";
@@ -126,20 +134,30 @@ public class CommonController {
         String organizerName = commonMapper.getUsernameById((int) congress.getOrganizerId());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         CongressNoteVO record = commonMapper.getCongressNoteByCommonIdAndCongressId(userId, congress.getCongressId());
-        List<CommonUserVO> participants = commonMapper.getParticipantIdByCongressId(congress.getOrganizerId());
+        LocalDateTime now = LocalDateTime.now();
+        //获取所有参加会议的参加者
+        List<CommonUserVO> participants = commonMapper.getParticipantIdByCongressId((int)congress.getCongressId());
+        //获取所有填写了到达时间和到达地点的参加者
+        List<CommonUserVO> allInformationParticipants = commonMapper.getAllInformationParticipantIdByCongressId((int)(congress.getCongressId()));
+        //判断当前参与者是否有填写完个人信息
+        CommonUserVO participantInformation = commonMapper.HaveInfomation((String) session.getAttribute("loginUser"));
+        //获取司机
+        List<DriverVO> hasDriver = organizerMapper.getDriverByCongressId(id);
 
 
         model.addAttribute("congress", congress);
         model.addAttribute("organizerName", organizerName);
         model.addAttribute("formatter", formatter);
         model.addAttribute("record", record);
+        model.addAttribute("hasDriver",hasDriver);
         model.addAttribute("participants", participants);
-//        if(congress.getStartTime().isBefore(congress.getEndTime())) {
-//
-//            System.out.println(1);
-//        }else{
-//            System.out.println(0);
-//        }
+        model.addAttribute("participantInformation",participantInformation);
+        model.addAttribute("allInformationParticipants",allInformationParticipants);
+//        判断当前时间用户是否可以参加会议
+        if(now.isBefore(congress.getRegisterEndTime())&&now.isAfter(congress.getRegisterStartTime())){
+            model.addAttribute("canRegisterCongress","yes");
+        }
+
         return "/common/congress";
     }
 
@@ -166,6 +184,8 @@ public class CommonController {
         map.put("user", user);
         return "/common/participant/information";
     }
+
+
     @RequestMapping(value = "/common/createinformation")
     public String createInformation( @RequestParam("name") String name,
                                     @RequestParam("age") int age, @RequestParam("idCardNo") long idCardNo,
@@ -202,5 +222,21 @@ public class CommonController {
             }
         }
 
+    }
+
+
+    /**
+     * 提供给酒店司机查看的会议信息
+     * @param congressId 会议ID
+     * @param model
+     * @return
+     */
+    @RequestMapping("/other/congress/{congressId}")
+    public String otherLookCongress(@PathVariable("congressId") int congressId,Model model){
+        CongressVO congress = commonMapper.getCongressById(congressId);
+        String organizerName = commonMapper.getUsernameById((int) congress.getOrganizerId());
+        model.addAttribute("congress",congress);
+        model.addAttribute("organizerName",organizerName);
+        return "/common/otherLookCongress";
     }
 }

@@ -1,5 +1,4 @@
-package com.java.bms.common.DO;
-
+package com.java.bms.driver.VO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,9 +9,10 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CongressNoteVO {
-    private int commonId;
+public class CongressDriver {
     private int congressId;
-    private String arrivalPlace;
-    private LocalDateTime arrivalTime;
+    private int driverId;
+    private String title;
+    private LocalDateTime time;
+    private String place;
 }

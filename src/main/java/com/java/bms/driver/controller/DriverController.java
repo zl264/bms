@@ -1,16 +1,24 @@
 package com.java.bms.driver.controller;
 
+import com.java.bms.common.mapper.CommonMapper;
+import com.java.bms.driver.DO.CongressApplyDriverDO;
+import com.java.bms.driver.DO.UserDriverVO;
+import com.java.bms.driver.VO.CongressDriver;
+import com.java.bms.driver.VO.DriverVO;
 import com.java.bms.driver.mapper.DriverMapper;
 import com.java.bms.other.DO.UserDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 
@@ -21,6 +29,9 @@ import java.util.Map;
 public class DriverController {
     @Autowired
     DriverMapper driverMapper;
+
+    @Autowired
+    CommonMapper commonMapper;
 
     /**
      * 主页进入司机登录界面
@@ -55,17 +66,25 @@ public class DriverController {
                               Map<String,Object> map, HttpSession session, Model model){
         if(StringUtils.isEmpty(username)||StringUtils.isEmpty(password)){
             session.setAttribute("msg","请输入用户名密码");
-            return "redirect:/driver/driverLogin";
+            return "redirect:/driver/enter";
         }
-        UserDO userDo = driverMapper.commonLogin(username,password);
+        UserDO userDo = driverMapper.driverLogin(username,password);
         if(userDo==null){
             map.put("msg","用户名密码错误");
             session.setAttribute("msg","用户名密码错误");
-            return "redirect:/driver/driverLogin";
+            return "redirect:/driver/enter";
         }
         if(username.equals(userDo.getUsername())&&password.equals(userDo.getPassword())) {
 //            登录成功以后，防止表单重复提交，可以重定向到主页
+            DriverVO driverVO = driverMapper.getDriverByDriverId(userDo.getId());
+            List<CongressApplyDriverDO> applyCongresses = driverMapper.getApplyCongressesByDriverId(userDo.getId());
+            List<CongressDriver> congresses = driverMapper.getCongressByDriverId(userDo.getId());
+
+            session.removeAttribute("msg");
             session.setAttribute("loginUser", username);
+            session.setAttribute("driver",driverVO);
+            session.setAttribute("applyCongresses",applyCongresses);
+            session.setAttribute("congresses",congresses);
             return "redirect:/driverMain";
         }
         return "/driver/driverLogin";
@@ -91,7 +110,7 @@ public class DriverController {
             map.put("msg","该用户名已经被注册了");
             return "/driver/driverRegister";
         }
-        int result = driverMapper.commonRegister(username,password);
+        int result = driverMapper.driverRegister(username,password);
         if(result==1){
             map.put("msg","注册成功，请登录");
             return "/driver/driverLogin";
@@ -100,4 +119,107 @@ public class DriverController {
             return "/driver/driverRegister";
         }
     }
+
+    @RequestMapping("/driver/add")
+    public String addDriverInformation(@RequestParam("name") String name,@RequestParam("age") int age,
+                                          @RequestParam("idCardNo") String idCardNo,@RequestParam("licensePlateNumber") String licensePlateNumber,
+                                          @RequestParam("sex") String sex,@RequestParam("tel") String tel,
+                                          @RequestParam("capacity") int capacity,
+                                          HttpSession session){
+        String username = (String)session.getAttribute("loginUser");
+        int driverId = commonMapper.getCommonIdByUsername(username);
+        driverMapper.addDriverInformation(driverId,username,name,tel,capacity,licensePlateNumber,sex,age,idCardNo);
+        DriverVO driverVO = driverMapper.getDriverByDriverId(driverId);
+        List<CongressApplyDriverDO> applyCongresses = driverMapper.getApplyCongressesByDriverId(driverId);
+        List<CongressDriver> congresses = driverMapper.getCongressByDriverId(driverId);
+
+        session.setAttribute("driver",driverVO);
+        session.setAttribute("applyCongresses",applyCongresses);
+        session.setAttribute("congresses",congresses);
+        return "redirect:/driverMain";
+    }
+
+    @RequestMapping("/driver/alter")
+    public String alterDriverInformation(@RequestParam("name") String name,@RequestParam("age") int age,
+                                       @RequestParam("idCardNo") String idCardNo,@RequestParam("licensePlateNumber") String licensePlateNumber,
+                                       @RequestParam("sex") String sex,@RequestParam("tel") String tel,
+                                       @RequestParam("capacity") int capacity,
+                                       HttpSession session){
+        String username = (String)session.getAttribute("loginUser");
+        int driverId = commonMapper.getCommonIdByUsername(username);
+        driverMapper.alterDriverInformation(driverId,username,name,tel,capacity,licensePlateNumber,sex,age,idCardNo);
+        DriverVO driverVO = driverMapper.getDriverByDriverId(driverId);
+        List<CongressApplyDriverDO> applyCongresses = driverMapper.getApplyCongressesByDriverId(driverId);
+        List<CongressDriver> congresses = driverMapper.getCongressByDriverId(driverId);
+
+        session.setAttribute("driver",driverVO);
+        session.setAttribute("applyCongresses",applyCongresses);
+        session.setAttribute("congresses",congresses);
+        return "redirect:/driverMain";
+    }
+
+
+    @RequestMapping("/driver/agree")
+    public String agreeCongress(@RequestParam("year") int year,@RequestParam("month") int month,
+                                @RequestParam("day") int day,@RequestParam("hour") int hour,
+                                @RequestParam("minute") int minute,@RequestParam("place") String place,
+                                @RequestParam("congressId") int congressId,HttpSession session){
+        LocalDateTime time = LocalDateTime.of(year,month,day,hour,minute);
+        int driverId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
+        driverMapper.deleteApplyCongressByDriverIdAndCongressId(driverId,congressId);
+        driverMapper.addCongressDriver(driverId,congressId,time,place);
+        DriverVO driverVO = driverMapper.getDriverByDriverId(driverId);
+        List<CongressApplyDriverDO> applyCongresses = driverMapper.getApplyCongressesByDriverId(driverId);
+        List<CongressDriver> congresses = driverMapper.getCongressByDriverId(driverId);
+
+        session.setAttribute("driver",driverVO);
+        session.setAttribute("applyCongresses",applyCongresses);
+        session.setAttribute("congresses",congresses);
+        return "redirect:/driverMain";
+    }
+
+    @RequestMapping("/driver/refuse/{congressId}")
+    public String refuseCongress(@PathVariable("congressId") int congressId,HttpSession session){
+        int driverId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
+        driverMapper.deleteApplyCongressByDriverIdAndCongressId(driverId,congressId);
+        driverMapper.addDriverRefuseCongress(driverId,congressId);
+        DriverVO driverVO = driverMapper.getDriverByDriverId(driverId);
+        List<CongressApplyDriverDO> applyCongresses = driverMapper.getApplyCongressesByDriverId(driverId);
+        List<CongressDriver> congresses = driverMapper.getCongressByDriverId(driverId);
+
+        session.setAttribute("driver",driverVO);
+        session.setAttribute("applyCongresses",applyCongresses);
+        session.setAttribute("congresses",congresses);
+        return "redirect:/driverMain";
+    }
+
+    /**
+     * 司机完成接送任务
+     * @param congressId
+     * @param session
+     * @return
+     */
+    @RequestMapping("/driver/complete/{congressId}")
+    public String taskComplete(@PathVariable("congressId") int congressId,HttpSession session){
+        int driverId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
+        driverMapper.deleteCongressDriver(driverId,congressId);
+
+        DriverVO driverVO = driverMapper.getDriverByDriverId(driverId);
+        List<CongressApplyDriverDO> applyCongresses = driverMapper.getApplyCongressesByDriverId(driverId);
+        List<CongressDriver> congresses = driverMapper.getCongressByDriverId(driverId);
+
+        session.setAttribute("driver",driverVO);
+        session.setAttribute("applyCongresses",applyCongresses);
+        session.setAttribute("congresses",congresses);
+        return "redirect:/driverMain";
+    }
+
+    @RequestMapping("/driver/list/{congressId}")
+    public String getList(@PathVariable("congressId") int congressId,HttpSession session,Model model){
+        int driverId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
+        List<UserDriverVO> list = driverMapper.getList(driverId,congressId);
+        model.addAttribute("list",list);
+        return "/driver/list";
+    }
+
 }
