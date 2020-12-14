@@ -60,11 +60,11 @@ public interface CommonMapper {
      */
     @Insert("insert into commonUser(username,name,age,idCardNo,identity,sex,commonId,tel) values(#{username}," +
             "#{name},#{age},#{idCardNo},#{identity},#{sex},#{commonId},#{tel})")
-    int createInformation(String username,String name,int age,long idCardNo,String identity,String sex,long commonId,String tel);
+    int createInformation(String username,String name,int age,String idCardNo,String identity,String sex,long commonId,String tel);
 
     @Update("update commonUser set username = #{username} , name= #{name} ,  age= #{age} , idCardNo=#{idCardNo}," +
             " identity= #{identity} , sex= #{sex} ,tel=#{tel} where commonId = #{commonId}")
-    int updateInformation(String username,String name,int age, long idCardNo, String identity,String sex, long commonId,String tel);
+    int updateInformation(String username,String name,int age, String idCardNo, String identity,String sex, long commonId,String tel);
 
     @Select("select * from commonUser where username=#{username}")
     CommonUserVO HaveInfomation(String username);

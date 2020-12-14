@@ -208,7 +208,7 @@ public class CommonController {
 
     @RequestMapping(value = "/common/createinformation")
     public String createInformation( @RequestParam("name") String name,
-                                    @RequestParam("age") int age, @RequestParam("idCardNo") long idCardNo,
+                                    @RequestParam("age") int age, @RequestParam("idCardNo") String idCardNo,
                                     @RequestParam("identity") String identity, @RequestParam("sex") String sex, @RequestParam("tel") String tel,
                                     Map<String, Object> map, HttpSession session) {
         int commonId = commonMapper.getCommonIdByUsername((String) session.getAttribute("loginUser"));
