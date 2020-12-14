@@ -6,81 +6,170 @@
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <title>普通用户登录之后的主界面</title>
-
     <style>
-        .showCongress{
-            margin-top: 100px;
+        .paddingtop{
+            padding-top:10px ;
         }
-        .search{
-            margin: 0 30px;
+        .line {
+            border-bottom: 2px solid #000000;
+            padding: 5px;
         }
     </style>
     <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/dashboard.css" rel="stylesheet">
 
-
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
+    <script src="/js/html5shiv.min.js"></script>
+    <script src="/js/respond.min.js"></script>
 
 
 </head>
 <body>
 
+   <!-- <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav nav-stacked">
+                    <li><a href="#" th:href="@{/organizer/manage}">创建会议</a></li>
+                    <li><a href="#" th:href="@{/participant/congress}">查看会议</a></li>
+                    <li><a href="#" th:href="@{/participant/driver}">查看司机</a></li>
+                    <li><a href="#" th:href="@{/participant/hotel}">查看酒店</a></li>
+                </ul>
+                <form class="navbar-form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">搜索</button>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#" th:href="@{/common/information}" style="margin-right: 50px;">
+                            <img class="img-circle" src="img/0.jpg" th:alt="${session.loginUser}" width="30" height="30">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>-->
 
-<!--导航条-->
-<nav class="navbar navbar-default navbar-fixed-top navbar-inverse myNav">
+   <!-- <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav nav-stacked">
+                    <li>
+                        <a href="#" th:href="@{/common/information}" style="margin-right: 50px;">
+                            <img class="img-circle" src="img/0.jpg" th:alt="${session.loginUser}" width="30" height="30">
+                        </a>
+                    </li>
+                </ul>
+                <form class="navbar-form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">搜索</button>
+                </form>
+            </div>
+        </div>
+    </nav>-->
+
+
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Congress Project</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#" th:href="@{/common/information}" style="margin-right: 50px;">
+                            <img class="img-circle" src="img/0.jpg" th:alt="${session.loginUser}" width="30" height="30">
+                        </a>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-right">
+                    <input type="text" class="form-control" placeholder="Search...">
+                    <button type="submit" class="btn btn-default">搜索</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
     <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-<!--        <div class="navbar-header">-->
-<!--            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">-->
-<!--                <span class="sr-only">Toggle navigation</span>-->
-<!--                <span class="icon-bar"></span>-->
-<!--                <span class="icon-bar"></span>-->
-<!--                <span class="icon-bar"></span>-->
-<!--            </button>-->
-<!--        </div>-->
+        <div class="row paddingtop">
+            <div class="col-sm-3 col-md-2 sidebar">
+                <ul class="nav nav-sidebar">
+                    <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+                    <li><a href="#" th:href="@{/organizer/manage}">创建会议</a></li>
+                </ul>
+                <ul class="nav nav-sidebar">
+                    <li><a href="#" th:href="@{/participant/congress}">查看会议</a></li>
+                </ul>
+                <ul class="nav nav-sidebar">
+                    <li><a href="#" th:href="@{/participant/driver}">查看司机</a></li>
+                </ul>
+                <ul class="nav nav-sidebar">
+                    <li><a href="#" th:href="@{/participant/hotel}">查看酒店</a></li>
+                </ul>
+            </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-<!--            显示搜索框左边的四个选项-->
-            <ul class="nav navbar-nav vMiddle" style="margin-left: 50px">
-                <li><a href="#" th:href="@{/organizer/manage}">创建会议</a></li>
-                <li><a href="#" th:href="@{/participant/congress}">查看会议</a></li>
-                <li><a href="#" th:href="@{/participant/driver}">查看司机</a></li>
-                <li><a href="#" th:href="@{/participant/hotel}">查看酒店</a></li>
-<!--                <li><a></a></li>-->
-<!--                <li><a></a></li>-->
-<!--                <li><a></a></li>-->
-<!--                <li><a></a></li>-->
-<!--                <li><a></a></li>-->
-<!--                <li><a></a></li>-->
-            </ul>
-<!--            这个表单是搜索框-->
-            <form class="navbar-form navbar-left search vMiddle" th:action="@{/common/search}" method="post" style="margin-left: 200px;">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <div class="row line">
+                    <h1 class="page-header ">
+                        <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                        <span>全部会议</span>
+                    </h1>
                 </div>
-                <button type="submit" class="btn btn-default">搜索</button>
-            </form>
-<!--            右边的个人信息-->
-            <ul class="nav navbar-nav navbar-right vMiddle">
-                <li>
-                    <a href="#" th:href="@{/common/information}" style="margin-right: 50px;">
-                        <img class="img-circle" src="img/0.jpg" th:alt="${session.loginUser}" width="30" height="30">
-                    </a>
-                </li>
-<!--                <li><a></a></li>-->
-<!--                <li><a></a></li>-->
-<!--                <li><a></a></li>-->
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
 
+                <div class="row placeholders paddingtop">
+                    <div class="col-xs-6 col-sm-3 placeholder" th:each="congress:${session.allCongress}">
+                            <div class="thumbnail" style="height: 360px;">
+                                <a th:href="@{/congress/}+${congress.getCongressId()}" >
+                                    <img class="lazy" th:src="'img/'+${congress.getImage()}+'.jpg'" alt="会议图片" width="300" height="150">
+                                </a>
+                                <div class="caption">
+                                    <h3>
+                                        <a th:href="@{/congress/}+${congress.getCongressId()}" th:text="${congress.getTitle()}"></a>
+                                    </h3>
+                                    <p th:text="${#strings.substring(congress.getContent(),0,20)}" th:if="${congress.getContent().length()>20}"></p>
+                                    <p th:text="${congress.getContent()}" th:if="${congress.getContent().length()<20}"></p>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <!--显示每一个会议-->
-<div class="container showCongress">
-    <div class="row" >
+<!--<div class="container">
+    <div class="row paddingtop line">
+        <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+        <span>全部会议</span>
+    </div>
+    <div class="row paddingtop">
         <div class="col-sm-6 col-md-4 col-lg-3 " th:each="congress:${session.allCongress}">
             <div class="thumbnail" style="height: 360px;">
                 <a th:href="@{/congress/}+${congress.getCongressId()}" >
@@ -95,8 +184,8 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </div>-->
+
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 <script src="js/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->

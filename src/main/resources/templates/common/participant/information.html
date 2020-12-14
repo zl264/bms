@@ -9,11 +9,9 @@
 
 
     <!-- Bootstrap -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
 
 
-    <script src="../js/html5shiv.min.js"></script>
-    <script src="../js/respond.min.js"></script>
     <style>
         *{
             margin:0px;
@@ -21,7 +19,10 @@
 
         }
         body{
-            background: url("static/img/background2.jpg") no-repeat center;
+            background: url(static/img/background2.jpg) no-repeat center;
+        }
+        lable{
+            font-size:20px;
         }
         .rg_layout{
             width:900px;
@@ -29,11 +30,12 @@
             border:5px solid #EEEEEE;
             background-color: white;
             margin: auto;
-            margin-top: 15px;
+            margin-top: 50px;
+            padding-top: 30px;
         }
         .rg_left{
             float:left;
-            margin: 15px;
+            margin:15px;
         }
         .rg_left >p:first-child{
             color:#FFD026;
@@ -48,7 +50,7 @@
             width: 450px;
         }
         .td_left{
-            width:100px;
+            width:200px;
             text-align: right;
             height:45px;
         }
@@ -57,22 +59,27 @@
         }
         #name,#sex,#age,#idCardNo,#identity,#tel{
             width:251px;
-            height:32px;
+            height:40px;
             border: 1px solid #000000;
             /*设置边框圆角*/
             border-radius: 5px;
             padding-left: 10px;
         }
         #btn_sub{
-            width:150px;
+            width:200px;
             height:40px;
             background-color:#000000;
             border: 1px solid #000000;
             margin-top:50px;
+            font-size: 20px;
             color: white;
         }
     </style>
 </head>
+<script>
+    var a = document.getElementsByTagName("body");
+    a.style.backgroundImage="@{resources/static/img/background2.jpg}";
+</script>
 <body>
     <!--<nav class="navbar navbar-inverse">
         <h3 style="color: white">&emsp;&emsp;Information</h3>
@@ -116,10 +123,13 @@
         </div>
     </div>
 -->
+    <nav class="navbar navbar-inverse">
+        <h3 style="color: white">&emsp;&emsp;Information</h3>
+    </nav>
     <div class="rg_layout">
         <div class="rg_left">
             <p>用户信息</p>
-            <p>USER information</p>
+            <p>USER INFORMATION</p>
         </div>
 
         <div class="rg_center">
@@ -149,7 +159,7 @@
                         </tr>
                         <tr>
                             <td class="td_left"><lable for="tel">电话号码：</lable></td>
-                            <td class="td_right"><input type="text" name="电话号码" id="tel" th:value="${user!=null?user.getTel():''}"></td>
+                            <td class="td_right"><input type="text" name="电话号码" id="tel" placeholder="请输入电话号码" th:value="${user!=null?user.getTel():''}"></td>
                         </tr>
                         <tr>
                             <td colspan="2" align="center"><input type="submit" id="btn_sub" value="保存"></td>
@@ -161,7 +171,7 @@
     </div>
 </body>
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-<script src="../js/jquery.min.js"></script>
+<script src="/js/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-<script src="../js/bootstrap.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 </html>
