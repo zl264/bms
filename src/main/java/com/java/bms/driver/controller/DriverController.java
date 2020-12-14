@@ -197,7 +197,7 @@ public class DriverController {
         LocalDateTime time = LocalDateTime.of(year,month,day,hour,minute);
         int driverId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
         driverMapper.deleteApplyCongressByDriverIdAndCongressId(driverId,congressId);
-        driverMapper.addCongressDriver(driverId,congressId,time,place);
+        driverMapper.addCongressDriver(driverId,congressId);
         DriverVO driverVO = driverMapper.getDriverByDriverId(driverId);
         List<CongressApplyDriverDO> applyCongresses = driverMapper.getApplyCongressesByDriverId(driverId);
         List<CongressDriver> congresses = driverMapper.getCongressByDriverId(driverId);
