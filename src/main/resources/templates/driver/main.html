@@ -86,12 +86,50 @@
                 <div class="row">
                     <main role="main" class="col-lg-8 col-lg-offset-2">
                         <form style="text-align: left; margin-top: 150px;margin-left: 300px;"
-                              th:action="@{/driver/alter}" method="post" th:if="${session.driver!=null}">
+                              th:action="@{/driver/addinformation}" method="post" >
                             <div class="input-group">
-                                <span class="input-group-addon" id="sizing-addon1">昵称：&emsp;&emsp;</span>
-                                <input type="text" name="name" class="form-control" placeholder="昵称"
-                                       aria-describedby="sizing-addon2" th:value="${session.driver.getUsername()}">
+                                <span class="input-group-addon" id="sizing-addon1">姓名：&emsp;&emsp;</span>
+                                <input type="text" name="name" class="form-control" placeholder="姓名"
+                                       aria-describedby="sizing-addon2" th:value="${driver!=null?driver.getName():''}">
                             </div>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="sizing-addon2">年龄：&emsp;&emsp;</span>
+                                <input type="text" name="age" class="form-control" placeholder="年龄"
+                                       aria-describedby="sizing-addon2" th:value="${driver!=null?driver.getAge():''}">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="sizing-addon3">身份证号：</span>
+                                <input type="text" name="idCardNo" class="form-control" placeholder="身份证号"
+                                       aria-describedby="sizing-addon2" th:value="${driver!=null?driver.getIdCardNo():''}">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="sizing-addon4">车牌号：</span>
+                                <input type="text" name="licensePlateNumber" class="form-control" placeholder="车牌号"
+                                       aria-describedby="sizing-addon2"
+                                       th:value="${driver!=null?driver.getLicensePlateNumber():''}">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="sizing-addon5">性别：&emsp;&emsp;</span>
+                                <input type="text" name="sex" class="form-control" placeholder="性别"
+                                       aria-describedby="sizing-addon2" th:value="${driver!=null?driver.getSex():''}">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="sizing-addon6">电话号码：</span>
+                                <input type="text" name="tel" class="form-control" placeholder="电话号码"
+                                       aria-describedby="sizing-addon2" th:value="${driver!=null?driver.getTel():''}">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="sizing-addon7">载客量：</span>
+                                <input type="text" name="capacity" class="form-control" placeholder="载客量"
+                                       aria-describedby="sizing-addon2" th:value="${driver!=null?driver.getCapacity():''}">
+                            </div>
+                            <button class="btn btn-lg btn-primary btn-block" type="submit">保存</button>
+       <!-- <div role="tabpanel" class="tab-pane" id="information">
+            <div class="container-fluid">
+                <div class="row">
+                    <main role="main" class="col-lg-8 col-lg-offset-2">
+                        <form style="text-align: left; margin-top: 150px;margin-left: 300px;"
+                              th:action="@{/driver/add}" method="post" th:if="${session.driver!=null}">
                             <div class="input-group">
                                 <span class="input-group-addon" id="sizing-addon2">姓名：&emsp;&emsp;</span>
                                 <input type="text" name="name" class="form-control" placeholder="姓名"
@@ -135,11 +173,6 @@
                             <form style="text-align: left; margin-top: 150px;margin-left: 300px;"
                                   th:action="@{/driver/add}" method="post">
                                 <div class="input-group">
-                                    <span class="input-group-addon" id="sizing-addon16">昵称：&emsp;&emsp;</span>
-                                    <input type="text" name="name" class="form-control" placeholder="昵称"
-                                           aria-describedby="sizing-addon2">
-                                </div>
-                                <div class="input-group">
                                     <span class="input-group-addon" id="sizing-addon9">姓名：&emsp;&emsp;</span>
                                     <input type="text" name="name" class="form-control" placeholder="姓名"
                                            aria-describedby="sizing-addon2">
@@ -156,7 +189,7 @@
                                 </div>
                                 <div class="input-group">
                                     <span class="input-group-addon" id="sizing-addon12">车牌号：&emsp;&emsp;</span>
-                                    <input type="text" name="licensePlateNumber" class="form-control" placeholder="身份"
+                                    <input type="text" name="licensePlateNumber" class="form-control" placeholder="车牌号"
                                            aria-describedby="sizing-addon2">
                                 </div>
                                 <div class="input-group">
@@ -171,7 +204,7 @@
                                 </div>
                                 <div class="input-group">
                                     <span class="input-group-addon" id="sizing-addon15">载客量：</span>
-                                    <input type="text" name="capacity" class="form-control" placeholder="电话号码"
+                                    <input type="text" name="capacity" class="form-control" placeholder="载客量"
                                            aria-describedby="sizing-addon2">
                                 </div>
                                 <button class="btn btn-lg btn-primary btn-block" type="submit">保存</button>
@@ -181,7 +214,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 
 </div>
 

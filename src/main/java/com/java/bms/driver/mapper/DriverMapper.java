@@ -82,8 +82,15 @@ public interface DriverMapper {
     @Update("update driver set username = #{username},name = #{name}, tel = #{tel},capacity = #{capacity}," +
             "licensePlateNumber = #{licensePlateNumber}, sex = #{sex},age = #{age},idCardNo = #{idCardNo} " +
             " where driverId = #{driverId}")
-    int alterDriverInformation(int driverId,String username,String name,String tel,int capacity,String licensePlateNumber,String sex,int age,String idCardNo);
+    int updateDriverInformation(int driverId,String username,String name,String tel,int capacity,String licensePlateNumber,String sex,int age,String idCardNo);
 
+    /**
+     *
+     * @param username
+     * @return
+     */
+    @Select("select id from driverLogin where username = #{username}")
+    int getDriverIdByUsername(String username);
 
     /**
      * 获取所有申请该司机的会议

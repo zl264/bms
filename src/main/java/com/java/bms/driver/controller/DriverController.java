@@ -1,5 +1,6 @@
 package com.java.bms.driver.controller;
 
+import com.java.bms.common.VO.CommonUserVO;
 import com.java.bms.common.mapper.CommonMapper;
 import com.java.bms.driver.DO.CongressApplyDriverDO;
 import com.java.bms.driver.DO.UserDriverVO;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -90,14 +92,7 @@ public class DriverController {
         return "/driver/driverLogin";
     }
 
-    /**
-     * 对司机用户的注册进行控制
-     * @param username 用户名
-     * @param password 密码
-     * @param map 存储msg信息
-     * @param session session
-     * @return
-     */
+
     @PostMapping(value = "/driver/register")
     public String driverRegister(@RequestParam("username") String username,
                                  @RequestParam("password") String password,
@@ -120,26 +115,61 @@ public class DriverController {
         }
     }
 
-    @RequestMapping("/driver/add")
+
+
+    @RequestMapping(value = "/driver/information")
+    public String DriverInformation(Map<String, Object> map, HttpSession session) throws UnsupportedEncodingException {
+        int driverId = driverMapper.getDriverIdByUsername((String) session.getAttribute("loginUser"));
+        DriverVO driver = driverMapper.getDriverByDriverId(driverId);
+        map.put("driver", driver);
+        return "/driver/main";
+    }
+
+    @RequestMapping("/driver/addinformation")
     public String addDriverInformation(@RequestParam("name") String name,@RequestParam("age") int age,
                                           @RequestParam("idCardNo") String idCardNo,@RequestParam("licensePlateNumber") String licensePlateNumber,
                                           @RequestParam("sex") String sex,@RequestParam("tel") String tel,
-                                          @RequestParam("capacity") int capacity,
+                                          @RequestParam("capacity") int capacity,Map<String,Object>map,
                                           HttpSession session){
         String username = (String)session.getAttribute("loginUser");
-        int driverId = commonMapper.getCommonIdByUsername(username);
-        driverMapper.addDriverInformation(driverId,username,name,tel,capacity,licensePlateNumber,sex,age,idCardNo);
-        DriverVO driverVO = driverMapper.getDriverByDriverId(driverId);
+        int driverId = driverMapper.getDriverIdByUsername(username);
+        DriverVO driver = driverMapper.getDriverByDriverId(driverId);
         List<CongressApplyDriverDO> applyCongresses = driverMapper.getApplyCongressesByDriverId(driverId);
         List<CongressDriver> congresses = driverMapper.getCongressByDriverId(driverId);
-
-        session.setAttribute("driver",driverVO);
+        session.setAttribute("driver",driver);
         session.setAttribute("applyCongresses",applyCongresses);
         session.setAttribute("congresses",congresses);
-        return "redirect:/driverMain";
+        if (StringUtils.isEmpty(name) || StringUtils.isEmpty(sex) || StringUtils.isEmpty(age) || StringUtils.isEmpty(capacity)
+                || StringUtils.isEmpty(idCardNo) || StringUtils.isEmpty(licensePlateNumber) || StringUtils.isEmpty(tel)) {
+            map.put("msg", "请填写完整信息");
+            return "/driver/main";
+        }
+        if(driver==null){
+            int result=driverMapper.addDriverInformation(driverId,username,name,tel,capacity,licensePlateNumber,sex,age,idCardNo);
+            driver = driverMapper.getDriverByDriverId(driverId);
+            map.put("driver", driver);
+            if (result == 1) {
+                map.put("msg", "填写或修改信息成功！");
+                return "/driver/main";
+            } else {
+                map.put("msg", "出现错误，修改信息失败，请再次尝试或联系管理员");
+                return "/driver/main";
+            }
+        }else{
+            int result =  driverMapper.updateDriverInformation(driverId,username,name,tel,capacity,licensePlateNumber,sex,age,idCardNo);
+            driver = driverMapper.getDriverByDriverId(driverId);
+            map.put("driver", driver);
+            if (result == 1) {
+                map.put("msg", "填写或修改信息成功！");
+                return "/driver/main";
+            } else {
+                map.put("msg", "出现错误，修改信息失败，请再次尝试或联系管理员");
+                return "/driver/main";
+            }
+        }
     }
 
-    @RequestMapping("/driver/alter")
+/*    @RequestMapping("/driver/alter")
     public String alterDriverInformation(@RequestParam("name") String name,@RequestParam("age") int age,
                                        @RequestParam("idCardNo") String idCardNo,@RequestParam("licensePlateNumber") String licensePlateNumber,
                                        @RequestParam("sex") String sex,@RequestParam("tel") String tel,
@@ -147,7 +177,7 @@ public class DriverController {
                                        HttpSession session){
         String username = (String)session.getAttribute("loginUser");
         int driverId = commonMapper.getCommonIdByUsername(username);
-        driverMapper.alterDriverInformation(driverId,username,name,tel,capacity,licensePlateNumber,sex,age,idCardNo);
+        driverMapper.updateDriverInformation(driverId,username,name,tel,capacity,licensePlateNumber,sex,age,idCardNo);
         DriverVO driverVO = driverMapper.getDriverByDriverId(driverId);
         List<CongressApplyDriverDO> applyCongresses = driverMapper.getApplyCongressesByDriverId(driverId);
         List<CongressDriver> congresses = driverMapper.getCongressByDriverId(driverId);
@@ -156,7 +186,7 @@ public class DriverController {
         session.setAttribute("applyCongresses",applyCongresses);
         session.setAttribute("congresses",congresses);
         return "redirect:/driverMain";
-    }
+    }*/
 
 
     @RequestMapping("/driver/agree")
