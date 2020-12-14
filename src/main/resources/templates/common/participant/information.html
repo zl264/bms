@@ -19,7 +19,7 @@
 
         }
         body{
-            background: url(static/img/background2.jpg) no-repeat center;
+            background: url("[[@{/}]]img/background2.jpg") no-repeat center;
         }
         lable{
             font-size:20px;
@@ -38,7 +38,7 @@
             margin:15px;
         }
         .rg_left >p:first-child{
-            color:#FFD026;
+            color:#080808;
             font-size:20px;
         }
         .rg_left >p:last-child{
@@ -48,6 +48,17 @@
         .rg_center{
             float:left;
             width: 450px;
+        }
+        .rg_right{
+            /* 	border:1px solid red; */
+            float:right;
+            margin: 15px;
+        }
+        .rg_right > p:first-child{
+            font-size: 15px;
+        }
+        .rg_right p a{
+            color:#eea236;
         }
         .td_left{
             width:200px;
@@ -76,10 +87,7 @@
         }
     </style>
 </head>
-<script>
-    var a = document.getElementsByTagName("body");
-    a.style.backgroundImage="@{resources/static/img/background2.jpg}";
-</script>
+
 <body>
     <!--<nav class="navbar navbar-inverse">
         <h3 style="color: white">&emsp;&emsp;Information</h3>
@@ -123,9 +131,6 @@
         </div>
     </div>
 -->
-    <nav class="navbar navbar-inverse">
-        <h3 style="color: white">&emsp;&emsp;Information</h3>
-    </nav>
     <div class="rg_layout">
         <div class="rg_left">
             <p>用户信息</p>
@@ -167,6 +172,9 @@
                     </table>
                 </form>
             </div>
+        </div>
+        <div class="rg_right">
+            <p>修改完成，点击<a th:href="@{/commonMain}">返回主页</a></p>
         </div>
     </div>
 </body>
