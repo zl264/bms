@@ -21,36 +21,37 @@
 
 </head>
 <body>
-<form style="text-align: left;margin-top: 150px;margin-left: 300px" th:action="@{/organizer/congress}" method="post">
-    会议名称:<input type="text" name="title"/><br>
-    内容:<textarea name="content" ></textarea><br>
-    地点:<input type="text" name="place" /><br>
-    开始时间:
-    <input type="text" name="startTimeYear" />年
-    <input type="text" name="startTimeMonth" />月
-    <input type="text" name="startTimeDay"/>日
-    <input type="text" name="startTimeHour" />点
-    <input type="text" name="startTimeMinute" />分<br>
-    结束时间:
-    <input type="text" name="endTimeYear" />年
-    <input type="text" name="endTimeMonth" />月
-    <input type="text" name="endTimeDay"/>日
-    <input type="text" name="endTimeHour" />点
-    <input type="text" name="endTimeMinute" />分<br>
-    报名会议开始时间:
-    <input type="text" name="registerStartTimeYear" />年
-    <input type="text" name="registerStartTimeMonth" />月
-    <input type="text" name="registerStartTimeDay"/>日
-    <input type="text" name="registerStartTimeHour" />点
-    <input type="text" name="registerStartTimeMinute" />分<br>
-    报名会议结束时间:
-    <input type="text" name="registerEndTimeYear" />年
-    <input type="text" name="registerEndTimeMonth" />月
-    <input type="text" name="registerEndTimeDay"/>日
-    <input type="text" name="registerEndTimeHour" />点
-    <input type="text" name="registerEndTimeMinute" />分<br>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">创建</button>
-</form>
+    <div ></div>
+    <form style="text-align: left;margin-top: 150px;margin-left: 300px" th:action="@{/organizer/congress}" method="post">
+        会议名称:<input type="text" name="title"/><br>
+        内容:<textarea name="content" ></textarea><br>
+        地点:<input type="text" name="place" /><br>
+        开始时间:
+        <input type="text" name="startTimeYear" />年
+        <input type="text" name="startTimeMonth" />月
+        <input type="text" name="startTimeDay"/>日
+        <input type="text" name="startTimeHour" />点
+        <input type="text" name="startTimeMinute" />分<br>
+        结束时间:
+        <input type="text" name="endTimeYear" />年
+        <input type="text" name="endTimeMonth" />月
+        <input type="text" name="endTimeDay"/>日
+        <input type="text" name="endTimeHour" />点
+        <input type="text" name="endTimeMinute" />分<br>
+        报名会议开始时间:
+        <input type="text" name="registerStartTimeYear" />年
+        <input type="text" name="registerStartTimeMonth" />月
+        <input type="text" name="registerStartTimeDay"/>日
+        <input type="text" name="registerStartTimeHour" />点
+        <input type="text" name="registerStartTimeMinute" />分<br>
+        报名会议结束时间:
+        <input type="text" name="registerEndTimeYear" />年
+        <input type="text" name="registerEndTimeMonth" />月
+        <input type="text" name="registerEndTimeDay"/>日
+        <input type="text" name="registerEndTimeHour" />点
+        <input type="text" name="registerEndTimeMinute" />分<br>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">创建</button>
+    </form>
 </body>
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 <script src="../js/jquery.min.js"></script>

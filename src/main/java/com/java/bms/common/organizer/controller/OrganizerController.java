@@ -48,7 +48,7 @@ public class OrganizerController {
      */
     @RequestMapping("/organizer/creat")
     public String goCreatCongress(){
-        return "/common/organizer/createCongress";
+        return "/common/organizer/manageCongress";
     }
 
 
