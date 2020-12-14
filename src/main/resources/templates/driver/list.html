@@ -17,8 +17,8 @@
 <body>
     <ul th:if="${list.size()!=0}">
         <li th:each="inf:${list}">
-            用户名:<span th:text="${inf.getUsername()}"></span>
-            电话:<span th:text="${inf.getTel()}"></span>
+            用户名:<span th:text="inf.getUsername()"></span>
+            电话:<span th:text="inf.getTel()"></span>
         </li>
     </ul>
     <span th:if="${list.size()==0}">暂未分配接送人员，请和会议组织者联系</span>

@@ -50,7 +50,7 @@ public class HotelController {
      */
     @PostMapping(value = "/hotel/login")
     public String hotelLogin(@RequestParam("username") String username,
-                              @RequestParam("password") String password,@RequestParam("code") String code,
+                              @RequestParam("password") String password,
                               Map<String,Object> map, HttpSession session, Model model){
         if(StringUtils.isEmpty(username)||StringUtils.isEmpty(password)){
             session.setAttribute("msg","请输入用户名密码");
@@ -59,14 +59,6 @@ public class HotelController {
         UserDO userDo = hotelMapper.commonLogin(username,password);
         if(userDo==null){
             session.setAttribute("msg","用户名密码错误");
-            return "redirect:/hotel/enter";
-        }
-        if(StringUtils.isEmpty(code)){
-            session.setAttribute("msg","请输入验证码");
-            return "redirect:/hotel/enter";
-        }
-        if (!code.equals(session.getAttribute("VerifyCode"))){
-            session.setAttribute("msg","验证码错误");
             return "redirect:/hotel/enter";
         }
         if(username.equals(userDo.getUsername())&&password.equals(userDo.getPassword())) {

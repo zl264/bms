@@ -1,8 +1,6 @@
 package com.java.bms.common.mapper;
 
-import com.java.bms.common.DO.ArrivalPlaceCountDO;
 import com.java.bms.common.DO.CongressNoteVO;
-import com.java.bms.common.VO.CommonUserAllInformationVO;
 import com.java.bms.common.VO.CommonUserVO;
 import com.java.bms.common.VO.CongressVO;
 import com.java.bms.common.VO.CommonUserVO;
@@ -14,7 +12,6 @@ import org.apache.ibatis.annotations.Update;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 对于普通用户登录注册的数据库访问的控制
@@ -122,27 +119,11 @@ public interface CommonMapper {
 
 
     /**
-     * 通过会议ID获取填写了到达时间和到达地点的参与者信息
+     * 通过会议ID获取参与者信息
      * @param congressId
      * @return
      */
-    @Select("select commonUser.*,congressNote.arrivalPlace,congressNote.arrivalTime " +
-            " from congressNote,commonUser where congressNote.congressId " +
+    @Select("select commonUser.* from congressNote,commonUser where congressNote.congressId " +
             "= #{congressId} and congressNote.commonId = commonUser.commonId and congressNote.arrivalPlace is not null")
-    List<CommonUserAllInformationVO> getAllInformationParticipantIdByCongressId(int congressId);
-
-
-    @Select("select arrivalPlace,count(arrivalPlace) num from congressNote " +
-            "where congressId = #{congressId} " +
-            "group by arrivalPlace ")
-    List<ArrivalPlaceCountDO> getAllParticipantPlaceByCongressId(int congressId);
-
-    /**
-     * 模糊搜索会议
-     * @param information
-     * @return
-     */
-    @Select("select * from congress where title like concat('%',#{information},'%') or " +
-            "content like concat('%',#{information},'%') or place like concat('%',#{information},'%')")
-    List<CongressVO> searchCongressByInformation(String information);
+    List<CommonUserVO> getAllInformationParticipantIdByCongressId(int congressId);
 }

@@ -22,8 +22,7 @@ public class AllConfig implements WebMvcConfigurer {
             "/**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/**/*.svg","/common/login","/common/register",
             "/driver/login","/driver/register","/hotel/login","/hotel/register","/manager/login",
             "/common/enter","/common/enterRegister","/hotel/enter","/hotel/enterRegister","/manager/enter","/driver/enter","/driver/enterRegister",
-            "/common/commonLogin","/common/commonRegister","/hotel/hotelLogin","/hotel/hotelRegister","/manager/managerLogin","/driver/driverLogin","/driver/driverRegister",
-            "/verifyCode"
+            "/common/commonLogin","/common/commonRegister","/hotel/hotelLogin","/hotel/hotelRegister","/manager/managerLogin","/driver/driverLogin","/driver/driverRegister"
     ));
 
     @Bean

@@ -6,8 +6,6 @@ import com.java.bms.driver.VO.CongressDriver;
 import com.java.bms.driver.VO.DriverVO;
 import com.java.bms.other.DO.UserDO;
 import org.apache.ibatis.annotations.*;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -104,25 +102,13 @@ public interface DriverMapper {
     List<CongressApplyDriverDO> getApplyCongressesByDriverId(int driverId);
 
     /**
-     * 通过司机ID获取他要接送的会议,时间地点已经确定好
+     * 通过司机ID获取他要接送的会议
      * @param driverId
      * @return
      */
     @Select("select congressDriver.driverId,congress.congressId,congress.title,congressDriver.time,congressDriver.place" +
-            " from congressDriver,congress " +
-            "where congressDriver.driverId = #{driverId} and congressDriver.congressId = congress.congressId " +
-            " and congressDriver.place is not null and congressDriver.time is not null")
+            " from congressDriver,congress where congressDriver.driverId = #{driverId} and congressDriver.congressId = congress.congressId")
     List<CongressDriver> getCongressByDriverId(int driverId);
-
-    /**
-     * 通过司机ID获取他要接送的会议,时间地点可能未确定好
-     * @param driverId
-     * @return
-     */
-    @Select("select congressDriver.driverId,congress.congressId,congress.title,congressDriver.time,congressDriver.place" +
-            " from congressDriver,congress " +
-            "where congressDriver.driverId = #{driverId} and congressDriver.congressId = congress.congressId")
-    List<CongressDriver> getAllCongressByDriverId(int driverId);
 
 
     /**
@@ -139,11 +125,13 @@ public interface DriverMapper {
      * 添加司机要接送的会议的记录
      * @param driverId
      * @param congressId
+     * @param time
+     * @param place
      * @return
      */
-    @Insert("insert into congressDriver(driverId,congressId) " +
-            "values(#{driverId},#{congressId})")
-    int addCongressDriver(int driverId, int congressId);
+    @Insert("insert into congressDriver(driverId,congressId,time,place) " +
+            "values(#{driverId},#{congressId},#{time},#{place})")
+    int addCongressDriver(int driverId, int congressId, LocalDateTime time,String place);
 
 
     /**
@@ -155,10 +143,6 @@ public interface DriverMapper {
     @Insert("insert into driverRefuseCongress(driverId,congressId)" +
             "values(driverId,congressId)")
     int addDriverRefuseCongress(int driverId,int congressId);
-
-    @Update("update congressDriver set time = #{time} " +
-            "where congressId = #{congressId} and driverId = #{driverId}")
-    int addTime(int congressId,int driverId,LocalDateTime time);
 
     /**
      * 通过司机ID和会议ID删除接送任务

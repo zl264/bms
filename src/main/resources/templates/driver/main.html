@@ -42,6 +42,14 @@
                         <a th:href="@{/other/congress/}+${applyCongress.getCongressId()}" th:text="${applyCongress.getTitle()}" style="display: block;background-color: #31b0d5;"></a>
                         <form method="post" th:action="@{/driver/agree}">
                             <input type="hidden" name="congressId" th:value="${applyCongress.getCongressId()}">
+                            接送时间:
+                            <input type="text" name="year" style="width: 50px"/>年
+                            <input type="text" name="month" style="width: 50px"/>月
+                            <input type="text" name="day" style="width: 50px"/>日
+                            <input type="text" name="hour" style="width: 50px"/>点
+                            <input type="text" name="minute" style="width: 50px"/>分
+                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;接送地点:
+                            <input type="text" name="place" style="width: 200px">
                             &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                             <input type="submit" value="同意">
                             &emsp;&emsp;&emsp;
@@ -56,34 +64,6 @@
 
             <hr style="background-color: red;height: 3px" color="red">
 
-
-            <div>
-                <div th:if="${session.allCongress.size()!=0}">
-                    <span>接送时间</span>
-                    <ul class="list-group" style="width: 80%;text-align: center">
-                        <li class="list-group-item" th:each="aCongress:${session.allCongress}">
-                            <a th:href="@{/other/congress/}+${aCongress.getCongressId()}" th:text="${aCongress.getTitle()}" style="display: block;background-color: #31b0d5;"></a>
-                            <form method="post" th:action="@{/driver/addTime}">
-                                <input type="hidden" name="congressId" th:value="${aCongress.getCongressId()}">
-                                接送时间:
-                                <input type="text" name="year" th:value="${aCongress.getTime()!=null?aCongress.getTime().getYear():''}" style="width: 50px"/>年
-                                <input type="text" name="month" th:value="${aCongress.getTime()!=null?aCongress.getTime().getMonth().value:''}" style="width: 50px"/>月
-                                <input type="text" name="day" th:value="${aCongress.getTime()!=null?aCongress.getTime().getDayOfMonth():''}" style="width: 50px"/>日
-                                <input type="text" name="hour" th:value="${aCongress.getTime()!=null?aCongress.getTime().getHour():''}" style="width: 50px"/>点
-                                <input type="text" name="minute" th:value="${aCongress.getTime()!=null?aCongress.getTime().getMinute():''}" style="width: 50px"/>分
-                                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;接送地点:
-                                <span th:text="${aCongress.getPlace()}" th:if="${aCongress.getPlace()!=null}"></span>
-                                <span th:text="暂未给出接送地点" th:if="${aCongress.getPlace()==null}"></span>
-                                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                                <input type="submit" value="保存">
-                            </form>
-                            <a th:href="@{/driver/list/}+${aCongress.getCongressId()}" style="display: block;background-color: #31b0d5;">接送人员名单</a>
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
-
             <h3>要去接送的会议列表</h3>
             <div th:if="${session.congresses.size()!=0}">
                 <ul class="list-group" style="width: 80%;text-align: center">
@@ -96,7 +76,6 @@
                     </li>
                 </ul>
             </div>
-
             <div th:if="${session.congresses.size()==0}">
                 暂时没有接送任务
             </div>
