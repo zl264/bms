@@ -31,47 +31,47 @@
 <nav class="navbar navbar-default navbar-fixed-top navbar-inverse myNav">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
-<!--        <div class="navbar-header">-->
-<!--            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">-->
-<!--                <span class="sr-only">Toggle navigation</span>-->
-<!--                <span class="icon-bar"></span>-->
-<!--                <span class="icon-bar"></span>-->
-<!--                <span class="icon-bar"></span>-->
-<!--            </button>-->
-<!--        </div>-->
+        <!--        <div class="navbar-header">-->
+        <!--            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">-->
+        <!--                <span class="sr-only">Toggle navigation</span>-->
+        <!--                <span class="icon-bar"></span>-->
+        <!--                <span class="icon-bar"></span>-->
+        <!--                <span class="icon-bar"></span>-->
+        <!--            </button>-->
+        <!--        </div>-->
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-<!--            显示搜索框左边的四个选项-->
+            <!--            显示搜索框左边的四个选项-->
             <ul class="nav navbar-nav vMiddle" style="margin-left: 50px">
                 <li><a href="#" th:href="@{/organizer/manage}">创建会议</a></li>
                 <li><a href="#" th:href="@{/participant/congress}">查看会议</a></li>
                 <li><a href="#" th:href="@{/participant/driver}">查看司机</a></li>
                 <li><a href="#" th:href="@{/participant/hotel}">查看酒店</a></li>
-<!--                <li><a></a></li>-->
-<!--                <li><a></a></li>-->
-<!--                <li><a></a></li>-->
-<!--                <li><a></a></li>-->
-<!--                <li><a></a></li>-->
-<!--                <li><a></a></li>-->
+                <!--                <li><a></a></li>-->
+                <!--                <li><a></a></li>-->
+                <!--                <li><a></a></li>-->
+                <!--                <li><a></a></li>-->
+                <!--                <li><a></a></li>-->
+                <!--                <li><a></a></li>-->
             </ul>
-<!--            这个表单是搜索框-->
+            <!--            这个表单是搜索框-->
             <form class="navbar-form navbar-left search vMiddle" th:action="@{/common/search}" method="post" style="margin-left: 200px;">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
+                    <input type="text" name="information" class="form-control" placeholder="Search">
                 </div>
                 <button type="submit" class="btn btn-default">搜索</button>
             </form>
-<!--            右边的个人信息-->
+            <!--            右边的个人信息-->
             <ul class="nav navbar-nav navbar-right vMiddle">
                 <li>
                     <a href="#" th:href="@{/common/information}" style="margin-right: 50px;">
-                        <img class="img-circle" src="img/0.jpg" th:alt="${session.loginUser}" width="30" height="30">
+                        <img class="img-circle" src="img/head/0.jpg" th:alt="${session.loginUser}" width="30" height="30">
                     </a>
                 </li>
-<!--                <li><a></a></li>-->
-<!--                <li><a></a></li>-->
-<!--                <li><a></a></li>-->
+                <!--                <li><a></a></li>-->
+                <!--                <li><a></a></li>-->
+                <!--                <li><a></a></li>-->
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -84,7 +84,7 @@
         <div class="col-sm-6 col-md-4 col-lg-3 " th:each="congress:${session.allCongress}">
             <div class="thumbnail" style="height: 360px;">
                 <a th:href="@{/congress/}+${congress.getCongressId()}" >
-                    <img class="lazy" th:src="'img/'+${congress.getImage()}+'.jpg'" alt="会议图片" width="300" height="150">
+                    <img class="lazy" th:src="'img/congress/'+${congress.getImage()}+'.jpg'" alt="会议图片" width="300" height="150">
                 </a>
                 <div class="caption">
                     <h3>

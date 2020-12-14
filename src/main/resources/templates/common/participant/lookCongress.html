@@ -26,7 +26,7 @@
         <div class="col-sm-6 col-md-4 col-lg-3 " th:each="congress:${allCongress}">
             <div class="thumbnail" style="height: 360px;">
                 <a th:href="@{/congress/}+${congress.getCongressId()}" >
-                    <img class="lazy" th:src="'../img/'+${congress.getImage()}+'.jpg'" alt="会议图片" width="300" height="150">
+                    <img class="lazy" th:src="'../img/congress/'+${congress.getImage()}+'.jpg'" alt="会议图片" width="300" height="150">
                 </a>
                 <div class="caption">
                     <h3>

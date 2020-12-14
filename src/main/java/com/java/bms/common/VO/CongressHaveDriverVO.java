@@ -7,14 +7,15 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommonUserVO {
+public class CongressHaveDriverVO {
+    private int driverId;
     private String username;
     private String name;
-    private int age;
-    private String sex;
-    private long idCardNo;
-    private String identity;
-    private int commonId;
     private String tel;
-
+    private int capacity;
+    private String licensePlateNumber;
+    private String sex;
+    private int age;
+    private String idCardNo;
+    private String place;
 }

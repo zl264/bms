@@ -1,5 +1,8 @@
 package com.java.bms.common.organizer.mapper;
 
+import com.java.bms.common.DO.ArrivalPlaceCountDO;
+import com.java.bms.common.VO.CommonUserVO;
+import com.java.bms.common.VO.CongressHaveDriverVO;
 import com.java.bms.common.VO.CongressVO;
 import com.java.bms.driver.VO.DriverVO;
 import org.apache.ibatis.annotations.*;
@@ -78,9 +81,32 @@ public interface OrganizerMapper {
      * @param congressId
      * @return
      */
+    @Select("select driver.*,congressDriver.place" +
+            " from driver,congressDriver " +
+            "where congressDriver.congressId = #{congressId} " +
+            "and congressDriver.driverId = driver.driverId " +
+            "group by driverId")
+    List<CongressHaveDriverVO> getDriverByCongressId(int congressId);
+
+    /**
+     * 获取司机安排的人员数量
+     * @param driverId
+     * @param congressId
+     * @return
+     */
+    @Select("select count(*) from userDriver " +
+            "where driverId = #{driverId} and congressId = #{congressId}")
+    Integer getDriverListNum(int driverId,int congressId);
+
+
+    /**
+     * 通过会议ID获取会议添加的司机
+     * @param congressId
+     * @return
+     */
     @Select("select driver.* from driver,congressDriver where congressDriver.congressId = #{congressId} " +
             "and congressDriver.driverId = driver.driverId")
-    List<DriverVO> getDriverByCongressId(int congressId);
+    List<DriverVO> getCongressDriverByCongressId(int congressId);
 
 
     /**
@@ -127,4 +153,71 @@ public interface OrganizerMapper {
     int deleteParticipantFromDriver(int commonId,int congressId);
 
 
+    /**
+     * 获取哪些地方还要接送，并且那个地方还有多少人需要接送
+     * @param congressId
+     * @return
+     */
+    @Select("select arrivalPlace,count(arrivalPlace) num from congressNote " +
+            "where congressId = #{congressId} and " +
+            "commonId not in(select commonId from userDriver where congressId = #{congressId}) " +
+            "group by arrivalPlace ")
+    List<ArrivalPlaceCountDO> getRemainderParticipant(int congressId);
+
+    /**
+     * 得到司机已经分配的接送人员名单的数量
+     * @param driverId
+     * @param congressId
+     * @return
+     */
+    @Select("select count(commonId) from userDriver " +
+            "where driverId = #{driverId} and congressId = #{congressId}")
+    int getNumberByDriverIdAndCongressId(int driverId,int congressId);
+
+    /**
+     * 得到司机要接送的地点
+     * @param driverId
+     * @param congressId
+     * @return
+     */
+    @Select("select place from congressDriver " +
+            "where driverId = #{driverId} and congressId = #{congressId} ")
+    String getPlaceByDriverIdAndCongressId(int driverId,int congressId);
+
+    /**
+     * 通过会议Id和到达地点得到所有未分配司机的参与者
+     * @param arrivalPlace
+     * @param congressId
+     * @return
+     */
+    @Select("select commonId from congressNote where arrivalPlace = #{arrivalPlace} " +
+            "and congressId = #{congressId} and " +
+            "commonId not in(select commonId from userDriver where congressId = #{congressId})")
+    List<Integer> getUnassignedCommonIdByArrivalPlace(String arrivalPlace,int congressId);
+
+    /**
+     * 给用户分配司机
+     * @param commonId
+     * @param congressId
+     * @param driverId
+     * @return
+     */
+    @Insert("insert userDriver(commonId,congressId,driverId)" +
+            " values(#{commonId},#{congressId},#{driverId})")
+    int participantAssignedDriver(int commonId,int congressId,int driverId);
+
+    /**
+     * 通过会议ID和司机Id获取接送人员信息
+     * @param congressId
+     * @param driverId
+     * @return
+     */
+    @Select("select commonUser.* from commonUser,userDriver " +
+            "where commonUser.commonId = userDriver.commonId and userDriver.congressId = #{congressId} " +
+            "and userDriver.driverId = #{driverId}")
+    List<CommonUserVO> getList(int congressId,int driverId);
+
+    @Update("update congressDriver set Place = #{Place}" +
+            " where congressId = #{congressId} and driverId = #{driverId}")
+    int setDriverPlace(int congressId,int driverId,String place);
 }

@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommonUserVO {
+public class CommonUserAllInformationVO {
     private String username;
     private String name;
     private int age;
@@ -16,5 +18,6 @@ public class CommonUserVO {
     private String identity;
     private int commonId;
     private String tel;
-
+    private String arrivalPlace;
+    private LocalDateTime arrivalTime;
 }

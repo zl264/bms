@@ -42,14 +42,6 @@
                         <a th:href="@{/other/congress/}+${applyCongress.getCongressId()}" th:text="${applyCongress.getTitle()}" style="display: block;background-color: #31b0d5;"></a>
                         <form method="post" th:action="@{/driver/agree}">
                             <input type="hidden" name="congressId" th:value="${applyCongress.getCongressId()}">
-                            接送时间:
-                            <input type="text" name="year" style="width: 50px"/>年
-                            <input type="text" name="month" style="width: 50px"/>月
-                            <input type="text" name="day" style="width: 50px"/>日
-                            <input type="text" name="hour" style="width: 50px"/>点
-                            <input type="text" name="minute" style="width: 50px"/>分
-                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;接送地点:
-                            <input type="text" name="place" style="width: 200px">
                             &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                             <input type="submit" value="同意">
                             &emsp;&emsp;&emsp;
@@ -64,6 +56,34 @@
 
             <hr style="background-color: red;height: 3px" color="red">
 
+
+            <div>
+                <div th:if="${session.allCongress.size()!=0}">
+                    <span>接送时间</span>
+                    <ul class="list-group" style="width: 80%;text-align: center">
+                        <li class="list-group-item" th:each="aCongress:${session.allCongress}">
+                            <a th:href="@{/other/congress/}+${aCongress.getCongressId()}" th:text="${aCongress.getTitle()}" style="display: block;background-color: #31b0d5;"></a>
+                            <form method="post" th:action="@{/driver/addTime}">
+                                <input type="hidden" name="congressId" th:value="${aCongress.getCongressId()}">
+                                接送时间:
+                                <input type="text" name="year" th:value="${aCongress.getTime()!=null?aCongress.getTime().getYear():''}" style="width: 50px"/>年
+                                <input type="text" name="month" th:value="${aCongress.getTime()!=null?aCongress.getTime().getMonth().value:''}" style="width: 50px"/>月
+                                <input type="text" name="day" th:value="${aCongress.getTime()!=null?aCongress.getTime().getDayOfMonth():''}" style="width: 50px"/>日
+                                <input type="text" name="hour" th:value="${aCongress.getTime()!=null?aCongress.getTime().getHour():''}" style="width: 50px"/>点
+                                <input type="text" name="minute" th:value="${aCongress.getTime()!=null?aCongress.getTime().getMinute():''}" style="width: 50px"/>分
+                                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;接送地点:
+                                <span th:text="${aCongress.getPlace()}" th:if="${aCongress.getPlace()!=null}"></span>
+                                <span th:text="暂未给出接送地点" th:if="${aCongress.getPlace()==null}"></span>
+                                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                                <input type="submit" value="保存">
+                            </form>
+                            <a th:href="@{/driver/list/}+${aCongress.getCongressId()}" style="display: block;background-color: #31b0d5;">接送人员名单</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
             <h3>要去接送的会议列表</h3>
             <div th:if="${session.congresses.size()!=0}">
                 <ul class="list-group" style="width: 80%;text-align: center">
@@ -76,145 +96,60 @@
                     </li>
                 </ul>
             </div>
+
             <div th:if="${session.congresses.size()==0}">
                 暂时没有接送任务
             </div>
         </div>
-<!--        司机信息-->
+        <!--        司机信息-->
         <div role="tabpanel" class="tab-pane" id="information">
             <div class="container-fluid">
                 <div class="row">
                     <main role="main" class="col-lg-8 col-lg-offset-2">
+                        <span th:text="${session.driverMsg}" th:if="${session.driverMsg!=null}"></span>
                         <form style="text-align: left; margin-top: 150px;margin-left: 300px;"
                               th:action="@{/driver/addinformation}" method="post" >
                             <div class="input-group">
                                 <span class="input-group-addon" id="sizing-addon1">姓名：&emsp;&emsp;</span>
                                 <input type="text" name="name" class="form-control" placeholder="姓名"
-                                       aria-describedby="sizing-addon2" th:value="${driver!=null?driver.getName():''}">
+                                       aria-describedby="sizing-addon2" th:value="${session.driver!=null?session.driver.getName():''}">
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="sizing-addon2">年龄：&emsp;&emsp;</span>
                                 <input type="text" name="age" class="form-control" placeholder="年龄"
-                                       aria-describedby="sizing-addon2" th:value="${driver!=null?driver.getAge():''}">
+                                       aria-describedby="sizing-addon2" th:value="${session.driver!=null?session.driver.getAge():''}">
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="sizing-addon3">身份证号：</span>
                                 <input type="text" name="idCardNo" class="form-control" placeholder="身份证号"
-                                       aria-describedby="sizing-addon2" th:value="${driver!=null?driver.getIdCardNo():''}">
+                                       aria-describedby="sizing-addon2" th:value="${session.driver!=null?session.driver.getIdCardNo():''}">
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="sizing-addon4">车牌号：</span>
                                 <input type="text" name="licensePlateNumber" class="form-control" placeholder="车牌号"
                                        aria-describedby="sizing-addon2"
-                                       th:value="${driver!=null?driver.getLicensePlateNumber():''}">
+                                       th:value="${session.driver!=null?session.driver.getLicensePlateNumber():''}">
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="sizing-addon5">性别：&emsp;&emsp;</span>
                                 <input type="text" name="sex" class="form-control" placeholder="性别"
-                                       aria-describedby="sizing-addon2" th:value="${driver!=null?driver.getSex():''}">
+                                       aria-describedby="sizing-addon2" th:value="${session.driver!=null?session.driver.getSex():''}">
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="sizing-addon6">电话号码：</span>
                                 <input type="text" name="tel" class="form-control" placeholder="电话号码"
-                                       aria-describedby="sizing-addon2" th:value="${driver!=null?driver.getTel():''}">
+                                       aria-describedby="sizing-addon2" th:value="${session.driver!=null?session.driver.getTel():''}">
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="sizing-addon7">载客量：</span>
                                 <input type="text" name="capacity" class="form-control" placeholder="载客量"
-                                       aria-describedby="sizing-addon2" th:value="${driver!=null?driver.getCapacity():''}">
-                            </div>
-                            <button class="btn btn-lg btn-primary btn-block" type="submit">保存</button>
-       <!-- <div role="tabpanel" class="tab-pane" id="information">
-            <div class="container-fluid">
-                <div class="row">
-                    <main role="main" class="col-lg-8 col-lg-offset-2">
-                        <form style="text-align: left; margin-top: 150px;margin-left: 300px;"
-                              th:action="@{/driver/add}" method="post" th:if="${session.driver!=null}">
-                            <div class="input-group">
-                                <span class="input-group-addon" id="sizing-addon2">姓名：&emsp;&emsp;</span>
-                                <input type="text" name="name" class="form-control" placeholder="姓名"
-                                       aria-describedby="sizing-addon2" th:value="${session.driver.getName()}">
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon" id="sizing-addon3">年龄：&emsp;&emsp;</span>
-                                <input type="text" name="age" class="form-control" placeholder="年龄"
-                                       aria-describedby="sizing-addon2" th:value="${session.driver.getAge()}">
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon" id="sizing-addon4">身份证号：</span>
-                                <input type="text" name="idCardNo" class="form-control" placeholder="身份证号"
-                                       aria-describedby="sizing-addon2" th:value="${session.driver.getIdCardNo()}">
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon" id="sizing-addon5">车牌号：</span>
-                                <input type="text" name="licensePlateNumber" class="form-control" placeholder="车牌号"
-                                       aria-describedby="sizing-addon2"
-                                       th:value="${session.driver.getLicensePlateNumber()}">
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon" id="sizing-addon6">性别：&emsp;&emsp;</span>
-                                <input type="text" name="sex" class="form-control" placeholder="性别"
-                                       aria-describedby="sizing-addon2" th:value="${session.driver.getSex()}">
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon" id="sizing-addon7">电话号码：</span>
-                                <input type="text" name="tel" class="form-control" placeholder="电话号码"
-                                       aria-describedby="sizing-addon2" th:value="${session.driver.getTel()}">
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon" id="sizing-addon8">载客量：</span>
-                                <input type="text" name="capacity" class="form-control" placeholder="载客量"
-                                       aria-describedby="sizing-addon2" th:value="${session.driver.getCapacity()}">
+                                       aria-describedby="sizing-addon2" th:value="${session.driver!=null?session.driver.getCapacity():''}">
                             </div>
                             <button class="btn btn-lg btn-primary btn-block" type="submit">保存</button>
                         </form>
-                        <div th:if="${session.driver==null}">
-                            <span style="color: red">请尽快填写个人信息，没有填写信息无法进行接送任务</span>
-                            <form style="text-align: left; margin-top: 150px;margin-left: 300px;"
-                                  th:action="@{/driver/add}" method="post">
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="sizing-addon9">姓名：&emsp;&emsp;</span>
-                                    <input type="text" name="name" class="form-control" placeholder="姓名"
-                                           aria-describedby="sizing-addon2">
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="sizing-addon10">年龄：&emsp;&emsp;</span>
-                                    <input type="text" name="age" class="form-control" placeholder="年龄"
-                                           aria-describedby="sizing-addon2">
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="sizing-addon11">身份证号：</span>
-                                    <input type="text" name="idCardNo" class="form-control" placeholder="身份证号"
-                                           aria-describedby="sizing-addon2">
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="sizing-addon12">车牌号：&emsp;&emsp;</span>
-                                    <input type="text" name="licensePlateNumber" class="form-control" placeholder="车牌号"
-                                           aria-describedby="sizing-addon2">
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="sizing-addon13">性别：&emsp;&emsp;</span>
-                                    <input type="text" name="sex" class="form-control" placeholder="性别"
-                                           aria-describedby="sizing-addon2">
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="sizing-addon14">电话号码：</span>
-                                    <input type="text" name="tel" class="form-control" placeholder="电话号码"
-                                           aria-describedby="sizing-addon2">
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="sizing-addon15">载客量：</span>
-                                    <input type="text" name="capacity" class="form-control" placeholder="载客量"
-                                           aria-describedby="sizing-addon2">
-                                </div>
-                                <button class="btn btn-lg btn-primary btn-block" type="submit">保存</button>
-                            </form>
-                        </div>
                     </main>
-                </div>
-            </div>
         </div>
-    </div>-->
+    </div>
 
 </div>
 
