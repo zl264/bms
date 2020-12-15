@@ -2,6 +2,7 @@ package com.java.bms.common.participant.mapper;
 
 import com.java.bms.common.VO.CommonUserVO;
 import com.java.bms.common.VO.CongressVO;
+import com.java.bms.common.VO.DriverUserVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -28,5 +29,13 @@ public interface ParticipantMapper {
      */
     @Insert("insert into congressNote(commonId,congressId) values(#{commonId},#{congressId})")
     int attendCongressByCommonIdAndCongressId(int commonId,int congressId);
+
+
+    @Select("select userDriver.* , driver.username,driver.tel,congressDriver.time,congressDriver.place " +
+            "from userDriver,driver,congressDriver " +
+            "where userDriver.congressId = #{congressId} and userDriver.commonId = #{commonId} and " +
+            "userDriver.congressId = congressDriver.congressId and userDriver.driverId = " +
+            " congressDriver.driverId and userDriver.driverId = driver.driverId")
+    DriverUserVO getDriverByCongressIdAndCommonId(int congressId,int commonId);
 
 }

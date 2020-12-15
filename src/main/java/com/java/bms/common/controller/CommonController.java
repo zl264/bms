@@ -2,10 +2,11 @@ package com.java.bms.common.controller;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.java.bms.common.DO.ArrivalPlaceCountDO;
 import com.java.bms.common.DO.CongressNoteVO;
-import com.java.bms.common.VO.CommonUserVO;
-import com.java.bms.common.VO.CongressVO;
+import com.java.bms.common.VO.*;
 import com.java.bms.common.organizer.mapper.OrganizerMapper;
+import com.java.bms.common.participant.mapper.ParticipantMapper;
 import com.java.bms.driver.VO.DriverVO;
 import com.java.bms.other.DO.UserDO;
 import com.java.bms.common.mapper.CommonMapper;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +35,9 @@ public class CommonController {
 
     @Autowired
     OrganizerMapper organizerMapper;
+
+    @Autowired
+    ParticipantMapper participantMapper;
 
     /**
      * 主页点击连接进入普通用户登录界面
@@ -66,7 +71,7 @@ public class CommonController {
      */
     @PostMapping(value = "/common/login")
     public String commonLogin(@RequestParam("username") String username,
-                              @RequestParam("password") String password,
+                              @RequestParam("password") String password,/*@RequestParam("code") String code,*/
                               Map<String, Object> map, HttpSession session, Model model) {
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             session.setAttribute("msg", "请输入用户名密码");
@@ -78,6 +83,14 @@ public class CommonController {
             session.setAttribute("msg", "用户名密码错误");
             return "redirect:/common/enter";
         }
+//        if(StringUtils.isEmpty(code)){
+//            session.setAttribute("msg","请输入验证码");
+//            return "redirect:/common/enter";
+//        }
+//        if (!code.equals(session.getAttribute("VerifyCode"))){
+//            session.setAttribute("msg","验证码错误");
+//            return "redirect:/common/enter";
+//        }
         if (username.equals(userDo.getUsername()) && password.equals(userDo.getPassword())) {
 //            登录成功以后，防止表单重复提交，可以重定向到主页
             session.setAttribute("loginUser", username);
@@ -128,7 +141,8 @@ public class CommonController {
      * @return 会议界面
      */
     @RequestMapping("/congress/{id}")
-    public String getCongressByID(@PathVariable("id") Integer id, Model model, HttpSession session) {
+    public String getCongressByID(@PathVariable("id") Integer id, Model model, HttpSession session,
+                                  Map<String,Integer> map) {
         int userId = commonMapper.getCommonIdByUsername((String) session.getAttribute("loginUser"));
         CongressVO congress = commonMapper.getCongressById(id);
         String organizerName = commonMapper.getUsernameById((int) congress.getOrganizerId());
@@ -138,11 +152,19 @@ public class CommonController {
         //获取所有参加会议的参加者
         List<CommonUserVO> participants = commonMapper.getParticipantIdByCongressId((int)congress.getCongressId());
         //获取所有填写了到达时间和到达地点的参加者
-        List<CommonUserVO> allInformationParticipants = commonMapper.getAllInformationParticipantIdByCongressId((int)(congress.getCongressId()));
+        List<CommonUserAllInformationVO> allInformationParticipants = commonMapper.getAllInformationParticipantIdByCongressId((int)(congress.getCongressId()));
         //判断当前参与者是否有填写完个人信息
         CommonUserVO participantInformation = commonMapper.HaveInfomation((String) session.getAttribute("loginUser"));
-        //获取司机
-        List<DriverVO> hasDriver = organizerMapper.getDriverByCongressId(id);
+        //获取每个到达地点的人数
+        List<ArrivalPlaceCountDO> allArrivalPlace = commonMapper.getAllParticipantPlaceByCongressId(id);
+        //获取会议司机
+        List<CongressHaveDriverVO> hasDriver = organizerMapper.getDriverByCongressId(id);
+        for(CongressHaveDriverVO driver:hasDriver){
+            map.put(String.valueOf(driver.getDriverId()),organizerMapper.getDriverListNum(driver.getDriverId(),id));
+        }
+        //获取参与者的司机
+        DriverUserVO participantDriver = participantMapper.getDriverByCongressIdAndCommonId(id,userId);
+
 
 
         model.addAttribute("congress", congress);
@@ -153,6 +175,9 @@ public class CommonController {
         model.addAttribute("participants", participants);
         model.addAttribute("participantInformation",participantInformation);
         model.addAttribute("allInformationParticipants",allInformationParticipants);
+        model.addAttribute("allArrivalPlace",allArrivalPlace);
+        model.addAttribute("driverHaveNum",map);
+        model.addAttribute("participantDriver",participantDriver);
 //        判断当前时间用户是否可以参加会议
         if(now.isBefore(congress.getRegisterEndTime())&&now.isAfter(congress.getRegisterStartTime())){
             model.addAttribute("canRegisterCongress","yes");
@@ -163,9 +188,9 @@ public class CommonController {
 
 
     @RequestMapping("/common/search")
-    public String searchCongress(@RequestParam("title") String title, Model model, HttpSession session) {
-
-
+    public String searchCongress(@RequestParam("information") String information, Model model, HttpSession session) {
+        List<CongressVO> searchCongress = commonMapper.searchCongressByInformation(information);
+        model.addAttribute("searchCongress",searchCongress);
         return "/common/search";
     }
 
@@ -188,9 +213,9 @@ public class CommonController {
 
     @RequestMapping(value = "/common/createinformation")
     public String createInformation( @RequestParam("name") String name,
-                                    @RequestParam("age") int age, @RequestParam("idCardNo") String idCardNo,
-                                    @RequestParam("identity") String identity, @RequestParam("sex") String sex, @RequestParam("tel") String tel,
-                                    Map<String, Object> map, HttpSession session) {
+                                     @RequestParam("age") int age, @RequestParam("idCardNo") long idCardNo,
+                                     @RequestParam("identity") String identity, @RequestParam("sex") String sex, @RequestParam("tel") String tel,
+                                     Map<String, Object> map, HttpSession session) {
         int commonId = commonMapper.getCommonIdByUsername((String) session.getAttribute("loginUser"));
         CommonUserVO visit = commonMapper.HaveInfomation(commonMapper.getUsernameById(commonId));
         if (StringUtils.isEmpty(name) || StringUtils.isEmpty(sex) || StringUtils.isEmpty(age)

@@ -1,7 +1,7 @@
 package com.java.bms.driver.mapper;
 
 import com.java.bms.driver.DO.CongressApplyDriverDO;
-import com.java.bms.driver.DO.UserDriverVO;
+import com.java.bms.driver.VO.UserDriverVO;
 import com.java.bms.driver.VO.CongressDriver;
 import com.java.bms.driver.VO.DriverVO;
 import com.java.bms.other.DO.UserDO;
@@ -42,6 +42,8 @@ public interface DriverMapper {
     @Insert("insert into driverLogin(username,password) values(#{username},#{password})")
     int driverRegister(String username,String password);
 
+
+
     /**
      * 通过司机ID获取司机信息
      * @param driverId
@@ -65,6 +67,7 @@ public interface DriverMapper {
     @Insert("insert into driver(driverId,username,name,tel,capacity,licensePlateNumber,sex,age,idCardNo)" +
             "values(#{driverId},#{username},#{name},#{tel},#{capacity},#{licensePlateNumber},#{sex},#{age},#{idCardNo})")
     int addDriverInformation(int driverId,String username,String name,String tel,int capacity,String licensePlateNumber,String sex,int age,String idCardNo);
+
 
 
     /**
@@ -93,6 +96,24 @@ public interface DriverMapper {
     int getDriverIdByUsername(String username);
 
     /**
+     * 修改司机信息
+     * @param driverId
+     * @param name
+     * @param tel
+     * @param capacity
+     * @param licensePlateNumber
+     * @param sex
+     * @param age
+     * @param idCardNo
+     * @return
+     */
+    @Update("update driver set username = #{username},name = #{name}, tel = #{tel},capacity = #{capacity}," +
+            "licensePlateNumber = #{licensePlateNumber}, sex = #{sex},age = #{age},idCardNo = #{idCardNo} " +
+            " where driverId = #{driverId}")
+    int alterDriverInformation(int driverId,String username,String name,String tel,int capacity,String licensePlateNumber,String sex,int age,String idCardNo);
+
+
+    /**
      * 获取所有申请该司机的会议
      * @param driverId
      * @return
@@ -102,13 +123,25 @@ public interface DriverMapper {
     List<CongressApplyDriverDO> getApplyCongressesByDriverId(int driverId);
 
     /**
-     * 通过司机ID获取他要接送的会议
+     * 通过司机ID获取他要接送的会议,时间地点已经确定好
      * @param driverId
      * @return
      */
     @Select("select congressDriver.driverId,congress.congressId,congress.title,congressDriver.time,congressDriver.place" +
-            " from congressDriver,congress where congressDriver.driverId = #{driverId} and congressDriver.congressId = congress.congressId")
+            " from congressDriver,congress " +
+            "where congressDriver.driverId = #{driverId} and congressDriver.congressId = congress.congressId " +
+            " and congressDriver.place is not null and congressDriver.time is not null")
     List<CongressDriver> getCongressByDriverId(int driverId);
+
+    /**
+     * 通过司机ID获取他要接送的会议,时间地点可能未确定好
+     * @param driverId
+     * @return
+     */
+    @Select("select congressDriver.driverId,congress.congressId,congress.title,congressDriver.time,congressDriver.place" +
+            " from congressDriver,congress " +
+            "where congressDriver.driverId = #{driverId} and congressDriver.congressId = congress.congressId")
+    List<CongressDriver> getAllCongressByDriverId(int driverId);
 
 
     /**
@@ -125,13 +158,11 @@ public interface DriverMapper {
      * 添加司机要接送的会议的记录
      * @param driverId
      * @param congressId
-     * @param time
-     * @param place
      * @return
      */
-    @Insert("insert into congressDriver(driverId,congressId,time,place) " +
-            "values(#{driverId},#{congressId},#{time},#{place})")
-    int addCongressDriver(int driverId, int congressId, LocalDateTime time,String place);
+    @Insert("insert into congressDriver(driverId,congressId) " +
+            "values(#{driverId},#{congressId})")
+    int addCongressDriver(int driverId, int congressId);
 
 
     /**
@@ -143,6 +174,10 @@ public interface DriverMapper {
     @Insert("insert into driverRefuseCongress(driverId,congressId)" +
             "values(driverId,congressId)")
     int addDriverRefuseCongress(int driverId,int congressId);
+
+    @Update("update congressDriver set time = #{time} " +
+            "where congressId = #{congressId} and driverId = #{driverId}")
+    int addTime(int congressId,int driverId,LocalDateTime time);
 
     /**
      * 通过司机ID和会议ID删除接送任务
@@ -159,8 +194,9 @@ public interface DriverMapper {
      * @param congressId
      * @return
      */
-    @Select("select userDriver.*,commonUser.username,commonUser.tel from userDriver,commonUser " +
+    @Select("select userDriver.*,commonUser.username,commonUser.tel,congressNote.arrivalTime from userDriver,commonUser,congressNote " +
             "where userDriver.driverId = #{driverId} and userDriver.congressId = #{congressId} " +
-            "and userDriver.commonId = commonUser.commonId")
+            "and userDriver.commonId = commonUser.commonId and congressNote.congressId = #{congressId}" +
+            " and congressNote.commonId = userDriver.commonId")
     List<UserDriverVO> getList(int driverId,int congressId);
 }
