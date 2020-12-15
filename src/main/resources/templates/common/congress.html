@@ -34,30 +34,22 @@
         会议名称:<input type="text" name="title" th:value="${congress.getTitle()}"/><br>
         内容:<textarea name="content" th:text="${congress.getContent()}"></textarea><br>
         地点:<input type="text" name="place" th:value="${congress.getPlace()}"/><br>
-        开始时间:
-        <input type="text" name="startTimeYear" th:value="${congress.getStartTime().getYear()}"/>年
-        <input type="text" name="startTimeMonth" th:value="${congress.getStartTime().getMonthValue()}"/>月
-        <input type="text" name="startTimeDay" th:value="${congress.getStartTime().getDayOfMonth()}"/>日
-        <input type="text" name="startTimeHour" th:value="${congress.getStartTime().getHour()}"/>点
-        <input type="text" name="startTimeMinute" th:value="${congress.getStartTime().getMinute()}"/>分<br>
-        结束时间:
-        <input type="text" name="endTimeYear" th:value="${congress.getEndTime().getYear()}"/>年
-        <input type="text" name="endTimeMonth" th:value="${congress.getEndTime().getMonthValue()}"/>月
-        <input type="text" name="endTimeDay" th:value="${congress.getEndTime().getDayOfMonth()}"/>日
-        <input type="text" name="endTimeHour" th:value="${congress.getEndTime().getHour()}"/>点
-        <input type="text" name="endTimeMinute" th:value="${congress.getEndTime().getMinute()}"/>分<br>
-        报名会议开始时间:
-        <input type="text" name="registerStartTimeYear" th:value="${congress.getRegisterStartTime().getYear()}"/>年
-        <input type="text" name="registerStartTimeMonth" th:value="${congress.getRegisterStartTime().getMonthValue()}"/>月
-        <input type="text" name="registerStartTimeDay" th:value="${congress.getRegisterStartTime().getDayOfMonth()}"/>日
-        <input type="text" name="registerStartTimeHour" th:value="${congress.getRegisterStartTime().getHour()}"/>点
-        <input type="text" name="registerStartTimeMinute" th:value="${congress.getRegisterStartTime().getMinute()}"/>分<br>
-        报名会议结束时间:
-        <input type="text" name="registerEndTimeYear" th:value="${congress.getRegisterEndTime().getYear()}"/>年
-        <input type="text" name="registerEndTimeMonth" th:value="${congress.getRegisterEndTime().getMonthValue()}"/>月
-        <input type="text" name="registerEndTimeDay" th:value="${congress.getRegisterEndTime().getDayOfMonth()}"/>日
-        <input type="text" name="registerEndTimeHour" th:value="${congress.getRegisterEndTime().getHour()}"/>点
-        <input type="text" name="registerEndTimeMinute" th:value="${congress.getRegisterEndTime().getMinute()}"/>分<br>
+        <tr>
+            <td class="td_left"><lable for="startTime">会议开始时间：</lable></td>
+            <td class="td_right"><input type="datetime-local" name="startTime" th:value="${congress.getStartTime()}" id="startTime" ></td>
+        </tr>
+        <tr>
+            <td class="td_left"><lable for="endTime">会议结束时间：</lable></td>
+            <td class="td_right"><input type="datetime-local" name="endTime" th:value="${congress.getEndTime()}" id="endTime" ></td>
+        </tr>
+        <tr>
+            <td class="td_left"><lable for="registerStartTime">申请会议开始时间：</lable></td>
+            <td class="td_right"><input type="datetime-local" name="registerStartTime" th:value="${congress.getRegisterStartTime()}" id="registerStartTime" ></td>
+        <tr>
+        <tr>
+            <td class="td_left"><lable for="registerEndTime">申请会议结束时间：</lable></td>
+            <td class="td_right"><input type="datetime-local" name="registerEndTime" th:value="${congress.getRegisterEndTime()}" id="registerEndTime" ></td>
+        </tr>
         <button class="btn btn-lg btn-primary btn-block" type="submit">保存</button>
     </form>
 
@@ -225,11 +217,8 @@
     <form th:if="${record}!=null" th:action="@{/organizer/arrival/}+${congress.getCongressId()}" method="post">
         <span style="color: red" th:if="${record.getArrivalPlace()==null}">注意：请填写到达时间和地点，不填写无法安排接送</span><br>
         到达地点：<input type="text" name="arrivalPlace" th:value="${record.getArrivalPlace()!=null?record.getArrivalPlace():''}"><br>
-        到达时间：<input type="text" name="arrivalTimeYear" style="width: 50px" th:value="${record.getArrivalTime()!=null?record.getArrivalTime().getYear():''}">年
-        <input type="text" name="arrivalTimeMonth" style="width: 50px" th:value="${record.getArrivalTime()!=null?record.getArrivalTime().getMonthValue():''}">月
-        <input type="text" name="arrivalTimeDay" style="width: 50px" th:value="${record.getArrivalTime()!=null?record.getArrivalTime().getDayOfMonth():''}">日
-        <input type="text" name="arrivalTimeHour" style="width: 50px" th:value="${record.getArrivalTime()!=null?record.getArrivalTime().getHour():''}">时
-        <input type="text" name="arrivalTimeMinute" style="width: 50px" th:value="${record.getArrivalTime()!=null?record.getArrivalTime().getMinute():''}">分
+        到达时间：
+        <input type="datetime-local" name="arrivalTime" th:value="${record.getArrivalTime()!=null?record.getArrivalTime():''}">
         <input type="submit" value="保存"/>
         <!--        onclick="setArrivalInformation()"-->
     </form>

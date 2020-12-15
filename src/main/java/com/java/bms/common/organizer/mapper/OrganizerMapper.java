@@ -88,6 +88,19 @@ public interface OrganizerMapper {
             "group by driverId")
     List<CongressHaveDriverVO> getDriverByCongressId(int congressId);
 
+
+    /**
+     * 通过会议ID获取会议安排的司机的信息,与上面的方法不同之处是返回值不同
+     * @param congressId
+     * @return
+     */
+    @Select("select driver.*,congressDriver.place" +
+            " from driver,congressDriver " +
+            "where congressDriver.congressId = #{congressId} " +
+            "and congressDriver.driverId = driver.driverId " +
+            "group by driverId")
+    List<DriverVO> getDriverByCongressId2(int congressId);
+
     /**
      * 获取司机安排的人员数量
      * @param driverId
@@ -205,6 +218,11 @@ public interface OrganizerMapper {
     @Insert("insert userDriver(commonId,congressId,driverId)" +
             " values(#{commonId},#{congressId},#{driverId})")
     int participantAssignedDriver(int commonId,int congressId,int driverId);
+
+
+    @Update("update congressDriver set place = #{place}" +
+            " where congressId = #{congressId} and driverId = #{driverId}")
+    int setPinkUpPlace(int congressId,int driverId,String place);
 
     /**
      * 通过会议ID和司机Id获取接送人员信息

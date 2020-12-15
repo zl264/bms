@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -63,7 +64,7 @@ public class DriverController {
      */
     @PostMapping(value = "/driver/login")
     public String driverLogin(@RequestParam("username") String username,
-                              @RequestParam("password") String password,@RequestParam("code") String code,
+                              @RequestParam("password") String password,/*@RequestParam("code") String code,*/
                               Map<String,Object> map, HttpSession session, Model model){
         if(StringUtils.isEmpty(username)||StringUtils.isEmpty(password)){
             session.setAttribute("msg","请输入用户名密码");
@@ -307,12 +308,11 @@ public class DriverController {
     }
 
     @RequestMapping("/driver/addTime")
-    public String addTime(@RequestParam("year") int year,@RequestParam("month") int month,
-                          @RequestParam("day") int day,@RequestParam("hour") int hour,
-                          @RequestParam("minute") int minute,@RequestParam("congressId") int congressId,
+    public String addTime(@RequestParam("pinkUpTime") String pinkUpTimeStr,@RequestParam("congressId") int congressId,
                           HttpSession session,Model model){
         int driverId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
-        LocalDateTime time = LocalDateTime.of(year,month,day,hour,minute);
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime time = LocalDateTime.parse(pinkUpTimeStr.replaceAll("T", " ") + ":00", df);
         driverMapper.addTime(congressId,driverId,time);
 
         DriverVO driverVO = driverMapper.getDriverByDriverId(driverId);

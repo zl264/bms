@@ -42,19 +42,19 @@
         </tr>
         <tr>
             <td class="td1">开始时间:</td>
-            <td th:text="${congress.getStartTime()}"></td>
+            <td th:text="${#temporals.format(congress.getStartTime(),'yyyy-MM-dd HH:mm')}"></td>
         </tr>
         <tr>
             <td class="td1">结束时间:</td>
-            <td th:text="${congress.getEndTime()}"></td>
+            <td th:text="${#temporals.format(congress.getEndTime(),'yyyy-MM-dd HH:mm')}"></td>
         </tr>
         <tr>
             <td class="td1">会议开始时间:</td>
-            <td th:text="${congress.getRegisterStartTime()}"></td>
+            <td th:text="${#temporals.format(congress.getRegisterStartTime(),'yyyy-MM-dd HH:mm')}"></td>
         </tr>
         <tr>
             <td class="td1">会议结束时间:</td>
-            <td th:text="${congress.getRegisterEndTime()}"></td>
+            <td th:text="${#temporals.format(congress.getRegisterEndTime(),'yyyy-MM-dd HH:mm')}"></td>
         </tr>
     </table>
 </div>

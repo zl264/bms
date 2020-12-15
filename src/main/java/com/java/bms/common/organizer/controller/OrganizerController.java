@@ -57,37 +57,27 @@ public class OrganizerController {
      * @param title 会议标题
      * @param content 会议内容
      * @param place 会议地点
-     * @param startTimeYear 下面五个参数是开始时间
-     * @param startTimeMonth
-     * @param startTimeDay
-     * @param startTimeHour
-     * @param startTimeMinute
-     * @param endTimeYear 接下来五个参数是结束时间
-     * @param endTimeMonth
-     * @param endTimeDay
-     * @param endTimeHour
-     * @param endTimeMinute
+     * @param startTimeStr
+     * @param endTimeStr
+     * @param registerStartTimeStr
+     * @param registerEndTimeStr
      * @param model 传递所有用户创建的会议
      * @param session session
      * @return 回到创建会议界面
      */
     @RequestMapping("/organizer/congress")
     public String createCongress(@RequestParam("title") String title,@RequestParam("content") String content,
-                                 @RequestParam("place") String place,@RequestParam("startTimeYear") int startTimeYear,
-                                 @RequestParam("startTimeMonth") int startTimeMonth,@RequestParam("startTimeDay") int startTimeDay,
-                                 @RequestParam("startTimeHour") int startTimeHour, @RequestParam("startTimeMinute") int startTimeMinute,
-                                 @RequestParam("endTimeYear") int endTimeYear, @RequestParam("endTimeMonth") int endTimeMonth,@RequestParam("endTimeDay") int endTimeDay,
-                                 @RequestParam("endTimeHour") int endTimeHour, @RequestParam("endTimeMinute") int endTimeMinute,
-                                 @RequestParam("registerStartTimeYear") int registerStartTimeYear,
-                                 @RequestParam("registerStartTimeMonth") int registerStartTimeMonth,@RequestParam("registerStartTimeDay") int registerStartTimeDay,
-                                 @RequestParam("registerStartTimeHour") int registerStartTimeHour, @RequestParam("registerStartTimeMinute") int registerStartTimeMinute,
-                                 @RequestParam("registerEndTimeYear") int registerEndTimeYear, @RequestParam("registerEndTimeMonth") int registerEndTimeMonth,@RequestParam("registerEndTimeDay") int registerEndTimeDay,
-                                 @RequestParam("registerEndTimeHour") int registerEndTimeHour, @RequestParam("registerEndTimeMinute") int registerEndTimeMinute,
+                                 @RequestParam("place") String place,@RequestParam("startTime") String startTimeStr,
+                                 @RequestParam("endTime") String endTimeStr, @RequestParam("registerStartTime") String registerStartTimeStr,
+                                 @RequestParam("registerEndTime") String registerEndTimeStr,
                                  Model model,HttpSession session){
-        LocalDateTime startTime = LocalDateTime.of(startTimeYear,startTimeMonth,startTimeDay,startTimeHour,startTimeMinute,0);
-        LocalDateTime endTime = LocalDateTime.of(endTimeYear,endTimeMonth,endTimeDay,endTimeHour,endTimeMinute,0);
-        LocalDateTime registerStartTime = LocalDateTime.of(registerStartTimeYear,registerStartTimeMonth,registerStartTimeDay,registerStartTimeHour,registerStartTimeMinute);
-        LocalDateTime registerEndTime = LocalDateTime.of(registerEndTimeYear,registerEndTimeMonth,registerEndTimeDay,registerEndTimeHour,registerEndTimeMinute);
+
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime startTime = LocalDateTime.parse(startTimeStr.replaceAll("T", " ") + ":00", df);
+        LocalDateTime endTime = LocalDateTime.parse(endTimeStr.replaceAll("T", " ") + ":00", df);
+        LocalDateTime registerStartTime = LocalDateTime.parse(registerStartTimeStr.replaceAll("T", " ") + ":00", df);
+        LocalDateTime registerEndTime = LocalDateTime.parse(registerEndTimeStr.replaceAll("T", " ") + ":00", df);
+
 
 
         int organizerId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
@@ -120,48 +110,27 @@ public class OrganizerController {
      * @param title
      * @param content
      * @param place
-     * @param startTimeYear
-     * @param startTimeMonth
-     * @param startTimeDay
-     * @param startTimeHour
-     * @param startTimeMinute
-     * @param endTimeYear
-     * @param endTimeMonth
-     * @param endTimeDay
-     * @param endTimeHour
-     * @param endTimeMinute
+     * @param startTimeStr
+     * @param endTimeStr
+     * @param registerStartTimeStr
+     * @param registerEndTimeStr
      * @param congressId
-     * @param registerStartTimeYear
-     * @param registerStartTimeMonth
-     * @param registerStartTimeDay
-     * @param registerStartTimeHour
-     * @param registerStartTimeMinute
-     * @param registerEndTimeYear
-     * @param registerEndTimeMonth
-     * @param registerEndTimeDay
-     * @param registerEndTimeHour
-     * @param registerEndTimeMinute
      * @param model
      * @param session
      * @return
      */
     @RequestMapping("/organizer/alter")
     public String alterCongress(@RequestParam("title") String title,@RequestParam("content") String content,
-                                @RequestParam("place") String place,@RequestParam("startTimeYear") int startTimeYear,
-                                @RequestParam("startTimeMonth") int startTimeMonth,@RequestParam("startTimeDay") int startTimeDay,
-                                @RequestParam("startTimeHour") int startTimeHour, @RequestParam("startTimeMinute") int startTimeMinute,
-                                @RequestParam("endTimeYear") int endTimeYear, @RequestParam("endTimeMonth") int endTimeMonth,@RequestParam("endTimeDay") int endTimeDay,
-                                @RequestParam("endTimeHour") int endTimeHour, @RequestParam("endTimeMinute") int endTimeMinute,@RequestParam("congressId") int congressId,
-                                @RequestParam("registerStartTimeYear") int registerStartTimeYear,
-                                @RequestParam("registerStartTimeMonth") int registerStartTimeMonth,@RequestParam("registerStartTimeDay") int registerStartTimeDay,
-                                @RequestParam("registerStartTimeHour") int registerStartTimeHour, @RequestParam("registerStartTimeMinute") int registerStartTimeMinute,
-                                @RequestParam("registerEndTimeYear") int registerEndTimeYear, @RequestParam("registerEndTimeMonth") int registerEndTimeMonth,@RequestParam("registerEndTimeDay") int registerEndTimeDay,
-                                @RequestParam("registerEndTimeHour") int registerEndTimeHour, @RequestParam("registerEndTimeMinute") int registerEndTimeMinute,
+                                @RequestParam("place") String place,@RequestParam("congressId") int congressId,
+                                @RequestParam("startTime") String startTimeStr, @RequestParam("endTime") String endTimeStr,
+                                @RequestParam("registerStartTime") String registerStartTimeStr,
+                                @RequestParam("registerEndTime") String registerEndTimeStr,
                                 Model model,HttpSession session, Map<String,Integer> map){
-        LocalDateTime startTime = LocalDateTime.of(startTimeYear,startTimeMonth,startTimeDay,startTimeHour,startTimeMinute,0);
-        LocalDateTime endTime = LocalDateTime.of(endTimeYear,endTimeMonth,endTimeDay,endTimeHour,endTimeMinute,0);
-        LocalDateTime registerStartTime = LocalDateTime.of(registerStartTimeYear,registerStartTimeMonth,registerStartTimeDay,registerStartTimeHour,registerStartTimeMinute);
-        LocalDateTime registerEndTime = LocalDateTime.of(registerEndTimeYear,registerEndTimeMonth,registerEndTimeDay,registerEndTimeHour,registerEndTimeMinute);
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime startTime = LocalDateTime.parse(startTimeStr.replaceAll("T", " ") + ":00", df);
+        LocalDateTime endTime = LocalDateTime.parse(endTimeStr.replaceAll("T", " ") + ":00", df);
+        LocalDateTime registerStartTime = LocalDateTime.parse(registerStartTimeStr.replaceAll("T", " ") + ":00", df);
+        LocalDateTime registerEndTime = LocalDateTime.parse(registerEndTimeStr.replaceAll("T", " ") + ":00", df);
         LocalDateTime now = LocalDateTime.now();
         organizerMapper.alterCongress(congressId,title,content,place,startTime,endTime,registerStartTime,registerEndTime);
 
@@ -213,7 +182,7 @@ public class OrganizerController {
     public String getAllDriver(@PathVariable("congressId") int congressId, HttpSession session, Model model){
         List<DriverVO> allDriver = organizerMapper.getAllDriver();
         List<DriverVO> applyDriver = organizerMapper.getApplyDriver(congressId);
-        List<CongressHaveDriverVO> hasDriver = organizerMapper.getDriverByCongressId(congressId);
+        List<DriverVO> hasDriver = organizerMapper.getDriverByCongressId2(congressId);
 
         model.addAttribute("allDriver",allDriver);
         model.addAttribute("applyDriver",applyDriver);
@@ -248,11 +217,7 @@ public class OrganizerController {
     /**
      * 用户设置到达时间和到达地点
      * @param arrivalPlace
-     * @param year
-     * @param month
-     * @param day
-     * @param hour
-     * @param minute
+     * @param arrivalTimeStr
      * @param model
      * @param session
      * @param congressId
@@ -260,12 +225,12 @@ public class OrganizerController {
      */
     @ResponseBody
     @RequestMapping("/organizer/arrival/{congressId}")
-    public ModelAndView setArrivalInformation(@RequestParam("arrivalPlace") String arrivalPlace, @RequestParam("arrivalTimeYear") int year,
-                                              @RequestParam("arrivalTimeMonth") int month, @RequestParam("arrivalTimeDay") int day,
-                                              @RequestParam("arrivalTimeHour") int hour, @RequestParam("arrivalTimeMinute") int minute,
+    public ModelAndView setArrivalInformation(@RequestParam("arrivalPlace") String arrivalPlace, @RequestParam("arrivalTime") String arrivalTimeStr,
                                               ModelAndView model, HttpSession session, @PathVariable("congressId") int congressId,
                                               Map<String,Integer> map){
-        LocalDateTime arrivalTime = LocalDateTime.of(year,month,day,hour,minute);
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime arrivalTime = LocalDateTime.parse(arrivalTimeStr.replaceAll("T", " ") + ":00", df);
+
         int commonId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
         organizerMapper.setArrivalTime(congressId,commonId,arrivalPlace,arrivalTime);
         CongressNoteVO record = commonMapper.getCongressNoteByCommonIdAndCongressId(commonId,congressId);
@@ -418,6 +383,7 @@ public class OrganizerController {
                     //给用户分配司机
                     organizerMapper.participantAssignedDriver(commonIds.get(num),congressId,
                             driver.getDriverId());
+                    organizerMapper.setPinkUpPlace(congressId,driver.getDriverId(),place.getArrivalPlace());
                     num++;
                     number++;
                 }

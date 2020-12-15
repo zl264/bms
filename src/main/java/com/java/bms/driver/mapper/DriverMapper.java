@@ -196,8 +196,9 @@ public interface DriverMapper {
      * @param congressId
      * @return
      */
-    @Select("select userDriver.*,commonUser.username,commonUser.tel from userDriver,commonUser " +
+    @Select("select userDriver.*,commonUser.username,commonUser.tel,congressNote.arrivalTime from userDriver,commonUser,congressNote " +
             "where userDriver.driverId = #{driverId} and userDriver.congressId = #{congressId} " +
-            "and userDriver.commonId = commonUser.commonId")
+            "and userDriver.commonId = commonUser.commonId and congressNote.congressId = #{congressId}" +
+            " and congressNote.commonId = userDriver.commonId")
     List<UserDriverVO> getList(int driverId,int congressId);
 }

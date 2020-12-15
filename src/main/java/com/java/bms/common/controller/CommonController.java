@@ -70,7 +70,7 @@ public class CommonController {
      */
     @PostMapping(value = "/common/login")
     public String commonLogin(@RequestParam("username") String username,
-                              @RequestParam("password") String password,@RequestParam("code") String code,
+                              @RequestParam("password") String password,/*@RequestParam("code") String code,*/
                               Map<String, Object> map, HttpSession session, Model model) {
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             session.setAttribute("msg", "请输入用户名密码");
