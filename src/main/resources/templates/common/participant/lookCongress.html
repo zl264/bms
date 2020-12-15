@@ -8,43 +8,129 @@
     <title>查看已经参加的会议</title>
 
     <style>
-        .showCongress{
-            margin-top: 100px;
+        .paddingtop{
+            padding-top:10px ;
+        }
+        .line {
+            border-bottom: 2px solid #000000;
+            padding: 5px;
         }
     </style>
     <!-- Bootstrap -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="/css/dashboard.css" rel="stylesheet">
 
     <script src="/js/html5shiv.min.js"></script>
     <script src="/js/respond.min.js"></script>
 
 </head>
 <body>
-<div class="container showCongress" th:if="${allCongress.size()!=0}">
-    <div class="row" >
-        <div class="col-sm-6 col-md-4 col-lg-3 " th:each="congress:${allCongress}">
-            <div class="thumbnail" style="height: 360px;">
-                <a th:href="@{/congress/}+${congress.getCongressId()}" >
-                    <img class="lazy" th:src="'../img/congress/'+${congress.getImage()}+'.jpg'" alt="会议图片" width="300" height="150">
-                </a>
-                <div class="caption">
-                    <h3>
-                        <a th:href="@{/congress/}+${congress.getCongressId()}" th:text="${congress.getTitle()}"></a>
-                    </h3>
-                    <p th:text="${#strings.substring(congress.getContent(),0,20)}" th:if="${congress.getContent().length()>20}"></p>
-                    <p th:text="${congress.getContent()}" th:if="${congress.getContent().length()<20}"></p>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Congress Project</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" th:href="@{/common/information}" style="margin-right: 50px;">
+                        <img class="img-circle" src="img/0.jpg" th:alt="${session.loginUser}" width="30" height="30">
+                    </a>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search...">
+                <button type="submit" class="btn btn-default">搜索</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row paddingtop">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+                <li><a href="#" th:href="@{/organizer/manage}">创建会议</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="#" th:href="@{/participant/congress}">查看会议</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="#" th:href="@{/participant/driver}">查看司机</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="#" th:href="@{/participant/hotel}">查看酒店</a></li>
+            </ul>
+        </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="row line">
+                <h1 class="page-header ">
+                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                    <span>我参加的会议</span>
+                </h1>
+            </div>
+            <div class="row placeholders paddingtop">
+                <div class="row" th:if="${allCongress.size()!=0}">
+                    <div class="row" th:if="${allCongress!=null}">
+                        <div class="col-xs-6 col-sm-3 placeholder" th:each="congress:${allCongress}">
+                            <div class="thumbnail" style="height: 360px;">
+                                <a th:href="@{/congress/}+${congress.getCongressId()}" >
+                                    <img class="lazy" th:src="'../img/'+${congress.getImage()}+'.jpg'" alt="会议图片" width="300" height="150">
+                                </a>
+                                <div class="caption">
+                                    <h3>
+                                        <a th:href="@{/congress/}+${congress.getCongressId()}" th:text="${congress.getTitle()}"></a>
+                                    </h3>
+                                    <p th:text="${#strings.substring(congress.getContent(),0,20)}" th:if="${congress.getContent().length()>20}"></p>
+                                    <p th:text="${congress.getContent()}" th:if="${congress.getContent().length()<20}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <div class="col-xs-6 col-sm-3 placeholder" >
+                    <div th:unless="${allCongress.size()!=0}" >
+                        你还没有参加任何会议，快去参加会议吧！
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
-<div th:unless="${allCongress.size()!=0}">
-    你还没有参加任何会议，快去参加会议吧
-</div>
+        <!--<div class="container showCongress" th:if="${allCongress.size()!=0}">
+            <div class="row" >
+                <div class="col-sm-6 col-md-4 col-lg-3 " th:each="congress:${allCongress}">
+                    <div class="thumbnail" style="height: 360px;">
+                        <a th:href="@{/congress/}+${congress.getCongressId()}" >
+                            <img class="lazy" th:src="'../img/'+${congress.getImage()}+'.jpg'" alt="会议图片" width="300" height="150">
+                        </a>
+                        <div class="caption">
+                            <h3>
+                                <a th:href="@{/congress/}+${congress.getCongressId()}" th:text="${congress.getTitle()}"></a>
+                            </h3>
+                            <p th:text="${#strings.substring(congress.getContent(),0,20)}" th:if="${congress.getContent().length()>20}"></p>
+                            <p th:text="${congress.getContent()}" th:if="${congress.getContent().length()<20}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:unless="${allCongress.size()!=0}">
+            你还没有参加任何会议，快去参加会议吧
+        </div>-->
 </body>
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-<script src="/js/jquery.min.js"></script>
+<script src="../js/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-<script src="/js/bootstrap.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
 </html>
