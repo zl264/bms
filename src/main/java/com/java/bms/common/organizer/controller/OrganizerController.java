@@ -2,12 +2,10 @@ package com.java.bms.common.organizer.controller;
 
 import com.java.bms.common.DO.ArrivalPlaceCountDO;
 import com.java.bms.common.DO.CongressNoteVO;
-import com.java.bms.common.VO.CommonUserAllInformationVO;
-import com.java.bms.common.VO.CommonUserVO;
-import com.java.bms.common.VO.CongressHaveDriverVO;
-import com.java.bms.common.VO.CongressVO;
+import com.java.bms.common.VO.*;
 import com.java.bms.common.mapper.CommonMapper;
 import com.java.bms.common.organizer.mapper.OrganizerMapper;
+import com.java.bms.common.participant.mapper.ParticipantMapper;
 import com.java.bms.driver.VO.DriverVO;
 import com.java.bms.driver.mapper.DriverMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +40,8 @@ public class OrganizerController {
     @Autowired
     DriverMapper driverMapper;
 
+    @Autowired
+    ParticipantMapper participantMapper;
     /**
      * 跳转到创建会议界面
      * @return 创建会议界面
@@ -152,6 +152,8 @@ public class OrganizerController {
         //判断当前参与者是否有填写完个人信息
         CommonUserVO participantInformation = commonMapper.HaveInfomation((String) session.getAttribute("loginUser"));
 
+
+
         model.addAttribute("hasDriver",hasDriver);
         model.addAttribute("congress",congress);
         model.addAttribute("organizerName",organizerName);
@@ -214,61 +216,7 @@ public class OrganizerController {
         return "/common/organizer/allDriver";
     }
 
-    /**
-     * 用户设置到达时间和到达地点
-     * @param arrivalPlace
-     * @param arrivalTimeStr
-     * @param model
-     * @param session
-     * @param congressId
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/organizer/arrival/{congressId}")
-    public ModelAndView setArrivalInformation(@RequestParam("arrivalPlace") String arrivalPlace, @RequestParam("arrivalTime") String arrivalTimeStr,
-                                              ModelAndView model, HttpSession session, @PathVariable("congressId") int congressId,
-                                              Map<String,Integer> map){
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime arrivalTime = LocalDateTime.parse(arrivalTimeStr.replaceAll("T", " ") + ":00", df);
 
-        int commonId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
-        organizerMapper.setArrivalTime(congressId,commonId,arrivalPlace,arrivalTime);
-        CongressNoteVO record = commonMapper.getCongressNoteByCommonIdAndCongressId(commonId,congressId);
-        CongressVO congress = commonMapper.getCongressById(congressId);
-        String organizerName = commonMapper.getUsernameById((int) congress.getOrganizerId());
-        List<CommonUserVO> participants = commonMapper.getParticipantIdByCongressId(congressId);
-        //获取所有填写了到达时间和到达地点的参加者
-        List<CommonUserAllInformationVO> allInformationParticipants = commonMapper.getAllInformationParticipantIdByCongressId(congressId);
-        //获取每个到达地点的人数
-        List<ArrivalPlaceCountDO> allArrivalPlace = commonMapper.getAllParticipantPlaceByCongressId(congressId);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime now = LocalDateTime.now();
-        List<CongressHaveDriverVO> hasDriver = organizerMapper.getDriverByCongressId(congressId);
-        for(CongressHaveDriverVO driver:hasDriver){
-            map.put(String.valueOf(driver.getDriverId()),organizerMapper.getDriverListNum(driver.getDriverId(),congressId));
-        }
-        //判断当前参与者是否有填写完个人信息
-        CommonUserVO participantInformation = commonMapper.HaveInfomation((String) session.getAttribute("loginUser"));
-
-
-        model.setViewName("/common/congress");
-        model.addObject("hasDriver",hasDriver);
-        model.addObject("congress", congress);
-        model.addObject("organizerName", organizerName);
-        model.addObject("formatter", formatter);
-        model.addObject("record", record);
-        model.addObject("participants", participants);
-        model.addObject("participantInformation",participantInformation);
-        model.addObject("allInformationParticipants",allInformationParticipants);
-        model.addObject("allArrivalPlace",allArrivalPlace);
-        model.addObject("driverHaveNum",map);
-
-//        判断当前时间用户是否可以参加会议
-        if(now.isBefore(congress.getRegisterEndTime())&&now.isAfter(congress.getRegisterStartTime())){
-            model.addObject("canRegisterCongress","yes");
-        }
-        return model;
-    }
 
     @RequestMapping("/organizer/delete/participant")
     public String deleteParticipant(@RequestParam("commonId") int commonId, @RequestParam("congressId") int congressId,
@@ -296,6 +244,8 @@ public class OrganizerController {
         }
         //判断当前参与者是否有填写完个人信息
         CommonUserVO participantInformation = commonMapper.HaveInfomation((String) session.getAttribute("loginUser"));
+        //获取参与者的司机
+        DriverUserVO participantDriver = participantMapper.getDriverByCongressIdAndCommonId(congressId,commonId);
 
         model.addAttribute("hasDriver",hasDriver);
         model.addAttribute("congress", congress);
@@ -307,6 +257,7 @@ public class OrganizerController {
         model.addAttribute("allInformationParticipants",allInformationParticipants);
         model.addAttribute("allArrivalPlace",allArrivalPlace);
         model.addAttribute("driverHaveNum",map);
+        model.addAttribute("participantDriver",participantDriver);
 
 //        判断当前时间用户是否可以参加会议
         if(now.isBefore(congress.getRegisterEndTime())&&now.isAfter(congress.getRegisterStartTime())){

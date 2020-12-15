@@ -4,11 +4,9 @@ package com.java.bms.common.controller;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.java.bms.common.DO.ArrivalPlaceCountDO;
 import com.java.bms.common.DO.CongressNoteVO;
-import com.java.bms.common.VO.CommonUserAllInformationVO;
-import com.java.bms.common.VO.CommonUserVO;
-import com.java.bms.common.VO.CongressHaveDriverVO;
-import com.java.bms.common.VO.CongressVO;
+import com.java.bms.common.VO.*;
 import com.java.bms.common.organizer.mapper.OrganizerMapper;
+import com.java.bms.common.participant.mapper.ParticipantMapper;
 import com.java.bms.driver.VO.DriverVO;
 import com.java.bms.other.DO.UserDO;
 import com.java.bms.common.mapper.CommonMapper;
@@ -37,6 +35,9 @@ public class CommonController {
 
     @Autowired
     OrganizerMapper organizerMapper;
+
+    @Autowired
+    ParticipantMapper participantMapper;
 
     /**
      * 主页点击连接进入普通用户登录界面
@@ -156,11 +157,14 @@ public class CommonController {
         CommonUserVO participantInformation = commonMapper.HaveInfomation((String) session.getAttribute("loginUser"));
         //获取每个到达地点的人数
         List<ArrivalPlaceCountDO> allArrivalPlace = commonMapper.getAllParticipantPlaceByCongressId(id);
-        //获取司机
+        //获取会议司机
         List<CongressHaveDriverVO> hasDriver = organizerMapper.getDriverByCongressId(id);
         for(CongressHaveDriverVO driver:hasDriver){
             map.put(String.valueOf(driver.getDriverId()),organizerMapper.getDriverListNum(driver.getDriverId(),id));
         }
+        //获取参与者的司机
+        DriverUserVO participantDriver = participantMapper.getDriverByCongressIdAndCommonId(id,userId);
+
 
 
         model.addAttribute("congress", congress);
@@ -173,6 +177,7 @@ public class CommonController {
         model.addAttribute("allInformationParticipants",allInformationParticipants);
         model.addAttribute("allArrivalPlace",allArrivalPlace);
         model.addAttribute("driverHaveNum",map);
+        model.addAttribute("participantDriver",participantDriver);
 //        判断当前时间用户是否可以参加会议
         if(now.isBefore(congress.getRegisterEndTime())&&now.isAfter(congress.getRegisterStartTime())){
             model.addAttribute("canRegisterCongress","yes");

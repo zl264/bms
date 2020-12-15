@@ -2,7 +2,7 @@ package com.java.bms.driver.controller;
 
 import com.java.bms.common.mapper.CommonMapper;
 import com.java.bms.driver.DO.CongressApplyDriverDO;
-import com.java.bms.driver.DO.UserDriverVO;
+import com.java.bms.driver.VO.UserDriverVO;
 import com.java.bms.driver.VO.CongressDriver;
 import com.java.bms.driver.VO.DriverVO;
 import com.java.bms.driver.mapper.DriverMapper;

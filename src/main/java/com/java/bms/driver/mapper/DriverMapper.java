@@ -1,13 +1,11 @@
 package com.java.bms.driver.mapper;
 
 import com.java.bms.driver.DO.CongressApplyDriverDO;
-import com.java.bms.driver.DO.UserDriverVO;
+import com.java.bms.driver.VO.UserDriverVO;
 import com.java.bms.driver.VO.CongressDriver;
 import com.java.bms.driver.VO.DriverVO;
 import com.java.bms.other.DO.UserDO;
 import org.apache.ibatis.annotations.*;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;

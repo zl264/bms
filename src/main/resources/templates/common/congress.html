@@ -222,6 +222,19 @@
         <input type="submit" value="保存"/>
         <!--        onclick="setArrivalInformation()"-->
     </form>
+<!--    显示参与者分配的司机信息-->
+    <div th:if="${record}!=null and ${record.getArrivalPlace()}!=null and ${record.getArrivalTime()}!=null">
+        <h4>司机信息</h4>
+        <div th:if="${participantDriver!=null}">
+            司机呢称:<span th:text="${participantDriver.getUsername()}"></span>
+            司机电话:<span th:text="${participantDriver.getTel()}"></span>
+            接送时间:<span th:text="${#temporals.format(participantDriver.getTime(),'yyyy-MM-dd HH:mm')}"></span>
+            接送地点:<span th:text="${participantDriver.getPlace()}"></span>
+        </div>
+        <div th:unless="${participantDriver!=null}">
+            暂未分配司机
+        </div>
+    </div>
 </div>
 
 <!--用户名<p th:text="${session.loginUser}"></p>-->
