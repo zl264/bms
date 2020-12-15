@@ -1,12 +1,16 @@
 package com.java.bms.common.mapper;
 
 import com.java.bms.common.DO.CongressNoteVO;
+import com.java.bms.common.VO.CommonUserVO;
 import com.java.bms.common.VO.CongressVO;
+import com.java.bms.common.VO.CommonUserVO;
 import com.java.bms.other.DO.UserDO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -41,12 +45,32 @@ public interface CommonMapper {
      */
     @Insert("insert into commonLogin(username,password) values(#{username},#{password})")
     int commonRegister(String username,String password);
+    /**
+     * 提交用户输入的个人信息
+     * @param username 用户名
+     * @param name 用户姓名
+     * @param sex 用户性别
+     * @param age 用户年龄
+     * @param commonId 用户id
+     * @param idCardNo 身份证号
+     * @param identity 身份
+     */
+    @Insert("insert into commonUser(username,name,age,idCardNo,identity,sex,commonId,tel) values(#{username}," +
+            "#{name},#{age},#{idCardNo},#{identity},#{sex},#{commonId},#{tel})")
+    int createInformation(String username,String name,int age,String idCardNo,String identity,String sex,long commonId,String tel);
+
+    @Update("update commonUser set username = #{username} , name= #{name} ,  age= #{age} , idCardNo=#{idCardNo}," +
+            " identity= #{identity} , sex= #{sex} ,tel=#{tel} where commonId = #{commonId}")
+    int updateInformation(String username,String name,int age, String idCardNo, String identity,String sex, long commonId,String tel);
+
+    @Select("select * from commonUser where username=#{username}")
+    CommonUserVO HaveInfomation(String username);
 
     /**
      * 查询数据库中的所有会议
      * @return 查询得到的所有会议的List
      */
-    @Select("select * from congress")
+    @Select("select * from congress order by startTime desc")
     List<CongressVO> getAllCongress();
 
     /**
@@ -83,4 +107,23 @@ public interface CommonMapper {
     @Select("select * from congressNote where commonId = #{commonId} and congressId = #{congressId}")
     CongressNoteVO getCongressNoteByCommonIdAndCongressId(int commonId,long congressId);
 
+
+    /**
+     * 通过会议ID获取参与者信息
+     * @param congressId
+     * @return
+     */
+    @Select("select commonUser.* from congressNote,commonUser where congressNote.congressId = #{congressId} and congressNote.commonId = commonUser.commonId")
+    List<CommonUserVO> getParticipantIdByCongressId(int congressId);
+
+
+
+    /**
+     * 通过会议ID获取参与者信息
+     * @param congressId
+     * @return
+     */
+    @Select("select commonUser.* from congressNote,commonUser where congressNote.congressId " +
+            "= #{congressId} and congressNote.commonId = commonUser.commonId and congressNote.arrivalPlace is not null")
+    List<CommonUserVO> getAllInformationParticipantIdByCongressId(int congressId);
 }

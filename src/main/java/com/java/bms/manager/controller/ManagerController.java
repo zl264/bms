@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
@@ -21,6 +22,14 @@ public class ManagerController {
     @Autowired
     ManagerMapper manageMapper;
 
+    /**
+     * 主页进入管理员登录界面
+     * @return
+     */
+    @RequestMapping("/manager/enter")
+    public String managerEnter(){
+        return "/manager/managerLogin";
+    }
 
     /**
      * 对管理员的登录进行控制
@@ -36,19 +45,20 @@ public class ManagerController {
                               Map<String,Object> map, HttpSession session, Model model){
         if(StringUtils.isEmpty(username)||StringUtils.isEmpty(password)){
             session.setAttribute("msg","请输入用户名密码");
-            return "redirect:/index";
+            return "redirect:/manager/enter";
         }
         UserDO userDo = manageMapper.commonLogin(username,password);
         if(userDo==null){
             session.setAttribute("msg","用户名密码错误");
-            return "redirect:/index";
+            return "redirect:/manager/enter";
         }
         if(username.equals(userDo.getUsername())&&password.equals(userDo.getPassword())) {
 //            登录成功以后，防止表单重复提交，可以重定向到主页
             session.setAttribute("loginUser", username);
+            session.removeAttribute("msg");
             return "redirect:/managerMain";
         }
-        return "index";
+        return "/manager/managerLogin";
     }
 
 }

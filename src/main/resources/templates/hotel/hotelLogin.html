@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>酒店用户登录界面</title>
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <script src="/js/html5shiv.min.js"></script>
+    <script src="/js/respond.min.js"></script>
+    <style>
+        a{
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="row">
+    <div class="col-lg-4 col-lg-offset-2">
+        <form class="form-signin" action="" th:action="@{/hotel/login}" method="post">
+
+            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+            <p style="color:red;" th:text="${session.msg}" th:if="${not #strings.isEmpty(session.msg)}"></p>
+            <label class="sr-only">用户名:</label>
+            <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
+            <label class="sr-only">密码:</label>
+            <input type="password" name="password" class="form-control" placeholder="Password" required="">
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+            <button class="btn btn-lg btn-primary btn-block" type="button"><a th:href="@{/hotel/enterRegister}">注册</a></button>
+
+            <p class="mt-5 mb-3 text-muted">© One Time</p>
+
+        </form>
+    </div>
+</div>
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script src="/js/jquery.min.js"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script src="/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package com.java.bms.common.participant.mapper;
 
+import com.java.bms.common.VO.CommonUserVO;
 import com.java.bms.common.VO.CongressVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,7 +19,6 @@ public interface ParticipantMapper {
      */
     @Select("select congress.* from congress,congressNote where congressNote.commonId = #{commonId} and congressNote.congressId = congress.congressId")
     List<CongressVO> getCongressByCommonId(int commonId);
-
 
     /**
      * 通过用户ID和会议ID确定哪个用户参加哪个会议

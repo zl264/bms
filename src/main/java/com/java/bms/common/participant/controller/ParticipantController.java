@@ -1,6 +1,7 @@
 package com.java.bms.common.participant.controller;
 
 import com.java.bms.common.DO.CongressNoteVO;
+import com.java.bms.common.VO.CommonUserVO;
 import com.java.bms.common.VO.CongressVO;
 import com.java.bms.common.mapper.CommonMapper;
 import com.java.bms.common.participant.mapper.ParticipantMapper;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -26,7 +28,7 @@ public class ParticipantController {
     @RequestMapping("/participant/information")
     public String Information(){
 
-        return "common/participant/information";
+        return "creatinformation";
     }
 
     @RequestMapping("/participant/congress")
@@ -61,19 +63,30 @@ public class ParticipantController {
     public String attendCongress(@RequestParam("congressId")int congressId,
                                  HttpSession session, Model model){
         int commonId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
+        CommonUserVO participantInformation = commonMapper.HaveInfomation((String) session.getAttribute("loginUser"));
         try{
-            participantMapper.attendCongressByCommonIdAndCongressId(commonId, congressId);
+            if(participantInformation!=null)
+                participantMapper.attendCongressByCommonIdAndCongressId(commonId, congressId);
         }catch (Exception e){
             model.addAttribute("error","加入会议失败，请重试！");
         }
+
         CongressVO congress = commonMapper.getCongressById(congressId);
         String organizerName = commonMapper.getUsernameById((int)congress.getOrganizerId());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        CongressNoteVO record = commonMapper.getCongressNoteByCommonIdAndCongressId(commonId,congressId);
+        LocalDateTime now = LocalDateTime.now();
 
         model.addAttribute("congress",congress);
         model.addAttribute("organizerName",organizerName);
         model.addAttribute("formatter",formatter);
-        model.addAttribute("record",new CongressNoteVO(commonId,congressId));
+        model.addAttribute("record",record);
+        model.addAttribute("participantInformation",participantInformation);
+
+        //        判断当前时间用户是否可以参加会议
+        if(now.isBefore(congress.getRegisterEndTime())&&now.isAfter(congress.getRegisterStartTime())){
+            model.addAttribute("canRegisterCongress","yes");
+        }
         return "/common/congress";
     }
 

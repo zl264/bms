@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>用户注册</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        img{
+            width: 100%;
+        }
+        .outContainer{
+            margin-top: 200px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="row">
+    <div class="col-lg-4 col-lg-offset-2">
+        <form class="form-signin" action="" th:action="@{/hotel/register}" method="post">
+
+            <h1 class="h3 mb-3 font-weight-normal">注册</h1>
+            <p style="color:red;" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+            <label class="sr-only">用户名:</label>
+            <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
+            <label class="sr-only">密码:</label>
+            <input type="text" name="password" class="form-control" placeholder="Password" required="">
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+            <button class="btn btn-lg btn-primary btn-block" type="reset">取消</button>
+
+            <p class="mt-5 mb-3 text-muted">© One Time</p>
+
+        </form>
+    </div>
+</div>
+</body>
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script src="/js/jquery.min.js"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script src="/js/bootstrap.min.js"></script>
+</html>

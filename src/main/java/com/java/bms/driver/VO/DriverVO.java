@@ -1,4 +1,4 @@
-package com.java.bms.common.VO;
+package com.java.bms.driver.VO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,14 +7,15 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommonUserVO {
+public class DriverVO {
+    private int driverId;
     private String username;
     private String name;
-    private int age;
-    private String sex;
-    private String idCardNo;
-    private String identity;
-    private int commonId;
     private String tel;
-
+    private int capacity;
+    private String licensePlateNumber;
+    private String sex;
+    private int age;
+    private String idCardNo;
 }
+

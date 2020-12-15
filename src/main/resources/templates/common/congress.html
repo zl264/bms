@@ -28,10 +28,11 @@
 
 <!--判断进入这个会议的是不是会议组织者-->
 <div th:if="${session.loginUser} eq ${organizerName}">
-    <form style="text-align: left;margin-top: 150px;margin-left: 300px">
+    <h2>会议的基本信息</h2>
+    <form style="text-align: left;margin-top: 150px;margin-left: 300px" method="post" th:action="@{/organizer/alter}">
+        <input type="hidden" name="congressId" th:value="${congress.getCongressId()}" th:if="${congress.getCongressId()}">
         会议名称:<input type="text" name="title" th:value="${congress.getTitle()}"/><br>
-        组织者:<input type="text" name="organizerName" th:value="${organizerName}"/><br>
-        内容:<textarea name="describe" th:text="${congress.getContent()}"></textarea><br>
+        内容:<textarea name="content" th:text="${congress.getContent()}"></textarea><br>
         地点:<input type="text" name="place" th:value="${congress.getPlace()}"/><br>
         开始时间:
         <input type="text" name="startTimeYear" th:value="${congress.getStartTime().getYear()}"/>年
@@ -45,8 +46,107 @@
         <input type="text" name="endTimeDay" th:value="${congress.getEndTime().getDayOfMonth()}"/>日
         <input type="text" name="endTimeHour" th:value="${congress.getEndTime().getHour()}"/>点
         <input type="text" name="endTimeMinute" th:value="${congress.getEndTime().getMinute()}"/>分<br>
+        报名会议开始时间:
+        <input type="text" name="registerStartTimeYear" th:value="${congress.getRegisterStartTime().getYear()}"/>年
+        <input type="text" name="registerStartTimeMonth" th:value="${congress.getRegisterStartTime().getMonthValue()}"/>月
+        <input type="text" name="registerStartTimeDay" th:value="${congress.getRegisterStartTime().getDayOfMonth()}"/>日
+        <input type="text" name="registerStartTimeHour" th:value="${congress.getRegisterStartTime().getHour()}"/>点
+        <input type="text" name="registerStartTimeMinute" th:value="${congress.getRegisterStartTime().getMinute()}"/>分<br>
+        报名会议结束时间:
+        <input type="text" name="registerEndTimeYear" th:value="${congress.getRegisterEndTime().getYear()}"/>年
+        <input type="text" name="registerEndTimeMonth" th:value="${congress.getRegisterEndTime().getMonthValue()}"/>月
+        <input type="text" name="registerEndTimeDay" th:value="${congress.getRegisterEndTime().getDayOfMonth()}"/>日
+        <input type="text" name="registerEndTimeHour" th:value="${congress.getRegisterEndTime().getHour()}"/>点
+        <input type="text" name="registerEndTimeMinute" th:value="${congress.getRegisterEndTime().getMinute()}"/>分<br>
         <button class="btn btn-lg btn-primary btn-block" type="submit">保存</button>
     </form>
+
+
+    <h2>参加会议的人员</h2>
+<!--    <h5>填写了到达时间和到达地点的人员</h5>-->
+    <div th:if="${participants.size()==0}">
+        暂无参会人员
+    </div>
+    <div class="table-responsive" th:if="${participants.size()!=0}">
+        <table class="table table-striped table-sm">
+            <thead>
+            <tr>
+                <th>昵称</th>
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>性别</th>
+                <th>身份</th>
+                <th>电话号码</th>
+                <th>身份证号</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="participant:${participants}">
+                <td th:text="${participant.getUsername()}"></td>
+                <td th:text="${participant.getName()}"></td>
+                <td th:text="${participant.getAge()}"></td>
+                <td th:text="${participant.getSex()}"></td>
+                <td th:text="${participant.getIdentity()}"></td>
+                <td th:text="${participant.getTel()}"></td>
+                <td th:text="${participant.getIdCardNo()}"></td>
+                <td>
+                    <a class="btn btn-sm btn-primary" th:href=" @{/organizer/delete/participant}+
+                    '?commonId='+${participant.getCommonId()}+'&congressId='+${congress.getCongressId()}">删除</a>
+<!--                    <button th:attr="del_uri=@{/emp/}+${emp.id}" class="btn btn-sm btn-danger deleteBtn">删除</button>-->
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <h5>填写了到达时间和到达地点的人员</h5>
+    <div th:if="${allInformationParticipants.size()==0}">
+        暂时没人填写到达时间和到达地点
+    </div>
+    <div class="table-responsive" th:if="${allInformationParticipants.size()!=0}">
+        <table class="table table-striped table-sm">
+            <thead>
+            <tr>
+                <th>昵称</th>
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>性别</th>
+                <th>身份</th>
+                <th>电话号码</th>
+                <th>身份证号</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="allInformationParticipant:${allInformationParticipants}">
+                <td th:text="${allInformationParticipant.getUsername()}"></td>
+                <td th:text="${allInformationParticipant.getName()}"></td>
+                <td th:text="${allInformationParticipant.getAge()}"></td>
+                <td th:text="${allInformationParticipant.getSex()}"></td>
+                <td th:text="${allInformationParticipant.getIdentity()}"></td>
+                <td th:text="${allInformationParticipant.getTel()}"></td>
+                <td th:text="${allInformationParticipant.getIdCardNo()}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <button>给参会人员分配司机</button>
+    </div>
+
+    <h2>酒店</h2>
+
+
+
+
+    <h2>车队</h2>
+    <a th:href="@{/organizer/driver/}+${congress.getCongressId()}" style="display: block;background-color: #31b0d5;">查看所有司机</a>
+    <h5>会议已有的司机</h5>
+    <ul style="text-align: center;margin-top: 10px">
+        <li th:each="driver:${hasDriver}">
+            司机呢称:<span th:text="${driver.getUsername()}"></span>
+            司机电话:<span th:text="${driver.getTel()}"></span>
+            载客容量:<span th:text="${driver.getCapacity()}"></span>
+        </li>
+    </ul>
+
 </div>
 
 <!--判断进入这个会议的是不是非会议组织者-->
@@ -68,11 +168,19 @@
             </tr>
             <tr>
                 <td class="td1">开始时间:</td>
-                <td th:text="${congress.getStartTime()}"></td>
+                <td th:text="${#temporals.format(congress.getStartTime(),'yyyy-MM-dd HH:mm')}"></td>
             </tr>
             <tr>
                 <td class="td1">结束时间:</td>
-                <td th:text="${congress.getEndTime()}"></td>
+                <td th:text="${#temporals.format(congress.getEndTime(),'yyyy-MM-dd HH:mm')}"></td>
+            </tr>
+            <tr>
+                <td class="td1">会议开始时间:</td>
+                <td th:text="${#temporals.format(congress.getRegisterStartTime(),'yyyy-MM-dd HH:mm')}"></td>
+            </tr>
+            <tr>
+                <td class="td1">会议结束时间:</td>
+                <td th:text="${#temporals.format(congress.getRegisterEndTime(),'yyyy-MM-dd HH:mm')}"></td>
             </tr>
         </table>
     </div>
@@ -85,7 +193,20 @@
 
     <form th:unless="${record}!=null" style="margin-top: 50px;" th:action="@{/participant/attend}">
         <input type="hidden" name="congressId" th:value="${congress.getCongressId()}">
-        <button class="btn btn-lg btn-primary btn-block" style="text-align: center">参加会议</button>
+        <button class="btn btn-lg btn-primary btn-block" th:if="${canRegisterCongress}!=null and ${participantInformation}!=null" style="text-align: center">参加会议</button>
+        <span th:if="${canRegisterCongress}==null">未在报名时间范围内</span>
+        <span th:if="${participantInformation}==null">请填写完个人信息之后再参加会议</span>
+    </form>
+    <form th:if="${record}!=null" th:action="@{/organizer/arrival/}+${congress.getCongressId()}" method="post">
+        <span style="color: red" th:if="${record.getArrivalPlace()==null}">注意：请填写到达时间和地点，不填写无法安排接送</span><br>
+        到达地点：<input type="text" name="arrivalPlace" th:value="${record.getArrivalPlace()!=null?record.getArrivalPlace():''}"><br>
+        到达时间：<input type="text" name="arrivalTimeYear" style="width: 50px" th:value="${record.getArrivalTime()!=null?record.getArrivalTime().getYear():''}">年
+        <input type="text" name="arrivalTimeMonth" style="width: 50px" th:value="${record.getArrivalTime()!=null?record.getArrivalTime().getMonthValue():''}">月
+        <input type="text" name="arrivalTimeDay" style="width: 50px" th:value="${record.getArrivalTime()!=null?record.getArrivalTime().getDayOfMonth():''}">日
+        <input type="text" name="arrivalTimeHour" style="width: 50px" th:value="${record.getArrivalTime()!=null?record.getArrivalTime().getHour():''}">时
+        <input type="text" name="arrivalTimeMinute" style="width: 50px" th:value="${record.getArrivalTime()!=null?record.getArrivalTime().getMinute():''}">分
+        <input type="submit" value="保存"/>
+<!--        onclick="setArrivalInformation()"-->
     </form>
 </div>
 
@@ -95,5 +216,31 @@
 <script src="js/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="js/bootstrap.min.js"></script>
+
+<script src="js/common.js"></script>
+<!--<script th:inline="javascript">-->
+<!--    function setArrivalInformation(){-->
+<!--        var arrivalPlace = document.getElementById("arrivalPlace");-->
+<!--        var arrivalTimeYear = document.getElementById("arrivalTimeYear");-->
+<!--        var arrivalTimeMonth = document.getElementById("arrivalTimeMonth");-->
+<!--        var arrivalTimeDay = document.getElementById("arrivalTimeDay");-->
+<!--        var arrivalTimeHour = document.getElementById("arrivalTimeHour");-->
+<!--        var arrivalTimeMinute = document.getElementById("arrivalTimeMinute");-->
+<!--        xmlHttp.open("POST", "/organizer/arrival/"+[[${congress.getCongressId()}]]+"?arrivalPlace="-->
+<!--            +arrivalPlace.value+"?arrivalTimeYear=" +arrivalTimeYear.value+"?arrivalTimeMonth=" +arrivalTimeMonth.value-->
+<!--            +"?arrivalTimeDay=" +arrivalTimeDay.value+"?arrivalTimeHour=" +arrivalTimeHour.value-->
+<!--            +"?arrivalTimeMinute=" +arrivalTimeMinute.value, true);-->
+<!--        xmlHttp.onreadystatechange = function () {-->
+<!--            if (xmlHttp.readyState == 4) {-->
+<!--                var data = xmlHttp.responseText;-->
+<!--                var obj = JSON.parse(data);-->
+
+<!--                arrivalPlace.value = obj["arrivalPlace"];-->
+<!--                alert(obj["arrivalTime"]);-->
+<!--            }-->
+<!--        }-->
+<!--    xmlHttp.send();-->
+<!--    }-->
+<!--</script>-->
 </body>
 </html>
