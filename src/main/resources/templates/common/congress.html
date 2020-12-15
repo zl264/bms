@@ -35,6 +35,7 @@
         内容:<textarea name="content" th:text="${congress.getContent()}"></textarea><br>
         地点:<input type="text" name="place" th:value="${congress.getPlace()}"/><br>
         开始时间:
+
         <input type="text" name="startTimeYear" th:value="${congress.getStartTime().getYear()}"/>年
         <input type="text" name="startTimeMonth" th:value="${congress.getStartTime().getMonthValue()}"/>月
         <input type="text" name="startTimeDay" th:value="${congress.getStartTime().getDayOfMonth()}"/>日
