@@ -50,7 +50,120 @@
             font-size: 20px;
             color: white;
         }
+        .error{
+            color:#d43f3a;
+            font-size: 15px;
+            padding: 10px;
+        }
     </style>
+
+    <script>
+        window.onload=function(){
+            document.getElementById("form1").onsubmit=function(){
+                return checkTitle() && checkContent() && checkPlace() && checkstartTime() &&
+                    checkendTime() && checkregisterStartTime() && checkregisterEndTime();
+            }
+            document.getElementById("title").onblur=checkTitle;
+            document.getElementById("place").onblur=checkPlace;
+            document.getElementById("content").onblur=checkContent;
+            document.getElementById("startTime").onblur=checkstartTime;
+            document.getElementById("endTime").onblur=checkendTime;
+            document.getElementById("registerStartTime").onblur=checkregisterStartTime;
+            document.getElementById("registerEndTime").onblur=checkregisterEndTime;
+        }
+
+        function checkTitle(){
+            var title=document.getElementById("title").value;
+            var s_title=document.getElementById("s_title");
+            if(title=='') {
+                s_title.innerHTML = " <span class=\"error\">该项不能为空</span>";
+                return false
+            }
+            else{
+                s_title.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+                return true;
+            }
+
+        }
+        function checkPlace(){
+            var place=document.getElementById("place").value;
+            var s_place=document.getElementById("s_place");
+            if(isnull(place)) {
+                s_place.innerHTML = " <span class=\"error\">该项不能为空</span>";
+                return false;
+            }
+            else{
+               s_place.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+                return true;
+            }
+
+        }
+        function checkContent(){
+            var content=document.getElementById("content").value;
+            var s_content=document.getElementById("s_content");
+            if(isnull(content)) {
+                s_content.innerHTML = " <span class=\"error\">该项不能为空</span>";
+                return false;
+            }
+            else{
+                s_content.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+                return true;
+            }
+
+        }
+        function checkstartTime(){
+            var startTime=document.getElementById("startTime").value;
+            var s_startTime=document.getElementById("s_startTime");
+            if(isnull(startTime)) {
+                s_startTime.innerHTML = " <span class=\"error\">该项不能为空</span>";
+                return false;
+            }
+            else{
+               s_startTime.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+                return true;
+            }
+
+        }
+        function checkendTime(){
+            var endTime=document.getElementById("endTime").value;
+            var s_endTime=document.getElementById("s_endTime");
+            if(isnull(endTime)) {
+                s_endTime.innerHTML = " <span class=\"error\">该项不能为空</span>";
+                return false;
+            }
+            else{
+               s_endTime.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+                return true;
+            }
+
+        }
+        function checkregisterStartTime(){
+            var registerStartTime=document.getElementById("registerstartTime").value;
+            var s_registerStartTime=document.getElementById("s_registerStartTime");
+            if(isnull(registerStartTime)) {
+                s_registerStartTime.innerHTML = " <span class=\"error\">该项不能为空</span>";
+                return false;
+            }
+            else{
+                s_registerStartTime.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+                return true;
+            }
+
+        }
+        function checkregisterEndTime(){
+            var registerEndTime=document.getElementById("registerEndTime").value;
+            var s_registerEndTime=document.getElementById("s_registerEndTime")
+            if(isnull(registerEndTime)) {
+                s_registerEndTime.innerHTML = " <span class=\"error\">该项不能为空</span>";
+                return false;
+            }
+            else{
+               s_registerEndTime.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+                return true;
+            }
+
+        }
+    </script>
     <!-- Bootstrap -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/dashboard.css" rel="stylesheet">
@@ -117,36 +230,57 @@
             </div>
             <!--创建会议表单-->
             <div class="row rg_center">
-                <form th:action="@{/organizer/congress}" method="post">
+                <form th:action="@{/organizer/congress}" id="form1" method="post">
                     <table>
                         <tr>
                             <td class="td_left"><lable for="title">会议名称：</lable></td>
-                            <td class="td_right"><input type="text" name="title" id="title" placeholder="请输入会议名称"></td>
+                            <td class="td_right">
+                                <input type="text" name="title" id="title" placeholder="请输入会议名称">
+                                <span id="s_title"></span>
+                            </td>
                         </tr>
                         <tr>
                             <td class="td_left"><lable for="content">会议内容：</lable></td>
-                            <td class="td_right"><textarea style="width:250px; height:100px; border:solid 1px #000000; border-radius:5px; resize:none;" name="content"></textarea>
+                            <td class="td_right">
+                                <textarea style="width:250px; height:100px; border:solid 1px #000000; border-radius:5px; resize:none;" name="content" id="content"></textarea>
+                                <span id="s_content" style="margin-bottom: 10px"></span>
+                            </td>
                         </tr>
                         <tr>
                             <td class="td_left"><lable for="place">会议地点：</lable></td>
-                            <td class="td_right"><input type="text" name="place" id="place" placeholder="请输入会议地点"></td>
+                            <td class="td_right">
+                                <input type="text" name="place" id="place" placeholder="请输入会议地点">
+                                <span id="s_place"></span>
+                            </td>
                         </tr>
 
                         <tr>
                             <td class="td_left"><lable for="startTime">会议开始时间：</lable></td>
-                            <td class="td_right"><input type="datetime-local" name="startTime" id="startTime" ></td>
+                            <td class="td_right">
+                                <input type="datetime-local" name="startTime" id="startTime" >
+                                <span id="s_startTime"></span>
+                            </td>
                         </tr>
                         <tr>
                             <td class="td_left"><lable for="endTime">会议结束时间：</lable></td>
-                            <td class="td_right"><input type="datetime-local" name="endTime" id="endTime" ></td>
+                            <td class="td_right">
+                                <input type="datetime-local" name="endTime" id="endTime" >
+                                <span id="s_endTime"></span>
+                            </td>
                         </tr>
                         <tr>
                             <td class="td_left"><lable for="registerStartTime">申请会议开始时间：</lable></td>
-                            <td class="td_right"><input type="datetime-local" name="registerStartTime" id="registerStartTime" ></td>
+                            <td class="td_right">
+                                <input type="datetime-local" name="registerStartTime" id="registerStartTime" >
+                                <span id="s_registerStartTime"></span>
+                            </td>
                         <tr>
                         <tr>
                             <td class="td_left"><lable for="registerEndTime">申请会议结束时间：</lable></td>
-                            <td class="td_right"><input type="datetime-local" name="registerEndTime" id="registerEndTime" ></td>
+                            <td class="td_right">
+                                <input type="datetime-local" name="registerEndTime" id="registerEndTime" >
+                                <span id="s_registerEndTime"></span>
+                            </td>
                         </tr>
                         <tr>
                         <td colspan="2" align="center"><input type="submit" id="btn_sub" value="创建会议"></td>
@@ -194,7 +328,8 @@
 
 </body>
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-<script src="../js/jquery.min.js"></script>
+<script src="/js/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-<script src="../js/bootstrap.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/utils.js"></script>
 </html>

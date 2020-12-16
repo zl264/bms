@@ -112,7 +112,7 @@
                                 </tr>
                                 <tr>
                                     <td class="td_left"><lable for="content">会议内容：</lable></td>
-                                    <td class="td_right"><textarea style="width:250px; height:100px; border:solid 1px #000000; border-radius:5px; resize:none;" name="content" th:value="${congress.getContent()}"></textarea>
+                                    <td class="td_right"><textarea style="width:250px; height:100px; border:solid 1px #000000; border-radius:5px; resize:none;" name="content" th:text="${congress.getContent()}"></textarea>
                                 </tr>
                                 <tr>
                                     <td class="td_left"><lable for="place">会议地点：</lable></td>
@@ -121,19 +121,19 @@
 
                                 <tr>
                                     <td class="td_left"><lable for="startTime">会议开始时间：</lable></td>
-                                    <td class="td_right"><input type="datetime-local" name="startTime" id="startTime" th:value="${#temporals.format(congress.getStartTime(),'yyyy-MM-dd HH:mm')}"></td>
+                                    <td class="td_right"><input type="datetime-local" name="startTime" id="startTime" th:value="${congress.getStartTime()}"></td>
                                 </tr>
                                 <tr>
                                     <td class="td_left"><lable for="endTime">会议结束时间：</lable></td>
-                                    <td class="td_right"><input type="datetime-local" name="endTime" id="endTime" th:value="${#temporals.format(congress.getEndTime(),'yyyy-MM-dd HH:mm')}"></td>
+                                    <td class="td_right"><input type="datetime-local" name="endTime" id="endTime" th:value="${congress.getEndTime()}"></td>
                                 </tr>
                                 <tr>
                                     <td class="td_left"><lable for="registerStartTime">申请会议开始时间：</lable></td>
-                                    <td class="td_right"><input type="datetime-local" name="registerStartTime" id="registerStartTime" th:value="${#temporals.format(congress.getRegisterStartTime(),'yyyy-MM-dd HH:mm')}"></td>
+                                    <td class="td_right"><input type="datetime-local" name="registerStartTime" id="registerStartTime" th:value="${congress.getRegisterStartTime()}"></td>
                                 <tr>
                                 <tr>
                                     <td class="td_left"><lable for="registerEndTime" >申请会议结束时间：</lable></td>
-                                    <td class="td_right"><input type="datetime-local" name="registerEndTime" id="registerEndTime" th:value="${#temporals.format(congress.getRegisterEndTime(),'yyyy-MM-dd HH:mm')}"></td>
+                                    <td class="td_right"><input type="datetime-local" name="registerEndTime" id="registerEndTime" th:value="${congress.getRegisterEndTime()}"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2" align="center"><input type="submit" class="btn_sub" value="保存"></td>
