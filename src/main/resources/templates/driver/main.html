@@ -8,7 +8,7 @@
     <title>司机主页</title>
 
     <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
 
@@ -16,8 +16,6 @@
             text-align: center;
         }
     </style>
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
 
 </head>
 <body>
@@ -41,11 +39,24 @@
                     <li class="list-group-item" th:each="applyCongress:${session.applyCongresses}">
                         <a th:href="@{/other/congress/}+${applyCongress.getCongressId()}" th:text="${applyCongress.getTitle()}" style="display: block;background-color: #31b0d5;"></a>
                         <form method="post" th:action="@{/driver/agree}">
-                            <input type="hidden" name="congressId" th:value="${applyCongress.getCongressId()}">
+                            <input type="hidden" id="congressId" name="congressId" th:value="${applyCongress.getCongressId()}">
                             &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                             <input type="submit" value="同意">
                             &emsp;&emsp;&emsp;
-                            <input type="button" th:href="@{/driver/refuse/}+${applyCongress.getCongressId()}" value="拒绝">
+<!--                            <input type="button" th:href="@{/driver/refuse/}+${applyCongress.getCongressId()}" value="拒绝">-->
+                            <input type="button" th:onclick="'javascript:refuse('+${applyCongress.getCongressId()}+')' " value="拒绝">
+                            <script>
+                                function refuse(congressId){
+                                    initAJAX();
+                                    xmlHttp.open("POST", "/driver/refuse/"+congressId, true);
+                                    xmlHttp.onreadystatechange = function () {
+                                        if (xmlHttp.readyState == 4) {
+                                            window.location.replace("/driver/refresh");
+                                        }
+                                    }
+                                    xmlHttp.send();
+                                }
+                            </script>
                         </form>
                     </li>
                 </ul>
@@ -151,8 +162,9 @@
 
 
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-<script src="js/jquery.min.js"></script>
+<script src="/js/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-<script src="js/bootstrap.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/common.js"></script>
 </body>
 </html>

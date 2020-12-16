@@ -172,7 +172,7 @@ public interface DriverMapper {
      * @return
      */
     @Insert("insert into driverRefuseCongress(driverId,congressId)" +
-            "values(driverId,congressId)")
+            "values(#{driverId},#{congressId})")
     int addDriverRefuseCongress(int driverId,int congressId);
 
     @Update("update congressDriver set time = #{time} " +

@@ -13,32 +13,221 @@
 
     <script src="/js/html5shiv.min.js"></script>
     <script src="/js/respond.min.js"></script>
+    <style>
+        *{
+            margin:0px;
+            padding:0px;
 
+        }
+        body{
+            background: url("[[@{/}]]img/background2.jpg") no-repeat center;
+        }
+        lable{
+            font-size:20px;
+        }
+        .rg_layout{
+            width:900px;
+            height:500px;
+            border:5px solid #EEEEEE;
+            background-color: white;
+            margin: auto;
+            margin-top: 50px;
+            padding-top: 30px;
+        }
+        .rg_left{
+            float:left;
+            margin:15px;
+        }
+        .rg_left >p:first-child{
+            color:#080808;
+            font-size:20px;
+        }
+        .rg_left >p:last-child{
+            color:#A6A6A6;
+            font-size:20px;
+        }
+        .rg_center{
+            float:left;
+            width: 450px;
+        }
+        .rg_right{
+            /* 	border:1px solid red; */
+            float:right;
+            margin: 15px;
+        }
+        .rg_right > p:first-child{
+            font-size: 15px;
+        }
+        .rg_right p a{
+            color:#eea236;
+        }
+        .td_left{
+            width:200px;
+            text-align: right;
+            height:45px;
+        }
+        .td_right{
+            padding-left: 50px;
+        }
+        #name,#sex,#age,#idCardNo,#identity,#tel,#username,#password,#password1{
+            width:251px;
+            height:40px;
+            border: 1px solid #000000;
+            /*设置边框圆角*/
+            border-radius: 5px;
+            padding-left: 10px;
+        }
+        #btn_sub{
+            width:200px;
+            height:40px;
+            background-color:#000000;
+            border: 1px solid #000000;
+            margin-top:50px;
+            font-size: 20px;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-<div class="row">
-    <div class="col-lg-4 col-lg-offset-2">
-        <form class="form-signin" action="" th:action="@{/common/register}" method="post">
+<!--<div class="row">-->
+<!--    <div class="col-lg-4 col-lg-offset-2">-->
+<!--        <form class="form-signin" action="" th:action="@{/common/register}" method="post">-->
 
-            <h1 class="h3 mb-3 font-weight-normal">注册</h1>
-            <p style="color:#ff0000;" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
-            <label class="sr-only">用户名:</label>
-            <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
-            <label class="sr-only">密码:</label>
-            <input type="text" name="password" class="form-control" placeholder="Password" required="">
+<!--            <h1 class="h3 mb-3 font-weight-normal">注册</h1>-->
+<!--            <p style="color:#ff0000;" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>-->
+<!--            <label class="sr-only">用户名:</label>-->
+<!--            <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">-->
+<!--            <label class="sr-only">密码:</label>-->
+<!--            <input type="text" name="password" class="form-control" placeholder="Password" required="">-->
 
-            <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
-            <button class="btn btn-lg btn-primary btn-block" type="reset">取消</button>
+<!--            <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>-->
+<!--            <button class="btn btn-lg btn-primary btn-block" type="reset">取消</button>-->
 
-            <p class="mt-5 mb-3 text-muted">© One Time</p>
+<!--            <p class="mt-5 mb-3 text-muted">© One Time</p>-->
 
-        </form>
+<!--        </form>-->
+<!--    </div>-->
+<!--</div>-->
+<div class="rg_layout">
+    <div class="rg_left">
+        <p>用户注册</p>
+        <p>USER REGISTER</p>
+    </div>
+
+    <div class="rg_center">
+        <div class="rg_form">
+            <p id="msg" style="color:red;height: 30px"></p>
+            <form id="loginForm" th:action="@{/common/register1}" method="post">
+                <table>
+                    <tr>
+                        <td class="td_left"><lable for="username">用户名：</lable></td>
+                        <td class="td_right"><input type="text" name="username" id="username" placeholder="请输入用户名" ></td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><lable for="password">密码：</lable></td>
+                        <td class="td_right"><input type="password" name="password" id="password" placeholder="请输入密码" ></td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><lable for="password1">确认密码：</lable></td>
+                        <td class="td_right"><input type="password" name="password1" id="password1" placeholder="请再次输入密码" ></td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><lable for="name">姓名：</lable></td>
+                        <td class="td_right"><input type="text" name="name" id="name" placeholder="请输入姓名" ></td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><lable for="sex">性别：</lable></td>
+                        <td class="td_right"><input type="text" name="sex" id="sex" placeholder="请输入性别" ></td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><lable for="idCardNo">身份证号：</lable></td>
+                        <td class="td_right"><input type="text" name="idCardNo" id="idCardNo" placeholder="请输入身份证号" ></td>
+                    </tr>
+
+                    <tr>
+                        <td class="td_left"><lable for="identity">身份：</lable></td>
+                        <td class="td_right"><input type="text" name="identity" id="identity" placeholder="请输入身份" ></td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><lable for="age">年龄：</lable></td>
+                        <td class="td_right"><input type="text" name="age" id="age" placeholder="请输入年龄" ></td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><lable for="tel">电话号码：</lable></td>
+                        <td class="td_right"><input type="text" name="电话号码" id="tel" placeholder="请输入电话号码" ></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center"><input type="button" onclick="commit()" id="btn_sub" value="注册"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div class="rg_right">
+        <p>注册完成，点击<a th:href="@{/common/enter}">返回登录</a></p>
     </div>
 </div>
+<script>
+    function commit(){
+        var name = document.getElementById("name").value;
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var password1 = document.getElementById("password1").value;
+        var sex = document.getElementById("sex").value;
+        var idCardNo = document.getElementById("idCardNo").value;
+        var identity = document.getElementById("identity").value;
+        var age = document.getElementById("age").value;
+        var tel = document.getElementById("tel").value;
+        var msg = document.getElementById("msg");
+        if(isnull(username)){
+            msg.innerHTML = "请输入用户名";
+            return ;
+        }
+        if(isnull(password)){
+            msg.innerHTML = "请输入密码";
+            return ;
+        }
+        if(isnull(password1)){
+            msg.innerHTML = "请输入确认密码";
+            return ;
+        }
+        if(isnull(name)){
+            msg.innerHTML = "请输入您的姓名";
+            return ;
+        }
+        if(isnull(sex)){
+            msg.innerHTML = "请输入您的性别";
+            return ;
+        }
+        if(isnull(idCardNo)){
+            msg.innerHTML = "请输入您的身份证号";
+            return ;
+        }
+        if(isnull(identity)){
+            msg.innerHTML = "请输入您的身份";
+            return ;
+        }
+        if(isnull(age)){
+            msg.innerHTML = "请输入您的年龄";
+            return ;
+        }
+        if(isnull(tel)){
+            msg.innerHTML = "请输入您的电话号码";
+            return ;
+        }
+        if(password!=password1){
+            msg.innerHTML = "两次输入密码不一致";
+            return ;
+        }
+        document.getElementById("loginForm").onsubmit;
+    }
+
+</script>
 
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 <script src="/js/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="/js/bootstrap.min.js"></script>
+<script src="/js/utils.js"></script>
 </body>
 </html>

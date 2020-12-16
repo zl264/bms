@@ -211,7 +211,7 @@ public class OrganizerController {
         organizerMapper.applyDriver(congressId,driverId);
         List<DriverVO> allDriver = organizerMapper.getAllDriver();
         List<DriverVO> applyDriver = organizerMapper.getApplyDriver(congressId);
-        List<CongressHaveDriverVO> hasDriver = organizerMapper.getDriverByCongressId(congressId);
+        List<DriverVO> hasDriver = organizerMapper.getDriverByCongressId2(congressId);
 
         model.addAttribute("allDriver",allDriver);
         model.addAttribute("applyDriver",applyDriver);
@@ -280,6 +280,7 @@ public class OrganizerController {
      * @param request
      */
     @RequestMapping("/organizer/allocation")
+    @ResponseBody
     public void allocationDriver(HttpServletRequest request){
         int congressId = Integer.parseInt(request.getParameter("congressId"));
         //空闲司机列表
@@ -299,8 +300,10 @@ public class OrganizerController {
                 //这个司机还未获得要接送的地点
                 leisureDriver.add(driverVO);
             }
-            if(!StringUtils.isEmpty(driverPlace)){
-                for(ArrivalPlaceCountDO place:places){
+            if(!StringUtils.isEmpty(driverPlace)&&!StringUtils.isEmpty(places)){
+
+                for(int x = 0;x<places.size();x++){
+                    ArrivalPlaceCountDO place = places.get(x);
                     if(place.getArrivalPlace().equals(driverPlace)){
                         //num
                         int num = 0;
@@ -316,6 +319,7 @@ public class OrganizerController {
                         //这个接送地方的人员分配完毕
                         if(num==place.getNum()){
                             places.remove(place);
+                            x--;
                         }
                     }
                 }
@@ -330,7 +334,7 @@ public class OrganizerController {
 
         //给并未有分配过接送地点的司机分配人员
         while(leisureDriver.size()!=0&&places.size()!=0){
-            for(int i=0;i<places.size()&&i<leisureDriver.size();i++){
+            for(int i=0,j=0;i<places.size()&&j<leisureDriver.size();i++,j++){
                 DriverVO driver = leisureDriver.get(i);
                 ArrivalPlaceCountDO place = places.get(i);
 
@@ -349,11 +353,13 @@ public class OrganizerController {
                 //这个接送地方的人员分配完毕
                 if(num==place.getNum()){
                     places.remove(place);
+                    i--;
                 }else{
                     place.setNum(place.getNum()-num);
                 }
                 //移除已经分配的司机
                 leisureDriver.remove(driver);
+                j--;
             }
         }
 

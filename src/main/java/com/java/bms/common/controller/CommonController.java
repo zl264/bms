@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
@@ -134,6 +135,40 @@ public class CommonController {
     }
 
     /**
+     * 新的用户注册
+     * @param request
+     * @param session
+     * @param map
+     * @return
+     */
+    @RequestMapping("/common/register1")
+    public String commonRegister1(HttpServletRequest request,HttpSession session,Map<Object,String> map){
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String name = request.getParameter("name");
+        String sex = request.getParameter("sex");
+        String idCardNo = request.getParameter("idCardNo");
+        String identity = request.getParameter("identity");
+        int age = Integer.parseInt(request.getParameter("age"));
+        String tel = request.getParameter("tel");
+
+        if (commonMapper.isRegister(username) != null) {
+            map.put("msg", "该用户名已经被注册了");
+            return "/common/commonRegister";
+        }
+        int result = commonMapper.commonRegister(username, password);
+        if (result == 1) {
+            map.put("msg", "注册成功，请登录");
+            int commonId = commonMapper.getCommonIdByUsername(username);
+            commonMapper.createInformation(username,name,age,idCardNo,identity,sex,commonId,tel);
+            return "/common/commonLogin";
+        } else {
+            map.put("msg", "出现错误，注册失败，请再次尝试或联系管理员");
+            return "/common/commonRegister";
+        }
+    }
+
+    /**
      * 通过会议ID查找会议
      *
      * @param id    会议ID
@@ -216,7 +251,7 @@ public class CommonController {
 
     @RequestMapping(value = "/common/createinformation")
     public String createInformation( @RequestParam("name") String name,
-                                     @RequestParam("age") int age, @RequestParam("idCardNo") long idCardNo,
+                                     @RequestParam("age") int age, @RequestParam("idCardNo") String idCardNo,
                                      @RequestParam("identity") String identity, @RequestParam("sex") String sex, @RequestParam("tel") String tel,
                                      Map<String, Object> map, HttpSession session) {
         int commonId = commonMapper.getCommonIdByUsername((String) session.getAttribute("loginUser"));
