@@ -20,16 +20,17 @@
 
         }
         body{
-            background: url("[[@{/}]]img/background2.jpg") no-repeat center;
+            background-color: rgb(20,20,20);
         }
         lable{
             font-size:20px;
+            color: white;
         }
         .rg_layout{
             width:900px;
             height:500px;
-            border:5px solid #EEEEEE;
-            background-color: white;
+            /*border:5px solid #EEEEEE;*/
+            background-color: rgba(15,15,15,0.8);
             margin: auto;
             margin-top: 50px;
             padding-top: 30px;
@@ -39,7 +40,7 @@
             margin:15px;
         }
         .rg_left >p:first-child{
-            color:#080808;
+            color:white;
             font-size:20px;
         }
         .rg_left >p:last-child{
@@ -57,6 +58,7 @@
         }
         .rg_right > p:first-child{
             font-size: 15px;
+            color: white;
         }
         .rg_right p a{
             color:#eea236;
@@ -80,34 +82,15 @@
         #btn_sub{
             width:200px;
             height:40px;
-            background-color:#000000;
+            background-color: rgba(5,5,5,0);
+            color: white;
             border: 1px solid #000000;
             margin-top:50px;
             font-size: 20px;
-            color: white;
         }
     </style>
 </head>
 <body>
-<!--<div class="row">-->
-<!--    <div class="col-lg-4 col-lg-offset-2">-->
-<!--        <form class="form-signin" action="" th:action="@{/common/register}" method="post">-->
-
-<!--            <h1 class="h3 mb-3 font-weight-normal">注册</h1>-->
-<!--            <p style="color:#ff0000;" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>-->
-<!--            <label class="sr-only">用户名:</label>-->
-<!--            <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">-->
-<!--            <label class="sr-only">密码:</label>-->
-<!--            <input type="text" name="password" class="form-control" placeholder="Password" required="">-->
-
-<!--            <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>-->
-<!--            <button class="btn btn-lg btn-primary btn-block" type="reset">取消</button>-->
-
-<!--            <p class="mt-5 mb-3 text-muted">© One Time</p>-->
-
-<!--        </form>-->
-<!--    </div>-->
-<!--</div>-->
 <div class="rg_layout">
     <div class="rg_left">
         <p>用户注册</p>
@@ -228,6 +211,7 @@
 <script src="/js/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="/js/bootstrap.min.js"></script>
+<script src="/js/mouse.js"></script>
 <script src="/js/utils.js"></script>
 </body>
 </html>
