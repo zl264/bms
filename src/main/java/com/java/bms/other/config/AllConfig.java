@@ -23,7 +23,7 @@ public class AllConfig implements WebMvcConfigurer {
             "/driver/login","/driver/register","/hotel/login","/hotel/register","/manager/login",
             "/common/enter","/common/enterRegister","/hotel/enter","/hotel/enterRegister","/manager/enter","/driver/enter","/driver/enterRegister",
             "/common/commonLogin","/common/commonRegister","/hotel/hotelLogin","/hotel/hotelRegister","/manager/managerLogin","/driver/driverLogin","/driver/driverRegister",
-            "/verifyCode"
+            "/verifyCode","/common/register1"
     ));
 
     @Bean

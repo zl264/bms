@@ -207,17 +207,54 @@ public class OrganizerController {
      */
     @RequestMapping("/organizer/applyDriver")
     public String addDriver(@RequestParam("driverId") int driverId,@RequestParam("congressId") int congressId,
-                            HttpSession session,Model model){
+                            HttpSession session,Model model,Map<Object,Integer> map){
+        System.out.println(driverId);
+        System.out.println(congressId);
         organizerMapper.applyDriver(congressId,driverId);
+        LocalDateTime now = LocalDateTime.now();
+
+        int userId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
+        CongressVO congress = commonMapper.getCongressById(congressId);
+        String organizerName = commonMapper.getUsernameById((int)congress.getOrganizerId());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        CongressNoteVO record = commonMapper.getCongressNoteByCommonIdAndCongressId(userId,congress.getCongressId());
+        List<CommonUserVO> participants = commonMapper.getParticipantIdByCongressId(congressId);
+        //获取所有填写了到达时间和到达地点的参加者
+        List<CommonUserAllInformationVO> allInformationParticipants = commonMapper.getAllInformationParticipantIdByCongressId(congressId);
+        //获取每个到达地点的人数
+        List<ArrivalPlaceCountDO> allArrivalPlace = commonMapper.getAllParticipantPlaceByCongressId(congressId);
+
+        List<CongressHaveDriverVO> hasDriver = organizerMapper.getDriverByCongressId(congressId);
+        for(CongressHaveDriverVO driver:hasDriver){
+            map.put(String.valueOf(driver.getDriverId()),organizerMapper.getDriverListNum(driver.getDriverId(),congressId));
+        }
+        //判断当前参与者是否有填写完个人信息
+        CommonUserVO participantInformation = commonMapper.HaveInfomation((String) session.getAttribute("loginUser"));
         List<DriverVO> allDriver = organizerMapper.getAllDriver();
         List<DriverVO> applyDriver = organizerMapper.getApplyDriver(congressId);
-        List<DriverVO> hasDriver = organizerMapper.getDriverByCongressId2(congressId);
 
+
+
+        model.addAttribute("hasDriver",hasDriver);
+        model.addAttribute("congress",congress);
+        model.addAttribute("organizerName",organizerName);
+        model.addAttribute("formatter",formatter);
+        model.addAttribute("record",record);
+        model.addAttribute("participants",participants);
+        model.addAttribute("participantInformation",participantInformation);
+        model.addAttribute("allInformationParticipants",allInformationParticipants);
+        model.addAttribute("allArrivalPlace",allArrivalPlace);
+        model.addAttribute("driverHaveNum",map);
         model.addAttribute("allDriver",allDriver);
         model.addAttribute("applyDriver",applyDriver);
-        model.addAttribute("hasDriver",hasDriver);
-        model.addAttribute("congressId",congressId);
-        return "/common/organizer/allDriver";
+
+        //        判断当前时间用户是否可以参加会议
+        if(now.isBefore(congress.getRegisterEndTime())&&now.isAfter(congress.getRegisterStartTime())){
+            model.addAttribute("canRegisterCongress","yes");
+        }
+
+
+        return "/common/congress";
     }
 
 

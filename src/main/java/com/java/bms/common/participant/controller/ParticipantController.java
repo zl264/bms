@@ -33,12 +33,13 @@ public class ParticipantController {
     @Autowired
     OrganizerMapper organizerMapper;
 
-    @RequestMapping("/participant/information")
-    public String Information(){
 
-        return "creatinformation";
-    }
-
+    /**
+     * 查看自己参加的所有会议
+     * @param model
+     * @param session
+     * @return
+     */
     @RequestMapping("/participant/congress")
     public String lookCongress(Model model,HttpSession session){
         int commonId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
@@ -54,11 +55,6 @@ public class ParticipantController {
         return "/common/participant/lookHotel";
     }
 
-    @RequestMapping("/participant/driver")
-    public String lookDriver(){
-
-        return "/common/participant/lookDriver";
-    }
 
     /**
      * 加入会议
@@ -156,6 +152,37 @@ public class ParticipantController {
             model.addObject("canRegisterCongress","yes");
         }
         return model;
+    }
+
+
+
+    @RequestMapping("/participant/exit")
+    public String exitCongress(@RequestParam("congressId") int congressId,HttpSession session, Model model) {
+        int commonId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
+        CommonUserVO participantInformation = commonMapper.HaveInfomation((String) session.getAttribute("loginUser"));
+        organizerMapper.deleteParticipantFromCongress(commonId,congressId);
+        organizerMapper.deleteParticipantFromDriver(commonId,congressId);
+
+
+        CongressVO congress = commonMapper.getCongressById(congressId);
+        String organizerName = commonMapper.getUsernameById((int)congress.getOrganizerId());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        CongressNoteVO record = commonMapper.getCongressNoteByCommonIdAndCongressId(commonId,congressId);
+        LocalDateTime now = LocalDateTime.now();
+        //获取参与者的司机
+        DriverUserVO participantDriver = participantMapper.getDriverByCongressIdAndCommonId(congressId,commonId);
+
+        model.addAttribute("congress",congress);
+        model.addAttribute("organizerName",organizerName);
+        model.addAttribute("formatter",formatter);
+        model.addAttribute("record",record);
+        model.addAttribute("participantInformation",participantInformation);
+        model.addAttribute("participantDriver",participantDriver);
+        //        判断当前时间用户是否可以参加会议
+        if(now.isBefore(congress.getRegisterEndTime())&&now.isAfter(congress.getRegisterStartTime())){
+            model.addAttribute("canRegisterCongress","yes");
+        }
+        return "/common/congress";
     }
 
 }

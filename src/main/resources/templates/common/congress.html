@@ -280,8 +280,8 @@
                             <td th:text="${driver.getCapacity()}"></td>
                             <td>
                                 <form th:if="${!hasDriver.contains(driver) and !applyDriver.contains(driver)}" th:action="@{/organizer/applyDriver}" method="post">
-                                    <input type="hidden" name="driverId" th:value="${driver.getDriverId()}">
-                                    <input type="hidden" name="congressId" th:value="${congressId}">
+                                    <input type="hidden" name="driverId" id="driverId" th:value="${driver.getDriverId()}">
+                                    <input type="hidden" name="congressId" id="congressId" th:value="${congress.getCongressId()}">
                                     <input class="btn btn-sm btn-primary" type="submit" value="申请司机">
                                 </form>
                                 <span th:if="${applyDriver.contains(driver)}">已申请</span>
@@ -368,8 +368,8 @@
                     </div>
                     <div class="row">
                         <form  th:if="${record}!=null">
-                            <input type="hidden" name="congressId" th:value="${congress.getCongressId()}">
-                            <button class="btn_sub">退出会议</button>
+                            <input type="hidden" id="congressIdInExit" name="congressId" th:value="${congress.getCongressId()}">
+                            <button class="btn_sub" onclick="participantExit()">退出会议</button>
                         </form>
                         <form th:unless="${record}!=null" style="margin-top: 50px;" th:action="@{/participant/attend}">
                             <input type="hidden" name="congressId" th:value="${congress.getCongressId()}">
@@ -437,6 +437,21 @@
             xmlHttp.onreadystatechange = function () {
                 if (xmlHttp.readyState == 4) {
                     window.location.href = "/congress/"+congressId;
+                }
+            }
+            xmlHttp.send();
+        }
+        function participantExit(){
+            alert(1);
+            initAJAX();
+            var congressId = document.getElementById("congressIdInExit").value;
+            xmlHttp.open("POST", "/participant/exit?congressId="+congressId, true);
+            alert(2);
+            xmlHttp.onreadystatechange = function () {
+                alert(3);
+                if (xmlHttp.readyState == 4) {
+                    alert(4);
+                    window.location.replace("/congress/"+congressId);
                 }
             }
             xmlHttp.send();
