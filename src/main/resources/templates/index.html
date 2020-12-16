@@ -107,37 +107,38 @@
 <!--   </div>-->
 
 
-   <div style="width: 30%; margin-left: 25%; margin-top: 215px; height: 275px;" class="b">
-       <div class="btn-group" role="group" aria-label="..." style="width: 800px;text-align: center" >
-           <button type="button" onclick="toCommonLogin()" id="default_btn" class="btn btn-default active bt " style="width: 25%;font-size: 20px">会议</button>
-           <button type="button" onclick="toHotelLogin()" class="btn btn-default bt" style="width: 25%;font-size: 20px">酒店</button>
-           <button type="button" onclick="toDriverLogin()" class="btn btn-default bt" style="width: 25%;font-size: 20px">司机</button>
-           <button type="button" onclick="toManagerLogin()" class="btn btn-default bt" style="width: 25%;font-size: 20px">管理员</button>
-       </div>
+<div style="width: 30%; margin-left: 35%; margin-top: 215px; height: 275px;" class="b">
+    <div class="btn-group" role="group" aria-label="..." style="width: 100%;text-align: center" >
+        <button type="button" onclick="toCommonLogin()" id="default_btn" class="btn btn-default active bt " style="width: 25%;">会议</button>
+        <button type="button" onclick="toHotelLogin()" class="btn btn-default bt" style="width: 25%;">酒店</button>
+        <button type="button" onclick="toDriverLogin()" class="btn btn-default bt" style="width: 25%;">司机</button>
+        <button type="button" onclick="toManagerLogin()" class="btn btn-default bt" style="width: 25%;">管理员</button>
+    </div>
 
 
-       <form class="form-signin f" action="" th:action="@{/common/login}" method="post" >
-           <p style="color:red;" th:text="${session.msg}" th:if="${not #strings.isEmpty(session.msg)}"></p>
-           <label class="" id="lab1" style="color: white;width: 60px;height: 20px">用户名:</label>
-           <input type="text" name="username" class="form-control ba aa" placeholder="Username" style="width: 330px;">
-           <label class="" id="lab2" style="">密码:</label>
-           <input type="password" name="password" class="form-control ba aa" placeholder="Password" style="width: 330px;margin-top: 10px">
+    <form class="form-signin f" action="" th:action="@{/common/login}" method="post" >
+        <p style="color:red;" th:text="${session.msg}" th:if="${not #strings.isEmpty(session.msg)}"></p>
+        <p style="color:red;" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+        <label class="" id="lab1" style="color: white;width: 60px;height: 20px">用户名:</label>
+        <input type="text" name="username" class="form-control ba aa" placeholder="Username" style="width: 330px;">
+        <label class="" id="lab2" style="">密码:</label>
+        <input type="password" name="password" class="form-control ba aa" placeholder="Password" style="width: 330px;margin-top: 10px">
 
 
-<!--           <label class="" id="lab3">验证码:</label>-->
-<!--           <input id="code" name="code" placeholder="验证码" type="text" class="form-control ba" style="width:170px;float: left;margin-top: 10px;-->
-<!--margin-left: 7px;">-->
-<!--           &lt;!&ndash; 验证码 显示 &ndash;&gt;-->
-<!--           <img onclick="javascript:getvCode()" id="verifyimg" style="margin-left: 20px;float: left;margin-top: 16px;"/>-->
+        <!--           <label class="" id="lab3">验证码:</label>-->
+        <!--           <input id="code" name="code" placeholder="验证码" type="text" class="form-control ba" style="width:170px;float: left;margin-top: 10px;-->
+        <!--margin-left: 7px;">-->
+        <!--           &lt;!&ndash; 验证码 显示 &ndash;&gt;-->
+        <!--           <img onclick="javascript:getvCode()" id="verifyimg" style="margin-left: 20px;float: left;margin-top: 16px;"/>-->
 
 
-           <button class="bt bt1" type="submit" style="width: 30%;margin-left: 15%;">登录</button>
-           <button class="bt bt1" type="button" style="width: 30%;margin-left: 15%;" onclick="toCommonRegister()">注册</button>
+        <button class="bt bt1" type="submit" style="width: 30%;margin-left: 15%;">登录</button>
+        <button class="bt bt1" type="button" style="width: 30%;margin-left: 15%;" onclick="toCommonRegister()">注册</button>
 
-           <p class="mt-5 mb-3 text-muted" style="text-align: center">© One Time</p>
+        <p class="mt-5 mb-3 text-muted" style="text-align: center">© One Time</p>
 
-       </form>
-   </div>
+    </form>
+</div>
 </body>
 <script type="text/javascript">
     // getvCode();

@@ -151,7 +151,6 @@ public class CommonController {
         String identity = request.getParameter("identity");
         int age = Integer.parseInt(request.getParameter("age"));
         String tel = request.getParameter("tel");
-        System.out.println(1);
         if (commonMapper.isRegister(username) != null) {
             map.put("msg", "该用户名已经被注册了");
             return "/common/commonRegister";
@@ -161,7 +160,6 @@ public class CommonController {
             map.put("msg", "注册成功，请登录");
             int commonId = commonMapper.getCommonIdByUsername(username);
             commonMapper.createInformation(username,name,age,idCardNo,identity,sex,commonId,tel);
-            System.out.println(2);
             return "/common/commonLogin";
         } else {
             map.put("msg", "出现错误，注册失败，请再次尝试或联系管理员");
