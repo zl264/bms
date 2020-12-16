@@ -17,5 +17,4 @@ public class UserDO {
     private String password;
     private Integer id;
 
-
 }

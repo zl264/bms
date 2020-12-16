@@ -172,7 +172,6 @@ public class CommonController {
 
     /**
      * 对普通用户的信息进行控制
-     *
      * @param map     信息
      * @param session session
      * @return
