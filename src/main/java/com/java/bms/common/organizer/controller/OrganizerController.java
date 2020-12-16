@@ -151,6 +151,8 @@ public class OrganizerController {
         }
         //判断当前参与者是否有填写完个人信息
         CommonUserVO participantInformation = commonMapper.HaveInfomation((String) session.getAttribute("loginUser"));
+        List<DriverVO> allDriver = organizerMapper.getAllDriver();
+        List<DriverVO> applyDriver = organizerMapper.getApplyDriver(congressId);
 
 
 
@@ -164,6 +166,8 @@ public class OrganizerController {
         model.addAttribute("allInformationParticipants",allInformationParticipants);
         model.addAttribute("allArrivalPlace",allArrivalPlace);
         model.addAttribute("driverHaveNum",map);
+        model.addAttribute("allDriver",allDriver);
+        model.addAttribute("applyDriver",applyDriver);
 
         //        判断当前时间用户是否可以参加会议
         if(now.isBefore(congress.getRegisterEndTime())&&now.isAfter(congress.getRegisterStartTime())){
@@ -190,7 +194,7 @@ public class OrganizerController {
         model.addAttribute("applyDriver",applyDriver);
         model.addAttribute("hasDriver",hasDriver);
         model.addAttribute("congressId",congressId);
-        return "/common/organizer/allDriver";
+        return "/common/congress";
     }
 
     /**
@@ -246,6 +250,8 @@ public class OrganizerController {
         CommonUserVO participantInformation = commonMapper.HaveInfomation((String) session.getAttribute("loginUser"));
         //获取参与者的司机
         DriverUserVO participantDriver = participantMapper.getDriverByCongressIdAndCommonId(congressId,commonId);
+        List<DriverVO> allDriver = organizerMapper.getAllDriver();
+        List<DriverVO> applyDriver = organizerMapper.getApplyDriver(congressId);
 
         model.addAttribute("hasDriver",hasDriver);
         model.addAttribute("congress", congress);
@@ -258,6 +264,8 @@ public class OrganizerController {
         model.addAttribute("allArrivalPlace",allArrivalPlace);
         model.addAttribute("driverHaveNum",map);
         model.addAttribute("participantDriver",participantDriver);
+        model.addAttribute("allDriver",allDriver);
+        model.addAttribute("applyDriver",applyDriver);
 
 //        判断当前时间用户是否可以参加会议
         if(now.isBefore(congress.getRegisterEndTime())&&now.isAfter(congress.getRegisterStartTime())){

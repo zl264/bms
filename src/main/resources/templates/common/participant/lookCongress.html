@@ -34,7 +34,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Congress Project</a>
+            <a class="navbar-brand" th:href="@{/}">首页</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -57,13 +57,15 @@
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
                 <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="#" th:href="@{/commonMain}">主页</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
                 <li><a href="#" th:href="@{/organizer/manage}">创建会议</a></li>
             </ul>
             <ul class="nav nav-sidebar">
                 <li><a href="#" th:href="@{/participant/congress}">查看会议</a></li>
-            </ul>
-            <ul class="nav nav-sidebar">
-                <li><a href="#" th:href="@{/participant/driver}">查看司机</a></li>
             </ul>
             <ul class="nav nav-sidebar">
                 <li><a href="#" th:href="@{/participant/hotel}">查看酒店</a></li>

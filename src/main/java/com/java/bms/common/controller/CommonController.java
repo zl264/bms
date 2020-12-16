@@ -164,7 +164,8 @@ public class CommonController {
         }
         //获取参与者的司机
         DriverUserVO participantDriver = participantMapper.getDriverByCongressIdAndCommonId(id,userId);
-
+        List<DriverVO> allDriver = organizerMapper.getAllDriver();
+        List<DriverVO> applyDriver = organizerMapper.getApplyDriver(id);
 
 
         model.addAttribute("congress", congress);
@@ -178,6 +179,8 @@ public class CommonController {
         model.addAttribute("allArrivalPlace",allArrivalPlace);
         model.addAttribute("driverHaveNum",map);
         model.addAttribute("participantDriver",participantDriver);
+        model.addAttribute("allDriver",allDriver);
+        model.addAttribute("applyDriver",applyDriver);
 //        判断当前时间用户是否可以参加会议
         if(now.isBefore(congress.getRegisterEndTime())&&now.isAfter(congress.getRegisterStartTime())){
             model.addAttribute("canRegisterCongress","yes");
