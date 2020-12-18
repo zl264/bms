@@ -7,9 +7,6 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <title th:text="${congress.getTitle()}"></title>
     <style>
-        lable{
-            font-size:20px;
-        }
         .rg_center{
             border:5px solid #EEEEEE;
             background-color: #f9f9f9;
@@ -193,8 +190,7 @@
                     </div>
                     <div class="table-responsive" th:if="${allInformationParticipants.size()!=0}">
                             <!--        显示到达地点的人数-->
-                        <div th:if="${allArrivalPlace.size()!=0}">
-                            <table>
+                        <!--<div th:if="${allArrivalPlace.size()!=0}">
                                 <thead>
                                     <tr>
                                         <th>到达地点</th>
@@ -208,7 +204,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
+                        </div>-->
                         <table class="table table-striped table-sm">
                             <thead>
                                 <tr>
@@ -218,8 +214,8 @@
                                     <th>性别</th>
                                     <th>身份</th>
                                     <th>电话号码</th>
-                                    <th>到达时间</th>
                                     <th>到达地点</th>
+                                    <th>到达时间</th>
                                 </tr>
                             </thead>
                             <tbody>

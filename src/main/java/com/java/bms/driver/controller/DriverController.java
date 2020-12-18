@@ -153,9 +153,8 @@ public class DriverController {
         int driverId = driverMapper.getDriverIdByUsername((String) session.getAttribute("loginUser"));
         DriverVO driver = driverMapper.getDriverByDriverId(driverId);
         map.put("driver", driver);
-        return "/driver/main";
+        return "/driver/driverInformation";
     }
-
 
     /**
      * 修改或者添加司机信息
