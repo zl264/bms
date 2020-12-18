@@ -1,6 +1,8 @@
 package com.java.bms.hotel.controller;
 
 import com.java.bms.common.VO.CommonUserVO;
+import com.java.bms.hotel.VO.HotelCancelNote;
+import com.java.bms.hotel.VO.HotelNoteVO;
 import com.java.bms.hotel.VO.HotelVO;
 import com.java.bms.hotel.mapper.HotelMapper;
 import com.java.bms.other.DO.UserDO;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,6 +24,7 @@ import java.util.Map;
  */
 @Controller
 public class HotelController {
+
     @Autowired
     HotelMapper hotelMapper;
 
@@ -65,8 +69,11 @@ public class HotelController {
         }
         if(username.equals(userDo.getUsername())&&password.equals(userDo.getPassword())) {
 //            登录成功以后，防止表单重复提交，可以重定向到主页
-            session.setAttribute("loginUser", username);
+            session.setAttribute("hotelUsername", username);
             session.removeAttribute("msg");
+            int hotelId = hotelMapper.getHotelIdByHotelUsername(username);
+            HotelVO hotel =  hotelMapper.getHotelByHotelId(hotelId);
+            session.setAttribute("hotel",hotel);
             return "redirect:/hotelMain";
         }
         return "/hotel/hotelLogin";
@@ -101,41 +108,113 @@ public class HotelController {
             return "/hotel/hotelRegister";
         }
     }
+
     /**
      * 进入酒店信息界面
      */
     @RequestMapping("/hotel/hotelInformation")
-    public String hotelInformation(){ return "/hotel/hotelInformation"; }
+    public String hotelInformation(Model model,HttpSession session){
+        int hotelId = hotelMapper.getHotelIdByHotelUsername((String)session.getAttribute("hotelUsername"));
+        HotelVO hotel = hotelMapper.getHotelByHotelId(hotelId);
+        model.addAttribute("hotel",hotel);
+        return "/hotel/hotelInformation";
+    }
+
+
+
     /**
-     * 进入客房查询界面
-     */
-    @RequestMapping("/hotel/searchRoom")
-    public String searchRoom(){ return "/hotel/searchRoom"; }
-    /**
-     * 进入预定记录界面
+     * 进入预约记录界面
      */
     @RequestMapping("/hotel/orderNote")
-    public String orderNote(){ return "/hotel/orderNote"; }
+    public String orderNote(HttpSession session,Model model){
+        String hotelUsername = (String)session.getAttribute("hotelUsername");
+        int hotelId = hotelMapper.getHotelIdByHotelUsername(hotelUsername);
+        List<HotelNoteVO> hotelOrderNotes = hotelMapper.getHotelOrderNoteByHotelId(hotelId);
+        HotelVO hotel = hotelMapper.getHotelByHotelId(hotelId);
+        model.addAttribute("hotelOrderNotes",hotelOrderNotes);
+        model.addAttribute("hotel",hotel);
+        return "/hotel/orderNote";
+    }
+
     /**
-     * 进入预定成功界面
+     * 同意预约
+     * @param hotelId
+     * @param commonId
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("/hotel/agree")
+    public String agreeOrder(@RequestParam("hotelId") int hotelId,@RequestParam("commonId") int commonId,
+                             HttpSession session,Model model){
+        HotelNoteVO note = hotelMapper.getHotelOrderNoteByHotelIdAndCommonId(hotelId,commonId);
+        hotelMapper.deleteHotelOrderNoteByHotelIdAndCommonId(hotelId,commonId);
+        hotelMapper.insertHotelCheckInNote(note.getHotelId(),note.getCommonId(),note.getCommonPhone(),note.getTime(),
+                note.getCheckInStartTime(),note.getCheckInEndTime(),note.getCommonName());
+        List<HotelNoteVO> hotelOrderNotes = hotelMapper.getHotelOrderNoteByHotelId(hotelId);
+        HotelVO hotel = hotelMapper.getHotelByHotelId(hotelId);
+        model.addAttribute("hotelOrderNotes",hotelOrderNotes);
+        model.addAttribute("hotel",hotel);
+        return "/hotel/orderNote";
+    }
+
+    /**
+     * 拒绝预约
+     * @param hotelId
+     * @param commonId
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("/hotel/refuse")
+    public String refuseOrder(@RequestParam("hotelId") int hotelId,@RequestParam("commonId") int commonId,
+                              HttpSession session,Model model){
+        HotelNoteVO note = hotelMapper.getHotelOrderNoteByHotelIdAndCommonId(hotelId,commonId);
+        HotelVO hotel = hotelMapper.getHotelByHotelId(hotelId);
+        hotelMapper.deleteHotelOrderNoteByHotelIdAndCommonId(hotelId,commonId);
+        hotelMapper.insertHotelOrderFailNote(hotelId,note.getCommonId(),hotel.getHotelPhone(),1,note.getTime(),
+                note.getCheckInStartTime(),note.getCheckInEndTime());
+        List<HotelNoteVO> hotelOrderNotes = hotelMapper.getHotelOrderNoteByHotelId(hotelId);
+        model.addAttribute("hotelOrderNotes",hotelOrderNotes);
+        model.addAttribute("hotel",hotel);
+        return "/hotel/orderNote";
+    }
+
+    /**
+     * 进入预约成功界面
      */
     @RequestMapping("/hotel/checkInNote")
-    public String checkInNote(){ return "/hotel/checkInNote"; }
+    public String checkInNote(HttpSession session,Model model){
+        String hotelUsername = (String)session.getAttribute("hotelUsername");
+        int hotelId = hotelMapper.getHotelIdByHotelUsername(hotelUsername);
+        List<HotelNoteVO> hotelCheckInNotes = hotelMapper.getHotelCheckInNoteByHotelId(hotelId);
+        HotelVO hotel = hotelMapper.getHotelByHotelId(hotelId);
+        model.addAttribute("hotelCheckInNotes",hotelCheckInNotes);
+        model.addAttribute("hotel",hotel);
+        return "/hotel/checkInNote";
+    }
+
     /**
-     * 进入预定失败界面
+     * 退房,删除预约成功记录
+     * @param hotelId
+     * @param commonId
+     * @param session
+     * @param model
+     * @return
      */
-    @RequestMapping("/hotel/orderFailNote")
-    public String orderFailNote(){ return "/hotel/orderFailNote"; }
-    /**
-     * 进入预定房间界面
-     */
-    @RequestMapping("/hotel/bookRoom")
-    public String bookRoom(){ return "/hotel/bookRoom"; }
-    /**
-     * 继续预定
-     */
-    @RequestMapping("/hotel/lookHotel")
-    public String lookHotel(){ return "/hotel/lookHotel"; }
+    @RequestMapping("/hotel/checkout")
+    public String checkout(@RequestParam("hotelId") int hotelId,@RequestParam("commonId") int commonId,
+                           HttpSession session,Model model){
+
+        HotelVO hotel = hotelMapper.getHotelByHotelId(hotelId);
+        hotelMapper.deleteHotelCheckInNote(hotelId,commonId);
+        List<HotelNoteVO> hotelOrderNotes = hotelMapper.getHotelOrderNoteByHotelId(hotelId);
+        model.addAttribute("hotelOrderNotes",hotelOrderNotes);
+        model.addAttribute("hotel",hotel);
+        return "/hotel/orderNote";
+    }
+
+
     /**
      * 注销
      */
@@ -145,12 +224,23 @@ public class HotelController {
     @RequestMapping("/hotel/main")
     public String main(){ return "/hotel/main"; }
 
+
     /**
-     * 酒店注册信息输入
-     *......
+     * 对酒店的信息进行注册
+     * @param hotelName
+     * @param hotelPhone
+     * @param hotelLocation
+     * @param singleRoomPrice
+     * @param doubleRoomPrice
+     * @param totalSingleRoom
+     * @param remainSingleRoom
+     * @param totalDoubleRoom
+     * @param remainDoubleRoom
+     * @param hotelDescription
+     * @param model
+     * @param session
      * @return
      */
-
     @RequestMapping(value = "/hotel/createHotel")
     public String createHotel(@RequestParam("hotelName") String hotelName,
                                 @RequestParam("hotelPhone") String hotelPhone,
@@ -162,43 +252,97 @@ public class HotelController {
                                 @RequestParam("totalDoubleRoom") int totalDoubleRoom,
                                 @RequestParam("remainDoubleRoom") int remainDoubleRoom,
                                 @RequestParam("hotelDescription") String hotelDescription,
-                                Map<String, Object> map, HttpSession session) {
-        int hotelId = hotelMapper.getHotelIdByLoginId((String) session.getAttribute("loginHotel"));
-        if (StringUtils.isEmpty(hotelName)||StringUtils.isEmpty(hotelPhone) || StringUtils.isEmpty(hotelLocation) || StringUtils.isEmpty(singleRoomPrice)||StringUtils.isEmpty(remainDoubleRoom)||StringUtils.isEmpty(hotelDescription)
-                || StringUtils.isEmpty(doubleRoomPrice) || StringUtils.isEmpty(totalSingleRoom) || StringUtils.isEmpty(remainSingleRoom)||StringUtils.isEmpty(totalDoubleRoom)) {
-            map.put("msg", "请填写完整信息");
-            return "/hotel/main";
-        }
-        if(hotelMapper.isRegisterHotel(hotelName) !=null){
-            int result = hotelMapper.createHotel((String)session.getAttribute("loginHotel"), hotelId,hotelName,hotelPhone,hotelLocation,singleRoomPrice,doubleRoomPrice,totalSingleRoom,remainSingleRoom,totalDoubleRoom,remainDoubleRoom,hotelDescription);
-            HotelVO user = hotelMapper.HaveHotel(hotelMapper.getHotelNameById(hotelId));
-            map.put("user", user);
-            if (result == 1) {
-                map.put("msg", "填写或修改信息成功！");
-                return "/hotel/main";
-            } else {
-                map.put("msg", "出现错误，修改信息失败，请再次尝试或联系管理员");
-                return "/hotel/main";
-            }
-        }else{
-            int result = hotelMapper.updateHotel((String)session.getAttribute("loginHotel"), hotelId,hotelName,hotelPhone,hotelLocation,singleRoomPrice,doubleRoomPrice,totalSingleRoom,remainSingleRoom,totalDoubleRoom,remainDoubleRoom,hotelDescription);
-            HotelVO user = hotelMapper.HaveHotel(hotelMapper.getHotelNameById(hotelId));
-            map.put("user", user);
-            if (result == 1) {
-                map.put("msg", "填写或修改信息成功！");
-                return "/hotel/main";
-            } else {
-                map.put("msg", "出现错误，修改信息失败，请再次尝试或联系管理员");
-                return "/hotel/main";
-            }
-        }
+                                Model model, HttpSession session) {
+        int hotelId = hotelMapper.getHotelIdByHotelUsername((String) session.getAttribute("hotelUsername"));
+        hotelMapper.createHotel(hotelName,hotelId,hotelPhone,hotelLocation,singleRoomPrice,doubleRoomPrice,
+                totalSingleRoom,remainSingleRoom,totalDoubleRoom,remainDoubleRoom,hotelDescription);
+        HotelVO hotel = hotelMapper.getHotelByHotelId(hotelId);
+        model.addAttribute("hotel",hotel);
+        return "/hotel/hotelInformation";
     }
 
-    @RequestMapping(value = "/hotel/ordernote")
-    public void hotelOrderNote(@RequestParam("commonId") int commonId,
-                               @RequestParam("commonPhone") int commonPhone,
-                               Model model, HttpSession session){
-        int hotelId = hotelMapper.getHotelOrderById((String) session.getAttribute("loginUser"));
-        HotelVO visit = hotelMapper.HaveHotel(hotelMapper.getHotelNameById(hotelId));
+    /**
+     * 修改酒店信息
+     * @param hotelName
+     * @param hotelPhone
+     * @param hotelLocation
+     * @param singleRoomPrice
+     * @param doubleRoomPrice
+     * @param totalSingleRoom
+     * @param remainSingleRoom
+     * @param totalDoubleRoom
+     * @param remainDoubleRoom
+     * @param hotelDescription
+     * @param model
+     * @param session
+     * @return
+     */
+    @RequestMapping("/hotel/updateHotel")
+    public String updateHotel(@RequestParam("hotelName") String hotelName,
+                              @RequestParam("hotelPhone") String hotelPhone,
+                              @RequestParam("hotelLocation") String hotelLocation,
+                              @RequestParam("singleRoomPrice") int singleRoomPrice,
+                              @RequestParam("doubleRoomPrice") int doubleRoomPrice,
+                              @RequestParam("totalSingleRoom") int totalSingleRoom,
+                              @RequestParam("remainSingleRoom") int remainSingleRoom,
+                              @RequestParam("totalDoubleRoom") int totalDoubleRoom,
+                              @RequestParam("remainDoubleRoom") int remainDoubleRoom,
+                              @RequestParam("hotelDescription") String hotelDescription,
+                              Model model, HttpSession session){
+        int hotelId = hotelMapper.getHotelIdByHotelUsername((String) session.getAttribute("hotelUsername"));
+        hotelMapper.updateHotel(hotelName,hotelId,hotelPhone,hotelLocation,singleRoomPrice,doubleRoomPrice,
+                totalSingleRoom,remainSingleRoom,totalDoubleRoom,remainDoubleRoom,hotelDescription);
+        HotelVO hotel = hotelMapper.getHotelByHotelId(hotelId);
+        model.addAttribute("hotel",hotel);
+        return "/hotel/hotelInformation";
     }
+
+
+    /**
+     * 进入产看取消预约界面
+     * @param model
+     * @param session
+     * @return
+     */
+    @RequestMapping("/hotel/cancelNote")
+    public String cancelNote(Model model, HttpSession session){
+        int hotelId = hotelMapper.getHotelIdByHotelUsername((String) session.getAttribute("hotelUsername"));
+        List<HotelCancelNote> cancelNotes = hotelMapper.getHotelCancelOrderByHotelId(hotelId);
+        HotelVO hotel = hotelMapper.getHotelByHotelId(hotelId);
+        model.addAttribute("cancelNotes",cancelNotes);
+        model.addAttribute("hotel",hotel);
+        return "/hotel/cancelNote";
+    }
+
+
+    /**
+     * 确认用户取消记录信息
+     * @param hotelId
+     * @param commonId
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("/hotel/cancel")
+    public String confirmCancelNote(@RequestParam("hotelId") int hotelId,@RequestParam("commonId") int commonId,
+                                    HttpSession session,Model model){
+        hotelMapper.deleteHotelCancelOrderByHotelIdAndCommonId(hotelId,commonId);
+        List<HotelCancelNote> cancelNotes = hotelMapper.getHotelCancelOrderByHotelId(hotelId);
+        HotelVO hotel = hotelMapper.getHotelByHotelId(hotelId);
+        model.addAttribute("cancelNotes",cancelNotes);
+        model.addAttribute("hotel",hotel);
+        return "/hotel/cancelNote";
+    }
+
+    @RequestMapping("/hotel/relatedCongress")
+    public String relatedCongress(HttpSession session,Model model){
+        int hotelId = hotelMapper.getHotelIdByHotelUsername((String) session.getAttribute("hotelUsername"));
+
+
+        HotelVO hotel = hotelMapper.getHotelByHotelId(hotelId);
+
+        model.addAttribute("hotel",hotel);
+        return "/hotel/relatedCongress";
+    }
+
 }

@@ -1,13 +1,14 @@
 package com.java.bms.hotel.mapper;
 
 import com.java.bms.common.VO.CongressVO;
+import com.java.bms.hotel.VO.HotelCancelNote;
+import com.java.bms.hotel.VO.HotelNoteVO;
+import com.java.bms.hotel.VO.HotelOrderFailNoteVO;
 import com.java.bms.hotel.VO.HotelVO;
 import com.java.bms.other.DO.UserDO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -24,6 +25,7 @@ public interface HotelMapper {
      */
     @Select("select * from hotelLogin where username=#{username} and password=#{password}")
     UserDO commonLogin(String username, String password);
+
     /**
      * 通过用户名判断该用户名有没有被注册
      * @param username 用户名
@@ -31,6 +33,7 @@ public interface HotelMapper {
      */
     @Select("select * from hotelLogin where username=#{username}")
     String isRegister(String username);
+
     /**
      * 对用户输入的用户名和密码进行注册
      * @param username 用户名
@@ -50,10 +53,17 @@ public interface HotelMapper {
     String isRegisterHotel(String hotelName);
 
     /**
-     *
+     * 通过酒店用户名获取酒店ID
+     * @param hotelUsername
+     * @return
+     */
+    @Select("select id from hotelLogin where username = #{hotelUsername}")
+    int getHotelIdByHotelUsername(String hotelUsername);
+
+    /**
+     * 插入酒店信息
      * @param hotelName
      * @param hotelId
-     * @param name
      * @param hotelPhone
      * @param hotelLocation
      * @param singleRoomPrice
@@ -65,102 +75,139 @@ public interface HotelMapper {
      * @param hotelDescription
      * @return
      */
-    @Insert("insert into hotel(hotelName,hotelId,hotelPhone,hotelLocation,singleRoomPrice,doubleRoomPrice,totalSingleRoom,remainSingleRoom,totalDoubleRoom,remainDoubleRoom,hotelDescription) values(#{hotelName},#{hotelId}," +
+    @Insert("insert into hotel(hotelName,hotelId,hotelPhone,hotelLocation,singleRoomPrice,doubleRoomPrice,totalSingleRoom,remainSingleRoom,totalDoubleRoom,remainDoubleRoom,hotelDescription)" +
+            " values(#{hotelName},#{hotelId}," +
             "#{hotelPhone},#{hotelLocation},#{singleRoomPrice},#{doubleRoomPrice},#{totalSingleRoom},#{remainSingleRoom},#{totalDoubleRoom},#{remainDoubleRoom},#{hotelDescription})")
-    int createHotel(String hotelName, long hotelId, String name, String hotelPhone, String hotelLocation, int singleRoomPrice, int doubleRoomPrice, int totalSingleRoom, int remainSingleRoom, int totalDoubleRoom, int remainDoubleRoom, String hotelDescription);
+    int createHotel(String hotelName, long hotelId,String hotelPhone, String hotelLocation, int singleRoomPrice, int doubleRoomPrice, int totalSingleRoom, int remainSingleRoom, int totalDoubleRoom, int remainDoubleRoom, String hotelDescription);
 
+    /**
+     * 更新酒店信息
+     * @param hotelName
+     * @param hotelId
+     * @param hotelPhone
+     * @param hotelLocation
+     * @param singleRoomPrice
+     * @param doubleRoomPrice
+     * @param totalSingleRoom
+     * @param remainSingleRoom
+     * @param totalDoubleRoom
+     * @param remainDoubleRoom
+     * @param hotelDescription
+     * @return
+     */
     @Update("update hotel set hotelName=#{hotelName},hotelPhone=#{hotelPhone},hotelLocation=#{hotelLocation},singleRoomPrice=#{singleRoomPrice},doubleRoomPrice=#{doubleRoomPrice},totalSingleRoom=#{totalSingleRoom}," +
             "remainSingleRoom=#{remainSingleRoom},totalDoubleRoom=#{totalDoubleRoom},remainDoubleRoom=#{remainDoubleRoom},hotelDescription=#{hotelDescription} where hotelId=#{hotelId})")
-    int updateHotel(String hotelName, long hotelId, String name, String hotelPhone, String hotelLocation, int singleRoomPrice, int doubleRoomPrice, int totalSingleRoom, int remainSingleRoom, int totalDoubleRoom, int remainDoubleRoom, String hotelDescription);
+    int updateHotel(String hotelName, long hotelId, String hotelPhone, String hotelLocation, int singleRoomPrice, int doubleRoomPrice, int totalSingleRoom, int remainSingleRoom, int totalDoubleRoom, int remainDoubleRoom, String hotelDescription);
 
+    /**
+     * 通过酒店名称获取酒店
+     * @param hotelName
+     * @return
+     */
     @Select("select * from hotel where hotelName=#{hotelName}")
     HotelVO HaveHotel(String hotelName) ;
+
     /**
      * 通过酒店ID获得酒店全部信息
      */
     @Select("select * from hotel where hotelId = #{hotelId}")
-    HotelVO getHotelById(int hotelId);
+    HotelVO getHotelByHotelId(int hotelId);
+
 
     /**
-     * 通过id获得酒店ID
-     * @param id
-     */
-    @Select("select hotelId from hotelLogin where id = #{id}")
-    int getHotelIdByLoginId(String id) ;
-
-    /**
-     * 通过酒店ID获得酒店名
-     */
-    @Select("select HotelName from hotelLogin where id = #{id}")
-    String getHotelNameById(int id) ;
-
-
-    /**以下部分关于预定记录
-     * 通过酒店Id获取预定记录
+     * 通过酒店ID获取酒店预约记录
      * @param hotelId
-     */
-    @Select("select HotelName from hotelOrderNote where hotelId = #{hotelId}")
-    int getHotelOrderById(String hotelId);
-    /**
-     * 插入预定酒店预定记录
-     * @param hotelId
-     * @param commonId
-     * @param commonPhone
      * @return
      */
-    @Insert("insert into hotelOrderNote(hotelId,commonId,commonPhone) values(#{hotelId},#{commonId},#{commomPhone}")
-    int createHotelOrderNote(int hotelId,int commonId,int commonPhone);
+    @Select("select * from hotelOrderNote where hotelId = #{hotelId} order by time")
+    List<HotelNoteVO> getHotelOrderNoteByHotelId(int hotelId);
 
-    @Select("select * from hotel where hotelId=#{hotelId}")
-    HotelVO HaveHotelOrder(int hotelId) ;
 
     /**
-     * 通过酒店ID查找预定记录
+     * 获取普通用户的酒店预约记录
+     * @param hotelId
+     * @param commonId
+     * @return
+     */
+    @Select("select * from hotelOrderNote where hotelId = #{hotelId} and commonId = #{commonId}")
+    HotelNoteVO getHotelOrderNoteByHotelIdAndCommonId(int hotelId,int commonId);
+
+    /**
+     * 删除用户的预约记录
+     * @param hotelId
+     * @param commonId
+     * @return
+     */
+    @Delete("delete from hotelOrderNote where hotelId = #{hotelId} and commonId = #{commonId}")
+    int deleteHotelOrderNoteByHotelIdAndCommonId(int hotelId,int commonId);
+
+    /**
+     * 插入用户预约成功的记录
      * @param hotelId
      * @param commonId
      * @param commonPhone
+     * @param time
+     * @param checkInStartTime
+     * @param checkInEndTime
+     * @param commonName
      * @return
      */
-    @Select("select HotelId from hotelOrderNote(hotelId,commonId,commonPhone) values(#{hotelId},#{commonId},#{commomPhone}")
-    int getHotelOrderNote(int hotelId,int commonId,int commonPhone);
+    @Insert("insert into hotelCheckInNote(hotelId,commonId,commonPhone,time,checkInStartTime,checkInEndTime,commonName)" +
+            " values(#{hotelId},{commonId},{commonPhone},{time},{checkInStartTime},{checkInEndTime},{commonName})")
+    int insertHotelCheckInNote(int hotelId, int commonId, String commonPhone, LocalDateTime time,LocalDateTime
+            checkInStartTime,LocalDateTime checkInEndTime,String commonName);
 
     /**
-     * 插入预定酒店成功记录
+     * 删除预约成功记录
      * @param hotelId
      * @param commonId
-     * @param commonPhone
      * @return
      */
-    @Insert("insert into hotelCheckInNote(hotelId,commonId,commonPhone) values(#{hotelId},#{commonId},#{commomPhone}")
-    int createHotelCheckInNote(int hotelId,int commonId,int commonPhone);
+    @Delete("delete from hotelCheckInNote where hotel = #{hotel} and commonId = #{commonId}")
+    int deleteHotelCheckInNote(int hotelId,int commonId);
 
     /**
-     * 通过酒店ID查找预定成功记录
+     * 插入用户预约失败的记录
      * @param hotelId
      * @param commonId
-     * @param commonPhone
+     * @param hotelPhone
+     * @param orRead
+     * @param time
+     * @param checkInStartTime
+     * @param checkEndTime
      * @return
      */
-    @Select("select HotelId from hotelCheckInNote(hotelId,commonId,commonPhone) values(#{hotelId},#{commonId},#{commomPhone}")
-    int getHotelCheckInNote(int hotelId,int commonId,int commonPhone);
-    /**
-     * 插入预定酒店失败记录
-     *  @param hotelId
-     * @param commonId
-     * @param commonPhone
-     * @return
-     */
-    @Insert("insert into hotelOrderFailNote(hotelId,commonId,commonPhone) values(#{hotelId},#{commonId},#{commomPhone}")
-    int createHotelOrderFailNote(int hotelId,int commonId,int commonPhone);
+    @Insert("insert into hotelOrderFailNote(hotelId,commonId,hotelPhone,orRead,time,checkInStartTime,checkEndTime) " +
+            "values(#{hotelId},#{commonId},#{hotelPhone},#{orRead},#{time},#{checkInStartTime},#{checkInEndTime})")
+    int insertHotelOrderFailNote(int hotelId,int commonId,String hotelPhone,int orRead,LocalDateTime time,
+                                 LocalDateTime checkInStartTime,LocalDateTime checkEndTime);
+
 
     /**
-     * 通过酒店ID查找失败记录
+     * 通过酒店ID获取酒店预约成功记录
      * @param hotelId
-     * @param commonId
-     * @param commonPhone
      * @return
      */
-    @Select("select HotelId from hotelOrderFailNote(hotelId,commonId,commonPhone) values(#{hotelId},#{commonId},#{commomPhone}")
-    int getHotelOrderFailNote(int hotelId,int commonId,int commonPhone);
+    @Select("select * from hotelCheckInNote where hotelId = #{hotelId}")
+    List<HotelNoteVO> getHotelCheckInNoteByHotelId(int hotelId);
+
+    /**
+     * 通过酒店ID获取取消预约记录
+     * @param hotelId
+     * @return
+     */
+    @Select("select * from hotelCancelOrder where hotelId = #{hotelId}")
+    List<HotelCancelNote> getHotelCancelOrderByHotelId(int hotelId);
+
+    /**
+     * 删除取消预约记录
+     * @param hotelId
+     * @param commonId
+     * @return
+     */
+    @Insert("delete from hotelCancelOrder where hotelId = #{hotelId} and commonId = #{commonId}")
+    int deleteHotelCancelOrderByHotelIdAndCommonId(int hotelId,int commonId);
+
+
 
 }
