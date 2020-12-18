@@ -39,8 +39,9 @@ public class AllConfig implements WebMvcConfigurer {
 
             @Override
             public void addViewControllers(ViewControllerRegistry registry) {
-                registry.addViewController("/").setViewName("index");
-                registry.addViewController("/index.html").setViewName("index");
+                registry.addViewController("/").setViewName("/index");
+                registry.addViewController("").setViewName("/index");
+                registry.addViewController("/index.html").setViewName("/index");
                 registry.addViewController("/commonMain").setViewName("/common/main");
                 registry.addViewController("/driverMain").setViewName("/driver/main");
                 registry.addViewController("/hotelMain").setViewName("/hotel/main");
