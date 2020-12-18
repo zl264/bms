@@ -143,7 +143,7 @@
                     <table>
                         <tr>
                             <td class="td_left"><lable for="name">姓名：</lable></td>
-                            <td class="td_right"><input type="text" name="name" id="name" placeholder="请输入姓名" th:value="${user!=null?user.getName():''}"></td>
+                            <td class="td_right"><input type="text" name="name" id="name"  placeholder="请输入姓名" th:value="${user!=null?user.getName():''}"></td>
                         </tr>
                         <tr>
                             <td class="td_left"><lable for="sex">性别：</lable></td>
@@ -164,7 +164,7 @@
                         </tr>
                         <tr>
                             <td class="td_left"><lable for="tel">电话号码：</lable></td>
-                            <td class="td_right"><input type="text" name="电话号码" id="tel" placeholder="请输入电话号码" th:value="${user!=null?user.getTel():''}"></td>
+                            <td class="td_right"><input type="text" name="tel" id="tel" placeholder="请输入电话号码" th:value="${user!=null?user.getTel():''}"></td>
                         </tr>
                         <tr>
                             <td colspan="2" align="center"><input type="submit" id="btn_sub" value="保存"></td>

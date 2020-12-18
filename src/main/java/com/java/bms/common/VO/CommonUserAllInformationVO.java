@@ -14,7 +14,7 @@ public class CommonUserAllInformationVO {
     private String name;
     private int age;
     private String sex;
-    private long idCardNo;
+    private String idCardNo;
     private String identity;
     private int commonId;
     private String tel;
