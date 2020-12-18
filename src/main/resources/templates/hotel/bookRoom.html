@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh_CN" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<!doctype html>
+<html lang="zh_CN" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>预定房间</title>
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="https://oss.liuyanzhao.com/static/hotel/static/front/images/favicon.png">
+        <!-- Bootstrap core CSS -->
+        <link href="https://oss.liuyanzhao.com/static/hotel/static/front/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <!--Default CSS-->
+        <link href="https://oss.liuyanzhao.com/static/hotel/static/front/css/default.css" rel="stylesheet" type="text/css">
+        <!--Custom CSS-->
+        <link href="https://oss.liuyanzhao.com/static/hotel/static/front/css/style.css" rel="stylesheet" type="text/css">
+        <!--Plugin CSS-->
+        <link href="https://oss.liuyanzhao.com/static/hotel/static/front/css/plugin.css" rel="stylesheet" type="text/css">
+        <link href="https://oss.liuyanzhao.com/static/hotel/static/plugins/toast/css/jquery.toast.min.css" rel="stylesheet" type="text/css">
+        <!--Font Awesome-->
+        <!--        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+        <!--        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">-->
+        <link rel="stylesheet" href="https://oss.liuyanzhao.com/static/hotel/static/plugins/font-awesome/css/font-awesome.min.css">
+
+    </head>
+    <body>
+        <!-- Preloader -->
+        <!--        <div id="preloader">-->
+        <!--            <div id="status"></div>-->
+        <!--        </div>-->
+        <!-- Preloader Ends -->
+
+        <!-- header start -->
+        <header class="main_header_area">
+            <!-- Navigation Bar -->
+            <div class="header_menu affix-top">
+                <nav class="navbar navbar-default">
+                    <div class="container">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="">南昌大学分店</a>
+                        </div>
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                    </div><!-- /.container-fluid -->
+                    <div id="slicknav-mobile"></div>
+                </nav>
+            </div>
+            <!-- Navigation Bar Ends -->
+        </header>
+        <!-- header Ends -->
+
+
+
+
+<!-- breadcrumb starts -->
+<section class="breadcrumb-outer">
+    <div class="container">
+        <div class="breadcrumb-content">
+            <h2>恭喜您预订成功！</h2>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb Ends -->
+
+    <div style="margin: 10px;border: 1px solid red;">
+        <p style="font-size: 1.2em;">
+		感谢您选择我们酒店！前台电话:1234567
+        </p>
+    </div>
+	<div  align="center">
+	<h3>请问您是否退出?</h3>
+	<div class="room-btns">
+        <a href="#" th:href="@{/hotel/lookHotel}" class="btn btn-orange mar-right-10">继续</a>
+	<a href="#" th:href="@{/common/l}" class="btn btn-orange mar-right-10">退出</a>
+    </div>
+	</div>
+</body>
+</html>

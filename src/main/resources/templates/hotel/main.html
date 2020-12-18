@@ -32,7 +32,7 @@
             <p2 class="ui teal header">欢迎你</p2>
             <p2 class="ui teal header">何鹏</p2>
             <div class="menu">
-                <a href="/hotelLogin" class="ui teal item">注销</a>
+                <a href="#" th:href="@{/hotel/hotelLogin}" class="ui teal item">注销</a>
             </div>
         </div>
     </div>
@@ -43,7 +43,7 @@
         <div class="ui stackable grid">
             <!--左-->
             <div class="five wide column">
-                <h2><a href="#" th:href="@{/main}"><i class="home icon"></i>酒店信息</a></h2><br>
+                <h2><a href="#" th:href="@{/hotel/hotelInformation}"><i class="home icon"></i>酒店信息</a></h2><br>
                 <h2><a href="#" th:href="@{/hotel/searchRoom}"><i class="home icon"></i>客房查询</a></h2><br>
                 <h2><a href="#" th:href="@{/hotel/orderNote}"><i class="home icon"></i>预定记录</a></h2><br>
                 <h2><a href="#" th:href="@{/hotel/checkInNote}"><i class="home icon"></i>成功记录</a></h2><br>
@@ -54,52 +54,54 @@
                 <div class="ui teal segment">
                     <h2 ><i class="home icon"></i>注册酒店</h2>
                     <div>
-                        <form>
+                        <form class="form-signin" th:action="@{/hotel/createHotel}" method="post">
                             <table border="1" bordercolor="blue" cellspacing="0">
                                 <tr>
-                                    <td>酒店ID</td>
-                                    <td><input class="cut"type="text" name="hotelid" required/>*</td>
+                                    <td>酒店名称</td>
+                                    <td><input type="text" name="hotelName" class="form-control" placeholder="HotelName" required="" autofocus=""></td>
                                 </tr>
                                 <tr>
                                     <td>酒店电话</td>
-                                    <td><input class="cut"type="text" name="hotelphone" required/>*</td>
+                                    <td><input type="text" name="hotelPhone" class="form-control" placeholder="HotelPhone" required="" autofocus=""></td>
                                 </tr>
                                 <tr>
                                     <td>酒店地址</td>
-                                    <td><input class="cut"type="text" name="hotellocation" required/>*</td>
+                                    <td><input type="text" name="hotelLocation" class="form-control" placeholder="HotelLocation" required="" autofocus=""></td>
                                 </tr>
                                 <tr>
                                     <td>单人房价格</td>
-                                    <td><input class="cut"type="text" name="singleroomprice" required/>*</td>
+                                    <td><input type="text" name="singleRoomPrice" class="form-control" placeholder="SingleRoomPrice" required="" autofocus=""></td>
                                 </tr>
                                 <tr>
                                     <td>双人房价格</td>
-                                    <td><input class="cut"type="text" name="doubleroomprice" required/>*</td>
+                                    <td><input type="text" name="doubleRoomPrice" class="form-control" placeholder="DoubleRoomPrice" required="" autofocus=""></td>
                                 </tr>
                                 <tr>
                                     <td>单人房总量</td>
-                                    <td><input class="cut"type="text" name="totalsingleroom" required/>*</td>
+                                    <td><input type="text" name="totalSingleRoom" class="form-control" placeholder="TotalSingleRoom" required="" autofocus=""></td>
                                 </tr>
                                 <tr>
                                     <td>单人房剩余</td>
-                                    <td><input class="cut"type="text" name="remainsingleroom" required/>*</td>
+                                    <td><input type="text" name="remainSingleRoom" class="form-control" placeholder="RemainSingleRoom" required="" autofocus=""></td>
                                 </tr>
                                 <tr>
                                     <td>双人房总量</td>
-                                    <td><input class="cut"type="text" name="totaldoubleroom" required/>*</td>
+                                    <td><input type="text" name="totalDoubleRoom" class="form-control" placeholder="TotalDoubleRoom" required="" autofocus=""></td>
                                 </tr>
                                 <tr>
                                     <td>双人房剩余</td>
-                                    <td><input class="cut"type="text" name="remaindoubleroom" required/>*</td>
+                                    <td><input type="text" name="remainDoubleRoom" class="form-control" placeholder="RemainDoubleRoom" required="" autofocus=""></td>
                                 </tr>
                                 <tr>
                                     <td>酒店描述</td>
-                                    <td><textarea type="submit" rows="5" cols="60" maxlength="10"></textarea></td>
+                                    <td><textarea type="text" name="hotelDescription" class="form-control" placeholder="HotelDescription" required="" autofocus="" rows="5" cols="60" maxlength="10"></textarea></td>
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td align="center"><input action="" type="submit" name="sub" value="提交">
-                                        <input action="" type="submit" name="res" value="重填"></td>
+                                    <td align="center">
+                                        <button class="btn btn-lg btn-primary btn-block" type="submit"><a th:href="@{/hotel/hotelInformation}">提交</a></button>
+                                        <button class="btn btn-lg btn-primary btn-block" type="reset">重置</button>
+                                    </td>
                                 </tr>
                             </table>
                         </form>
