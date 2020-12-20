@@ -4,6 +4,7 @@ import com.java.bms.common.DO.ArrivalPlaceCountDO;
 import com.java.bms.common.DO.CongressNoteVO;
 import com.java.bms.common.VO.*;
 import com.java.bms.common.mapper.CommonMapper;
+import com.java.bms.common.organizer.mapper.CongressHotelMapper;
 import com.java.bms.common.organizer.mapper.OrganizerMapper;
 import com.java.bms.common.participant.mapper.ParticipantMapper;
 import com.java.bms.driver.VO.DriverVO;
@@ -42,6 +43,9 @@ public class OrganizerController {
 
     @Autowired
     ParticipantMapper participantMapper;
+
+    @Autowired
+    CongressHotelMapper congressHotelMapper;
     /**
      * 跳转到创建会议界面
      * @return 创建会议界面
@@ -153,10 +157,17 @@ public class OrganizerController {
         CommonUserVO participantInformation = commonMapper.HaveInfomation((String) session.getAttribute("loginUser"));
         List<DriverVO> allDriver = organizerMapper.getAllDriver();
         List<DriverVO> applyDriver = organizerMapper.getApplyDriver(congressId);
+        List<DriverVO> hasDriver1 = organizerMapper.getDriverByCongressId1(congressId);
 
-
+        //得到所有的酒店
+        List<CongressHotelVO> allHotel = congressHotelMapper.getAllHotel(congressId);
+        //得到已申请的会议
+        List<CongressHotelVO> applyHotel = congressHotelMapper.getCongressApplyHotel(congressId);
+        //得到会议所有的酒店
+        List<CongressHotelVO> hasHotel = congressHotelMapper.getCongressHotel(congressId);
 
         model.addAttribute("hasDriver",hasDriver);
+        model.addAttribute("hasDriver1",hasDriver1);
         model.addAttribute("congress",congress);
         model.addAttribute("organizerName",organizerName);
         model.addAttribute("formatter",formatter);
@@ -168,6 +179,9 @@ public class OrganizerController {
         model.addAttribute("driverHaveNum",map);
         model.addAttribute("allDriver",allDriver);
         model.addAttribute("applyDriver",applyDriver);
+        model.addAttribute("allHotel",allHotel);
+        model.addAttribute("applyHotel",applyHotel);
+        model.addAttribute("hasHotel",hasHotel);
 
         //        判断当前时间用户是否可以参加会议
         if(now.isBefore(congress.getRegisterEndTime())&&now.isAfter(congress.getRegisterStartTime())){
@@ -208,8 +222,8 @@ public class OrganizerController {
     @RequestMapping("/organizer/applyDriver")
     public String addDriver(@RequestParam("driverId") int driverId,@RequestParam("congressId") int congressId,
                             HttpSession session,Model model,Map<Object,Integer> map){
-        System.out.println(driverId);
-        System.out.println(congressId);
+//        System.out.println(driverId);
+//        System.out.println(congressId);
         organizerMapper.applyDriver(congressId,driverId);
         LocalDateTime now = LocalDateTime.now();
 
@@ -232,10 +246,17 @@ public class OrganizerController {
         CommonUserVO participantInformation = commonMapper.HaveInfomation((String) session.getAttribute("loginUser"));
         List<DriverVO> allDriver = organizerMapper.getAllDriver();
         List<DriverVO> applyDriver = organizerMapper.getApplyDriver(congressId);
+        List<DriverVO> hasDriver1 = organizerMapper.getDriverByCongressId1(congressId);
 
-
+        //得到所有的酒店
+        List<CongressHotelVO> allHotel = congressHotelMapper.getAllHotel(congressId);
+        //得到已申请的会议
+        List<CongressHotelVO> applyHotel = congressHotelMapper.getCongressApplyHotel(congressId);
+        //得到会议所有的酒店
+        List<CongressHotelVO> hasHotel = congressHotelMapper.getCongressHotel(congressId);
 
         model.addAttribute("hasDriver",hasDriver);
+        model.addAttribute("hasDriver1",hasDriver1);
         model.addAttribute("congress",congress);
         model.addAttribute("organizerName",organizerName);
         model.addAttribute("formatter",formatter);
@@ -247,6 +268,9 @@ public class OrganizerController {
         model.addAttribute("driverHaveNum",map);
         model.addAttribute("allDriver",allDriver);
         model.addAttribute("applyDriver",applyDriver);
+        model.addAttribute("allHotel",allHotel);
+        model.addAttribute("applyHotel",applyHotel);
+        model.addAttribute("hasHotel",hasHotel);
 
         //        判断当前时间用户是否可以参加会议
         if(now.isBefore(congress.getRegisterEndTime())&&now.isAfter(congress.getRegisterStartTime())){
@@ -289,8 +313,17 @@ public class OrganizerController {
         DriverUserVO participantDriver = participantMapper.getDriverByCongressIdAndCommonId(congressId,commonId);
         List<DriverVO> allDriver = organizerMapper.getAllDriver();
         List<DriverVO> applyDriver = organizerMapper.getApplyDriver(congressId);
+        List<DriverVO> hasDriver1 = organizerMapper.getDriverByCongressId1(congressId);
+
+        //得到所有的酒店
+        List<CongressHotelVO> allHotel = congressHotelMapper.getAllHotel(congressId);
+        //得到已申请的会议
+        List<CongressHotelVO> applyHotel = congressHotelMapper.getCongressApplyHotel(congressId);
+        //得到会议所有的酒店
+        List<CongressHotelVO> hasHotel = congressHotelMapper.getCongressHotel(congressId);
 
         model.addAttribute("hasDriver",hasDriver);
+        model.addAttribute("hasDriver1",hasDriver1);
         model.addAttribute("congress", congress);
         model.addAttribute("organizerName", organizerName);
         model.addAttribute("formatter", formatter);
@@ -303,13 +336,16 @@ public class OrganizerController {
         model.addAttribute("participantDriver",participantDriver);
         model.addAttribute("allDriver",allDriver);
         model.addAttribute("applyDriver",applyDriver);
+        model.addAttribute("allHotel",allHotel);
+        model.addAttribute("applyHotel",applyHotel);
+        model.addAttribute("hasHotel",hasHotel);
 
 //        判断当前时间用户是否可以参加会议
         if(now.isBefore(congress.getRegisterEndTime())&&now.isAfter(congress.getRegisterStartTime())){
             model.addAttribute("canRegisterCongress","yes");
         }
 
-        return "common/congress";
+        return "/common/congress";
     }
 
     /**

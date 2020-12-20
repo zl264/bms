@@ -4,8 +4,11 @@ import com.java.bms.common.DO.ArrivalPlaceCountDO;
 import com.java.bms.common.DO.CongressNoteVO;
 import com.java.bms.common.VO.*;
 import com.java.bms.common.mapper.CommonMapper;
+import com.java.bms.common.organizer.mapper.CongressHotelMapper;
 import com.java.bms.common.organizer.mapper.OrganizerMapper;
 import com.java.bms.common.participant.mapper.ParticipantMapper;
+import com.java.bms.hotel.VO.HotelOrderFailNoteVO;
+import com.java.bms.hotel.VO.HotelVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +38,9 @@ public class ParticipantController {
     @Autowired
     OrganizerMapper organizerMapper;
 
+    @Autowired
+    CongressHotelMapper congressHotelMapper;
+
 
     /**
      * 查看自己参加的所有会议
@@ -47,12 +55,6 @@ public class ParticipantController {
         model.addAttribute("allCongress",allCongresses);
 
         return "/common/participant/lookCongress";
-    }
-
-    @RequestMapping("/participant/hotel")
-    public String lookHotel(){
-
-        return "/common/participant/lookHotel";
     }
 
 
@@ -155,7 +157,13 @@ public class ParticipantController {
     }
 
 
-
+    /**
+     * 退出会议
+     * @param congressId
+     * @param session
+     * @param model
+     * @return
+     */
     @RequestMapping("/participant/exit")
     public String exitCongress(@RequestParam("congressId") int congressId,HttpSession session, Model model) {
         int commonId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
@@ -183,6 +191,46 @@ public class ParticipantController {
             model.addAttribute("canRegisterCongress","yes");
         }
         return "/common/congress";
+    }
+
+
+    /**
+     * 查看酒店
+     * @return
+     */
+    @RequestMapping("/participant/hotel")
+    public String lookHotel(HttpSession session,Model model){
+        String username = (String)session.getAttribute("loginUser");
+        int commonId = commonMapper.getCommonIdByUsername(username);
+        List<CongressVO> congress = participantMapper.getCongressByCommonId(commonId);
+        //参加的未结束的会议
+        List<CongressVO> exitCongress = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        for(int i=0;i<congress.size();i++){
+            if(now.isBefore(congress.get(i).getEndTime()));
+                exitCongress.add(congress.get(i));
+        }
+        //每个会议提供的酒店
+        Map<Object,List<HotelVO>> congressHotels = new HashMap<>();
+        for(int i=0;i<exitCongress.size();i++){
+            List<HotelVO> hotelVOS = participantMapper.getCongressHotel((int)exitCongress.get(i).getCongressId());
+            congressHotels.put(exitCongress.get(i),hotelVOS);
+        }
+        //所有的酒店
+        List<HotelVO> allHotel = participantMapper.getAllHotelFull();
+//        //预约失败的记录
+//        List<HotelOrderFailNoteVO> failNotes = participantMapper.getRefuseNote(commonId);
+        //预约成功的酒店
+        List<HotelVO> successHotel = participantMapper.getAgreeHotel(commonId);
+
+
+        model.addAttribute("exitCongress",exitCongress);
+        model.addAttribute("congressHotels",congressHotels);
+        model.addAttribute("allHotel",allHotel);
+//        model.addAttribute("failNotes",failNotes);
+        model.addAttribute("successHotel",successHotel);
+        model.addAttribute("commonId",commonId);
+        return "/common/participant/lookHotel";
     }
 
 }

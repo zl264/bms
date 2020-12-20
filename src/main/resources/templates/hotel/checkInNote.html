@@ -57,6 +57,7 @@
                             <tr>
                                 <th>预约人名称</th>
                                 <th>预约人电话号码</th>
+                                <th>预约房间类型</th>
                                 <th>入住时间</th>
                                 <th>退房时间</th>
                                 <th>退房</th>
@@ -66,6 +67,7 @@
                             <tr th:each="note:${hotelCheckInNotes}">
                                 <td th:text="${note.getCommonName()}"></td>
                                 <td th:text="${note.getCommonPhone()}"></td>
+                                <td th:text="${note.getType()==1?'单人房':'双人房'}"></td>
                                 <td th:text="${#temporals.format(note.getCheckInStartTime(),'yyyy-MM-dd HH:mm')}"></td>
                                 <td th:text="${#temporals.format(note.getCheckInEndTime(),'yyyy-MM-dd HH:mm')}"></td>
                                 <td>

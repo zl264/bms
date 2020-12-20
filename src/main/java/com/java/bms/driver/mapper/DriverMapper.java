@@ -6,6 +6,7 @@ import com.java.bms.driver.VO.CongressDriver;
 import com.java.bms.driver.VO.DriverVO;
 import com.java.bms.other.DO.UserDO;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
  * 对于司机用户登录注册的数据库访问的控制
  */
 @Mapper
+@Repository
 public interface DriverMapper {
     /**
      * 通过用户名和密码来查找输入的用户名密码是否正确

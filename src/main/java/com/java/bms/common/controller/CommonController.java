@@ -5,9 +5,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.java.bms.common.DO.ArrivalPlaceCountDO;
 import com.java.bms.common.DO.CongressNoteVO;
 import com.java.bms.common.VO.*;
+import com.java.bms.common.organizer.mapper.CongressHotelMapper;
 import com.java.bms.common.organizer.mapper.OrganizerMapper;
 import com.java.bms.common.participant.mapper.ParticipantMapper;
 import com.java.bms.driver.VO.DriverVO;
+import com.java.bms.hotel.VO.HotelVO;
 import com.java.bms.other.DO.UserDO;
 import com.java.bms.common.mapper.CommonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,10 @@ public class CommonController {
 
     @Autowired
     ParticipantMapper participantMapper;
+
+    @Autowired
+    CongressHotelMapper congressHotelMapper;
+
 
     /**
      * 主页点击连接进入普通用户登录界面
@@ -167,6 +173,13 @@ public class CommonController {
         }
     }
 
+    @RequestMapping("/common/returnMain")
+    public String returnMain(HttpSession session){
+        List<CongressVO> allCongress = commonMapper.getAllCongress();
+        session.setAttribute("allCongress", allCongress);
+        return "/common/main";
+    }
+
     /**
      * 通过会议ID查找会议
      *
@@ -200,13 +213,21 @@ public class CommonController {
         DriverUserVO participantDriver = participantMapper.getDriverByCongressIdAndCommonId(id,userId);
         List<DriverVO> allDriver = organizerMapper.getAllDriver();
         List<DriverVO> applyDriver = organizerMapper.getApplyDriver(id);
+        List<DriverVO> hasDriver1 = organizerMapper.getDriverByCongressId1(id);
 
+        //得到所有的酒店
+        List<CongressHotelVO> allHotel = congressHotelMapper.getAllHotel(id);
+        //得到已申请的会议
+        List<CongressHotelVO> applyHotel = congressHotelMapper.getCongressApplyHotel(id);
+        //得到会议所有的酒店
+        List<CongressHotelVO> hasHotel = congressHotelMapper.getCongressHotel(id);
 
         model.addAttribute("congress", congress);
         model.addAttribute("organizerName", organizerName);
         model.addAttribute("formatter", formatter);
         model.addAttribute("record", record);
         model.addAttribute("hasDriver",hasDriver);
+        model.addAttribute("hasDriver1",hasDriver1);
         model.addAttribute("participants", participants);
         model.addAttribute("participantInformation",participantInformation);
         model.addAttribute("allInformationParticipants",allInformationParticipants);
@@ -215,6 +236,10 @@ public class CommonController {
         model.addAttribute("participantDriver",participantDriver);
         model.addAttribute("allDriver",allDriver);
         model.addAttribute("applyDriver",applyDriver);
+        model.addAttribute("allHotel",allHotel);
+        model.addAttribute("applyHotel",applyHotel);
+        model.addAttribute("hasHotel",hasHotel);
+
 //        判断当前时间用户是否可以参加会议
         if(now.isBefore(congress.getRegisterEndTime())&&now.isAfter(congress.getRegisterStartTime())){
             model.addAttribute("canRegisterCongress","yes");
@@ -227,7 +252,11 @@ public class CommonController {
     @RequestMapping("/common/search")
     public String searchCongress(@RequestParam("information") String information, Model model, HttpSession session) {
         List<CongressVO> searchCongress = commonMapper.searchCongressByInformation(information);
+        List<HotelVO> searchHotel = commonMapper.searchHotelByInformation(information);
+        int commonId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
         model.addAttribute("searchCongress",searchCongress);
+        model.addAttribute("searchHotel",searchHotel);
+        model.addAttribute("commonId",commonId);
         return "/common/search";
     }
 
@@ -288,7 +317,7 @@ public class CommonController {
 
 
     /**
-     * 提供给酒店司机查看的会议信息
+     * 提供给司机查看的会议信息
      * @param congressId 会议ID
      * @param model
      * @return
@@ -301,4 +330,6 @@ public class CommonController {
         model.addAttribute("organizerName",organizerName);
         return "/common/otherLookCongress";
     }
+
+
 }

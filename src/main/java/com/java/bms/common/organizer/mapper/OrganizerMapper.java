@@ -6,11 +6,13 @@ import com.java.bms.common.VO.CongressHaveDriverVO;
 import com.java.bms.common.VO.CongressVO;
 import com.java.bms.driver.VO.DriverVO;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
+@Repository
 public interface OrganizerMapper {
 
 
@@ -87,6 +89,19 @@ public interface OrganizerMapper {
             "and congressDriver.driverId = driver.driverId " +
             "group by driverId")
     List<CongressHaveDriverVO> getDriverByCongressId(int congressId);
+
+
+    /**
+     * 通过会议ID获取会议安排的司机的信息
+     * 此方法的返回值用于产看所有司机时判断司机是否已在会议中
+     * @param congressId
+     * @return
+     */
+    @Select("select driver.*" +
+            " from driver,congressDriver " +
+            "where congressDriver.congressId = #{congressId} " +
+            "and congressDriver.driverId = driver.driverId ")
+    List<DriverVO> getDriverByCongressId1(int congressId);
 
 
     /**
@@ -173,7 +188,8 @@ public interface OrganizerMapper {
      */
     @Select("select arrivalPlace,count(arrivalPlace) num from congressNote " +
             "where congressId = #{congressId} and " +
-            "commonId not in(select commonId from userDriver where congressId = #{congressId}) " +
+            "commonId not in(select commonId from userDriver where congressId = #{congressId}) and " +
+            "arrivalPlace is not null " +
             "group by arrivalPlace ")
     List<ArrivalPlaceCountDO> getRemainderParticipant(int congressId);
 

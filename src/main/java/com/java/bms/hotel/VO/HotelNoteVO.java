@@ -18,4 +18,5 @@ public class HotelNoteVO {
     private LocalDateTime checkInStartTime;
     private LocalDateTime checkInEndTime;
     private String commonName;
+    private int type;
 }

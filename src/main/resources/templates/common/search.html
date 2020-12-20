@@ -2,31 +2,72 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>会议搜索结果</title>
+    <title>搜索结果</title>
     <!-- Bootstrap -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-<div class="container showCongress" th:if="${searchCongress.size()!=0}">
-    <div class="row" >
-        <div class="col-sm-6 col-md-4 col-lg-3 " th:each="congress:${searchCongress}">
-            <div class="thumbnail" style="height: 360px;">
-                <a th:href="@{/congress/}+${congress.getCongressId()}" >
-                    <img class="lazy" th:src="'/img/congress/'+${congress.getImage()}+'.jpg'" alt="会议图片" width="300" height="150">
-                </a>
-                <div class="caption">
-                    <h3>
-                        <a th:href="@{/congress/}+${congress.getCongressId()}" th:text="${congress.getTitle()}"></a>
-                    </h3>
-                    <p th:text="${#strings.substring(congress.getContent(),0,20)}" th:if="${congress.getContent().length()>20}"></p>
-                    <p th:text="${congress.getContent()}" th:if="${congress.getContent().length()<20}"></p>
+<div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#congress" aria-controls="congress" role="tab" data-toggle="tab">会议</a></li>
+        <li role="presentation"><a href="#hotel" aria-controls="hotel" role="tab" data-toggle="tab">酒店</a></li>
+
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+<!--        会议搜索结果-->
+        <div role="tabpanel" class="tab-pane active" id="congress">
+            <div class="container showCongress" th:if="${searchCongress.size()!=0}">
+                <div class="row" >
+                    <div class="col-sm-6 col-md-4 col-lg-3 " th:each="congress:${searchCongress}">
+                        <div class="thumbnail" style="height: 360px;">
+                            <a th:href="@{/congress/}+${congress.getCongressId()}" >
+                                <img class="lazy" th:src="'/img/congress/'+${congress.getImage()}+'.jpg'" alt="会议图片" width="300" height="150">
+                            </a>
+                            <div class="caption">
+                                <h3>
+                                    <a th:href="@{/congress/}+${congress.getCongressId()}" th:text="${congress.getTitle()}"></a>
+                                </h3>
+                                <p th:text="${#strings.substring(congress.getContent(),0,20)}" th:if="${congress.getContent().length()>20}"></p>
+                                <p th:text="${congress.getContent()}" th:if="${congress.getContent().length()<20}"></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div th:if="${searchCongress.size()==0}">无会议搜索结果</div>
+        </div>
+
+<!--        酒店搜索结果-->
+        <div role="tabpanel" class="tab-pane" id="hotel">
+            <div class="container showCongress" th:if="${searchHotel.size()!=0}">
+                <div class="row" >
+                    <div class="col-xs-6 col-sm-3 placeholder" th:each="hotel:${searchHotel}">
+                        <div class="thumbnail" style="height: 360px;">
+                            <a  th:href="@{/hotel/show}+'?hotelId='+${hotel.getHotelId()}+'&&commonId='+${commonId}">
+                                <img th:src="'/img/hotel/'+${hotel.getImage()}+'.jpg'" alt="酒店图片" width="300" height="150">
+                            </a>
+                            <div class="caption">
+                                <h3>
+                                    <a th:href="@{/hotel/show}+'?hotelId='+${hotel.getHotelId()}+'&&commonId='+${commonId}"
+                                       th:text="${hotel.getHotelName()}"></a>
+                                </h3>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${searchHotel.size()==0}">无会议搜索结果</div>
         </div>
     </div>
+
 </div>
-<div th:if="${searchCongress.size()==0}"></div>
+
 </body>
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 <script src="/js/jquery.min.js"></script>

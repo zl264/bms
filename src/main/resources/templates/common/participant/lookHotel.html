@@ -8,20 +8,172 @@
     <title>查看酒店</title>
 
     <style>
-        .showCongress{
-            margin-top: 100px;
+        .paddingtop{
+            padding-top:10px ;
+        }
+        .line {
+            border-bottom: 2px solid #000000;
+            padding: 5px;
         }
     </style>
     <!-- Bootstrap -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="/css/dashboard.css" rel="stylesheet">
 
     <script src="/js/html5shiv.min.js"></script>
     <script src="/js/respond.min.js"></script>
 
 </head>
 <body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" th:href="@{/}">首页</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" th:href="@{/common/information}" style="margin-right: 50px;">
+                        <img class="img-circle" src="/img/head/0.jpg" th:alt="${session.loginUser}" width="30" height="30">
+                    </a>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-right" th:action="@{/common/search}">
+                <input type="text" name="information" class="form-control" placeholder="Search...">
+                <button type="submit" class="btn btn-default">搜索</button>
+            </form>
+        </div>
+    </div>
+</nav>
 
+<div class="container-fluid">
+    <div class="row paddingtop">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="#" th:href="@{/common/returnMain}">主页</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="#" th:href="@{/organizer/manage}">创建会议</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="#" th:href="@{/participant/congress}">查看会议</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="#" th:href="@{/participant/hotel}">查看酒店</a></li>
+            </ul>
+        </div>
+
+<!--        预约成功的酒店-->
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="row line" >
+                <h1 class="page-header ">
+                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                    <span>预约成功的酒店</span>
+                </h1>
+            </div>
+            <div class="row placeholders paddingtop">
+                <div class="row" th:if="${successHotel.size()!=0}">
+                    <div class="row" th:if="${successHotel!=null}">
+                        <div class="col-xs-6 col-sm-3 placeholder" th:each="sHotel:${successHotel}">
+                            <div class="thumbnail" style="height: 360px;">
+                                <a  th:href="@{/hotel/show}+'?hotelId='+${sHotel.getHotelId()}+'&&commonId='+${commonId}">
+                                    <img th:src="'/img/hotel/'+${sHotel.getImage()}+'.jpg'" alt="酒店图片" width="300" height="150">
+                                </a>
+                                <div class="caption">
+                                    <h3>
+                                        <a th:href="@{/hotel/show}+'?hotelId='+${sHotel.getHotelId()}+'&&commonId='+${commonId}"
+                                                th:text="${sHotel.getHotelName()}"></a>
+                                    </h3>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-6 col-sm-3 placeholder" >
+                    <div th:unless="${successHotel.size()!=0}" >
+                        没有预约成功的酒店
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+<!--        每个会议提供的酒店-->
+        <div th:if="${exitCongress.size()!=0}">
+            <div th:each="eCongress:${exitCongress}">
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" th:if="${congressHotels.get(eCongress).size()!=0}">
+                    <div class="row line" >
+                        <h1 class="page-header ">
+                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                            <span th:text="${eCongress.getTitle()}+'提供的酒店'"></span>
+                        </h1>
+                    </div>
+                    <div class="row placeholders paddingtop" th:if="${congressHotels.get(eCongress).size()!=0}">
+                        <div class="row" >
+                            <div class="row" >
+                                <div class="col-xs-6 col-sm-3 placeholder" th:each="cHotel:${congressHotels.get(eCongress)}">
+                                    <div class="thumbnail" style="height: 360px;">
+                                        <a  th:href="@{/hotel/show}+'?hotelId='+${cHotel.getHotelId()}+'&&commonId='+${commonId}">
+                                            <img th:src="'/img/hotel/'+${cHotel.getImage()}+'.jpg'" alt="酒店图片" width="300" height="150">
+                                        </a>
+                                        <div class="caption">
+                                            <h3>
+                                                <a th:href="@{/hotel/show}+'?hotelId='+${cHotel.getHotelId()}+'&&commonId='+${commonId}"
+                                                        th:text="${cHotel.getHotelName()}"></a>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+<!--        全部酒店-->
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="row line" >
+                <h1 class="page-header ">
+                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                    <span>所有酒店</span>
+                </h1>
+            </div>
+            <div class="row placeholders paddingtop">
+                <div class="row" th:if="${allHotel.size()!=0}">
+                    <div class="row" >
+                        <div class="col-xs-6 col-sm-3 placeholder" th:each="aHotel:${allHotel}">
+                            <div class="thumbnail" style="height: 360px;">
+                                <a  th:href="@{/hotel/show}+'?hotelId='+${aHotel.getHotelId()}+'&&commonId='+${commonId}">
+                                    <img th:src="'/img/hotel/'+${aHotel.getImage()}+'.jpg'" alt="酒店图片" width="300" height="150">
+                                </a>
+                                <div class="caption">
+                                    <h3>
+                                        <a th:href="@{/hotel/show}+'?hotelId='+${aHotel.getHotelId()}+'&&commonId='+${commonId}"
+                                           th:text="${aHotel.getHotelName()}"></a>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 </body>
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 <script src="/js/jquery.min.js"></script>
