@@ -102,7 +102,10 @@ public class CommonController {
 //            登录成功以后，防止表单重复提交，可以重定向到主页
             session.setAttribute("loginUser", username);
             List<CongressVO> allCongress = commonMapper.getAllCongress();
+            int commonId = commonMapper.getCommonIdByUsername(username);
+            CommonUserVO user = commonMapper.getCommonUserByCommonId(commonId);
             session.setAttribute("allCongress", allCongress);
+            session.setAttribute("user", user);
             session.removeAttribute("msg");
             return "redirect:/commonMain";
         }
@@ -176,7 +179,10 @@ public class CommonController {
     @RequestMapping("/common/returnMain")
     public String returnMain(HttpSession session){
         List<CongressVO> allCongress = commonMapper.getAllCongress();
+        int commonId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
+        CommonUserVO user = commonMapper.getCommonUserByCommonId(commonId);
         session.setAttribute("allCongress", allCongress);
+        session.setAttribute("user",user);
         return "/common/main";
     }
 

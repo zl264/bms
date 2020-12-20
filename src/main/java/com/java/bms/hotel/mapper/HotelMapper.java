@@ -334,4 +334,13 @@ public interface HotelMapper {
     @Update("update hotel set remainDoubleRoom = #{remainDoubleRoom} " +
             "where hotelId = #{hotelId}")
     int updateDoubleRoom(int hotelId,int remainDoubleRoom);
+
+    /**
+     * 更新酒店图片
+     * @param image
+     * @param hotelId
+     * @return
+     */
+    @Update("update hotel set image = #{image} where hotelId = #{hotelId}")
+    int updateHotelImage(String image,int hotelId);
 }

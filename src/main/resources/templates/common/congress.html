@@ -471,9 +471,19 @@
                     </div>
                 </div>
 
+
+                <form method="post" enctype="multipart/form-data">
+                    <label>更换会议图像</label>
+                    <input type="file" id="congressImage" name="file"/>
+                    <input type="button" onclick="changeImage()" value="更换"/>
+                </form>
+                <p>会议图片:</p>
+                <img style="width: 150px;height: 150px;" th:src="@{/images/congress/}+${congress.getImage()!=null?congress.getImage():'0.jpg'}"/>
             </div>
         </div>
     </div>
+
+
 
     <!--用户名<p th:text="${session.loginUser}"></p>-->
 
@@ -496,19 +506,44 @@
             xmlHttp.send();
         }
         function participantExit(){
-            alert(1);
             initAJAX();
             var congressId = document.getElementById("congressIdInExit").value;
             xmlHttp.open("POST", "/participant/exit?congressId="+congressId, true);
-            alert(2);
             xmlHttp.onreadystatechange = function () {
-                alert(3);
                 if (xmlHttp.readyState == 4) {
-                    alert(4);
                     window.location.replace("/congress/"+congressId);
                 }
             }
             xmlHttp.send();
+        }
+        function changeImage()
+        {
+            var up_file = document.getElementById("congressImage").files[0];//找到id为file的组件，当然这里是input组件
+            var formData = new FormData();//新建一个formdata用于存储数据
+            formData.append("file",up_file);//将选择的文件添加到formdata中
+            var congressId = [[${congress.getCongressId()}]];
+            formData.append("congressId",congressId);
+            alert(congressId);
+            alert(1);
+            $.ajax
+            ({
+                url:'/congress/image',
+                dataType:'json',
+                type:'POST',
+                async: true,
+                data: formData,
+                processData : false,
+                contentType : false,
+                success: function(data)
+                {
+                    // window.location.reload();
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                    window.location.reload();
+                }
+            });
         }
     </script>
     <!--<script th:inline="javascript">-->

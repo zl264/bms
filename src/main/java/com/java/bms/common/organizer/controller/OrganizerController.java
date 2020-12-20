@@ -105,7 +105,10 @@ public class OrganizerController {
     public String manageCongress(Model model, HttpSession session){
         int organizerId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
         List<CongressVO> allCongress = organizerMapper.getCongressByOrganizerId(organizerId);
+        int commonId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
+        CommonUserVO user = commonMapper.getCommonUserByCommonId(commonId);
         model.addAttribute("allCongress",allCongress);
+        model.addAttribute("user",user);
         return "/common/organizer/manageCongress";
     }
 

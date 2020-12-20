@@ -4,6 +4,7 @@ import com.java.bms.other.component.LoginHandleInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -23,7 +24,7 @@ public class AllConfig implements WebMvcConfigurer {
             "/driver/login","/driver/register","/hotel/login","/hotel/register","/manager/login",
             "/common/enter","/common/enterRegister","/hotel/enter","/hotel/enterRegister","/manager/enter","/driver/enter","/driver/enterRegister",
             "/common/commonLogin","/common/commonRegister","/hotel/hotelLogin","/hotel/hotelRegister","/manager/managerLogin","/driver/driverLogin","/driver/driverRegister",
-            "/verifyCode","/common/register1"
+            "/verifyCode","/common/register1","/fileUpload","/images/**","/common/image"
     ));
 
     @Bean
@@ -48,6 +49,17 @@ public class AllConfig implements WebMvcConfigurer {
                 registry.addViewController("/managerMain").setViewName("/manager/main");
                 registry.addViewController("/index").setViewName("/index");
 
+            }
+
+            @Override
+            public void addResourceHandlers(ResourceHandlerRegistry registry) {
+                /**
+                 * 资源映射路径
+                 * addResourceHandler：访问映射路径
+                 * addResourceLocations：资源绝对路径
+                 */
+                registry.addResourceHandler("/images/**").addResourceLocations("file:D:/images/");
+//                registry.addResourceHandler("/images/**").addResourceLocations("file:/home/images/");
             }
         };
         return adapter;

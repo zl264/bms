@@ -166,12 +166,48 @@
                                 </table>
                             </form>
                         </div>
+                        <h2 ><i class="home icon"></i>酒店图片</h2>
+                        <form method="post" enctype="multipart/form-data">
+                            <input type="file" id="hotelImage" name="file"/><span id="inf"></span>
+                            <input type="button" onclick="changeImage()" value="更换"/>
+                        </form>
+                        <p>酒店图片:</p>
+                        <img style="width: 150px;height: 150px;" th:src="@{/images/hotel/}+${hotel.getImage()!=null?hotel.getImage():'0.jpg'}"/>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    function changeImage()
+    {
+        var up_file = document.getElementById("hotelImage").files[0];//找到id为file的组件，当然这里是input组件
+        var formData = new FormData();//新建一个formdata用于存储数据
+        formData.append("file",up_file);//将选择的文件添加到formdata中
+        $.ajax
+        ({
+            url:'/hotel/image',
+            dataType:'test json',
+            type:'POST',
+            async: true,
+            data: formData,
+            processData : false,
+            contentType : false,
+            success: function(data)
+            {
+                // window.location.reload();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+                window.location.reload();
+            }
+        });
+    }
+</script>
+
 <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
 
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->

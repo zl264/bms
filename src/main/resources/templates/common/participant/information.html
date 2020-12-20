@@ -171,6 +171,13 @@
                         </tr>
                     </table>
                 </form>
+                <form method="post" enctype="multipart/form-data">
+                    <label>更换头像</label>
+                    <input type="file" id="headImage" name="file"/><span id="inf"></span>
+                    <input type="button" onclick="changeImage()" value="更换"/>
+                </form>
+                <p>头像:</p>
+                <img style="width: 150px;height: 150px;" th:src="@{/images/head/}+${user.getImage()!=null?user.getImage():'0.jpg'}"/>
             </div>
         </div>
         <div class="rg_right">
@@ -178,8 +185,37 @@
         </div>
     </div>
 </body>
+<script>
+    function changeImage()
+    {
+        var up_file = document.getElementById("headImage").files[0];//找到id为file的组件，当然这里是input组件
+        var formData = new FormData();//新建一个formdata用于存储数据
+        formData.append("file",up_file);//将选择的文件添加到formdata中
+        $.ajax
+        ({
+            url:'/common/image',
+            dataType:'test json',
+            type:'POST',
+            async: true,
+            data: formData,
+            processData : false,
+            contentType : false,
+            success: function(data)
+            {
+                // window.location.reload();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+                window.location.reload();
+            }
+        });
+    }
+
+</script>
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 <script src="/js/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="/js/bootstrap.min.js"></script>
+<script src="/js/utils.js"></script>
 </html>

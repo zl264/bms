@@ -51,9 +51,11 @@ public class ParticipantController {
     @RequestMapping("/participant/congress")
     public String lookCongress(Model model,HttpSession session){
         int commonId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
+        CommonUserVO user = commonMapper.getCommonUserByCommonId(commonId);
         List<CongressVO> allCongresses = participantMapper.getCongressByCommonId(commonId);
-        model.addAttribute("allCongress",allCongresses);
 
+        model.addAttribute("allCongress",allCongresses);
+        model.addAttribute("user",user);
         return "/common/participant/lookCongress";
     }
 
@@ -202,6 +204,7 @@ public class ParticipantController {
     public String lookHotel(HttpSession session,Model model){
         String username = (String)session.getAttribute("loginUser");
         int commonId = commonMapper.getCommonIdByUsername(username);
+        CommonUserVO user = commonMapper.getCommonUserByCommonId(commonId);
         List<CongressVO> congress = participantMapper.getCongressByCommonId(commonId);
         //参加的未结束的会议
         List<CongressVO> exitCongress = new ArrayList<>();
@@ -223,7 +226,7 @@ public class ParticipantController {
         //预约成功的酒店
         List<HotelVO> successHotel = participantMapper.getAgreeHotel(commonId);
 
-
+        model.addAttribute("user",user);
         model.addAttribute("exitCongress",exitCongress);
         model.addAttribute("congressHotels",congressHotels);
         model.addAttribute("allHotel",allHotel);

@@ -19,5 +19,5 @@ public class HotelVO {
     private int totalDoubleRoom;
     private int remainDoubleRoom;
     private String hotelDescription;
-    private int image;
+    private String image;
 }

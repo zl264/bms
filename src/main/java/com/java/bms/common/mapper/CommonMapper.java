@@ -167,4 +167,15 @@ public interface CommonMapper {
     @Select("select * from commonUser where commonId = #{commonId}")
     CommonUserVO getCommonUserByCommonId(int commonId);
 
+    /**
+     * 更换普通用户头像
+     * @param image
+     * @param commonId
+     * @return
+     */
+    @Update("update commonUser set image = #{image} where commonId = #{commonId}")
+    int updateCommonHeadImage(String image,int commonId);
+
+    @Update("update congress set image = #{image} where congressId = #{congressId}")
+    int updateCongressImage(String image,int congressId);
 }
