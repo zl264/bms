@@ -11,38 +11,140 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
     <link rel="stylesheet" href="css/me.css">
-
-
+    <link href="/css/dashboard.css" rel="stylesheet">
+    <style>
+        .paddingtop{
+            padding-top:10px ;
+        }
+        .margintop{
+            margin-top: 15px;
+        }
+        .line {
+            border-bottom: 2px solid #000000;
+            padding: 5px;
+        }
+    </style>
     <script src="js/html5shiv.min.js"></script>
     <script src="js/respond.min.js"></script>
 
 </head>
 <body>
-<nav class="ui inverted attached segment">
-    <div class="ui container">
-        <div class="ui inverted secondary stackable menu">
-            <p2 class="ui teal header">欢迎你</p2>
-            <p2 class="ui teal header" th:text="${session.hotelUsername}"></p2>
-            <div class="menu">
-                <a href="#" th:href="@{/hotel/hotelLogin}" class="ui teal item">注销</a>
-            </div>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" th:href="@{/}">首页</a>
         </div>
     </div>
 </nav>
-
-<div class="m-padded-tb-large m-container-small">
-    <div class="ui container">
-        <div class="ui stackable grid">
-            <!--左-->
-            <div class="five wide column">
-                <h2><a href="#" th:href="@{/hotel/hotelInformation}"><i class="home icon"></i>酒店信息</a></h2><br>
-                <h2><a href="#" th:href="@{/hotel/orderNote}"><i class="home icon"></i>预约记录</a></h2><br>
-                <h2><a href="#" th:href="@{/hotel/checkInNote}"><i class="home icon"></i>预约成功</a></h2><br>
-                <h2><a href="#" th:href="@{/hotel/relatedCongress}"><i class="home icon"></i>相关会议</a></h2><br>
-                <h2><a href="#" th:href="@{/hotel/cancelNote}"><i class="home icon"></i>取消预约</a></h2><br>
-            </div>
+<div class="container-fluid">
+    <div class="row paddingtop">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="#" th:href="@{/hotel/hotelInformation}">酒店信息</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="#" th:href="@{/hotel/orderNote}">预约记录</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="#" th:href="@{/hotel/checkInNote}">预约成功</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="#" th:href="@{/hotel/relatedCongress}">相关会议</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="#" th:href="@{/hotel/cancelNote}">取消预约</a></li>
+            </ul>
+        </div>
             <!--右-->
-            <div class="eleven wide column">
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="row line">
+                <h1 class="page-header ">
+                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                    <span>相关会议</span>
+                </h1>
+            </div>
+            <div class="row" th:if="${hotel==null}">
+                <label>请先填写酒店相关信息</label>
+            </div>
+            <div th:if="${hotel!=null}">
+                <div class="row margintop">
+                    <h3>
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        <span>申请的会议</span>
+                    </h3>
+                </div>
+                <div th:if="${applyCongresses.size()==0}">
+                    <label>暂无申请的会议</label>
+                </div>
+                <table class="table table-striped table-sm" th:if="${applyCongresses.size()!=0}">
+                    <thead>
+                    <tr>
+                        <th>会议标题</th>
+                        <th>同意</th>
+                        <th>拒绝</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="applyCongress:${applyCongresses}">
+                        <td><a th:href="@{/hotel/lookCongress/}+${applyCongress.getCongressId()}" th:text="${applyCongress.getTitle()}"></a></td>
+                        <td>
+                            <form th:action="@{/hotel/agreeCongress}" method="post">
+                                <input type="hidden" name="hotelId" th:value="${applyCongress.getHotelId()}">
+                                <input type="hidden" name="congressId" th:value="${applyCongress.getCongressId()}">
+                                <input class="btn btn-sm btn-primary" type="submit" value="同意">
+                            </form>
+                        </td>
+                        <td>
+                            <form th:action="@{/hotel/refuseCongress}" method="post">
+                                <input type="hidden" name="hotelId" th:value="${applyCongress.getHotelId()}">
+                                <input type="hidden" name="congressId" th:value="${applyCongress.getCongressId()}">
+                                <input class="btn btn-sm btn-primary" type="submit" value="拒绝">
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="row margintop">
+                    <h3>
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        <span>同意的会议</span>
+                    </h3>
+                </div>
+                <div th:if="${applyCongresses.size()==0}">
+                    <label>暂无同意的会议</label>
+                </div>
+                <table class="table table-striped table-sm" th:if="${haveCongresses.size()!=0}">
+                    <thead>
+                    <tr>
+                        <th>会议标题</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="haveCongress:${haveCongresses}">
+                        <td><a th:href="@{/hotel/lookCongress/}+${haveCongress.getCongressId()}" th:text="${haveCongress.getTitle()}"></a></td>
+                        <td>
+                            <form th:action="@{/hotel/deleteCongress}" method="post">
+                                <input type="hidden" name="hotelId" th:value="${haveCongress.getHotelId()}">
+                                <input type="hidden" name="congressId" th:value="${haveCongress.getCongressId()}">
+                                <input class="btn btn-sm btn-primary" type="submit" value="删除">
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!--<div class="eleven wide column">
                 <div class="ui teal segment">
                     <div th:if="${hotel!=null}">
                         <h2>申请的会议</h2>
@@ -111,7 +213,7 @@
                         请先填写酒店相关信息
                     </div>
                 </div>
-            </div>
+            </div>-->
         </div>
     </div>
 </div>
