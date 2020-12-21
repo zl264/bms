@@ -2,41 +2,214 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>用户注册</title>
+    <title>酒店用户注册</title>
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        img{
-            width: 100%;
+        *{
+            margin:0px;
+            padding:0px;
+
         }
-        .outContainer{
-            margin-top: 200px;
+        body{
+            background-color: rgb(20,20,20);
+        }
+        lable{
+            font-size:20px;
+            color: white;
+        }
+        .rg_layout{
+            width:750px;
+            height:500px;
+            /*border:5px solid #EEEEEE;*/
+            background-color: rgba(15,15,15,0.8);
+            margin: auto;
+            margin-top: 50px;
+            padding-top: 30px;
+        }
+        .rg_left{
+            float:left;
+            margin:15px;
+        }
+        .rg_left >p:first-child{
+            color:white;
+            font-size:20px;
+        }
+        .rg_left >p:last-child{
+            color:#A6A6A6;
+            font-size:20px;
+        }
+        .rg_center{
+            float:left;
+            width: 510px;
+        }
+        .rg_right{
+            /* 	border:1px solid red; */
+            float:right;
+            margin: 15px;
+        }
+        .rg_right > p:first-child{
+            font-size: 15px;
+            color: white;
+        }
+        .rg_right p a{
+            color:#eea236;
+        }
+        .td_left{
+            width:200px;
+            text-align: right;
+            height:45px;
+        }
+        .td_right{
+            padding-left: 50px;
+        }
+        #name,#sex,#age,#idCardNo,#capacity,#tel,#username,#password,#password1,#licensePlateNumber{
+            width:251px;
+            height:40px;
+            border: 1px solid #000000;
+            /*设置边框圆角*/
+            border-radius: 5px;
+            padding-left: 10px;
+        }
+        #btn_sub{
+            width:200px;
+            height:40px;
+            background-color: rgba(5,5,5,0);
+            color: white;
+            border: 1px solid #000000;
+            margin-top:50px;
+            font-size: 20px;
+        }
+        .error{
+            color:#d43f3a;
+            font-size: 15px;
+            padding: 10px;
+        }
+        .glyphicon-ok{
+            color: red;
         }
     </style>
 </head>
 
 <body>
-<div class="row">
-    <div class="col-lg-4 col-lg-offset-2">
-        <form class="form-signin" action="" th:action="@{/hotel/register}" method="post">
+<!--<div class="row">-->
+<!--    <div class="col-lg-4 col-lg-offset-2">-->
+<!--        <form class="form-signin" action="" th:action="@{/hotel/register}" method="post">-->
 
-            <h1 class="h3 mb-3 font-weight-normal">注册</h1>
-            <p style="color:red;" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
-            <label class="sr-only">用户名:</label>
-            <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
-            <label class="sr-only">密码:</label>
-            <input type="text" name="password" class="form-control" placeholder="Password" required="">
+<!--            <h1 class="h3 mb-3 font-weight-normal">注册</h1>-->
+<!--            <p style="color:red;" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>-->
+<!--            <label class="sr-only">用户名:</label>-->
+<!--            <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">-->
+<!--            <label class="sr-only">密码:</label>-->
+<!--            <input type="text" name="password" class="form-control" placeholder="Password" required="">-->
 
-            <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
-            <button class="btn btn-lg btn-primary btn-block" type="reset">取消</button>
+<!--            <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>-->
+<!--            <button class="btn btn-lg btn-primary btn-block" type="reset">取消</button>-->
 
-            <p class="mt-5 mb-3 text-muted">© One Time</p>
+<!--            <p class="mt-5 mb-3 text-muted">© One Time</p>-->
 
-        </form>
+<!--        </form>-->
+<!--    </div>-->
+<!--</div>-->
+<div class="rg_layout">
+
+
+    <div class="rg_center">
+            <p style="color:white;font-size:20px;">酒店注册</p>
+            <p style="color:#A6A6A6;font-size:20px;">HOTEL REGISTER</p>
+
+        <div class="rg_form">
+            <p id="msg" style="color:red;height: 30px"></p>
+            <p th:text="${msg}" th:if="${msg!=null}" style="color:red;height: 30px"></p>
+            <form id="loginForm" th:action="@{/hotel/register}" method="post">
+                <table>
+                    <tr>
+                        <td class="td_left"><lable for="username">用户名：</lable></td>
+                        <td class="td_right">
+                            <input type="text" name="username" id="username" placeholder="请输入用户名" >
+                            <span id="s_username"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><lable for="password">密码：</lable></td>
+                        <td class="td_right">
+                            <input type="password" name="password" id="password" placeholder="请输入密码" >
+                            <span id="s_password"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><lable for="password1">确认密码：</lable></td>
+                        <td class="td_right">
+                            <input type="password" name="password1" id="password1" placeholder="请再次输入密码" >
+                            <span id="s_password1"></span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" align="center"><input type="submit" style="margin-left: 100px;" id="btn_sub" value="注册"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div class="rg_right">
+        <p>注册完成，点击<a th:href="@{/hotel/enter}">返回登录</a></p>
     </div>
 </div>
 </body>
+<script>
+    window.onload=function(){
+        document.getElementById("loginForm").onsubmit=function(){
+            return checkUsername() && checkPassword() && checkPassword1();
+        }
+        document.getElementById("username").onblur=checkUsername;
+        document.getElementById("password").onblur=checkPassword;
+        document.getElementById("password1").onblur=checkPassword1;
+    }
+
+    function checkUsername(){
+        var username=document.getElementById("username").value;
+        var s_username=document.getElementById("s_username");
+        if(isnull(username)) {
+            s_username.innerHTML = " <span class=\"error\">该项不能为空</span>";
+            return false;
+        }
+        else{
+            s_username.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+            return true;
+        }
+
+    }
+    function checkPassword(){
+        var password=document.getElementById("password").value;
+        var s_password=document.getElementById("s_password");
+        if(isnull(password)) {
+            s_password.innerHTML = " <span class=\"error\">该项不能为空</span>";
+            return false;
+        }
+        else{
+            s_password.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+            return true;
+        }
+
+    }
+    function checkPassword1(){
+        var password1=document.getElementById("password1").value;
+        var s_password1=document.getElementById("s_password1");
+        if(isnull(password1)) {
+            s_password1.innerHTML = " <span class=\"error\">该项不能为空</span>";
+            return false;
+        }
+        else{
+            s_password1.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+            return true;
+        }
+
+    }
+</script>
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 <script src="/js/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="/js/bootstrap.min.js"></script>
+<script src="/js/mouse.js"></script>
+<script src="/js/utils.js"></script>
 </html>

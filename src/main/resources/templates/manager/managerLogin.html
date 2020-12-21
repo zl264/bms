@@ -101,9 +101,40 @@
     </style>
 </head>
 <body>
-<div style="width: 30%; margin-left: 35%; margin-top: 215px; height: 275px;" class="b">
+<!--<div style="width: 30%; margin-left: 35%; margin-top: 215px; height: 275px;" class="b">-->
+<!--    <div class="btn-group" role="group" aria-label="..." style="width: 100%;text-align: center" >-->
+<!--        <button type="button" onclick="toCommonLogin()"  class="btn btn-default  bt " style="width: 25%;">会议</button>-->
+<!--        <button type="button" onclick="toHotelLogin()"  class="btn btn-default bt" style="width: 25%;">酒店</button>-->
+<!--        <button type="button" onclick="toDriverLogin()" class="btn btn-default bt" style="width: 25%;">司机</button>-->
+<!--        <button type="button" onclick="toManagerLogin()" id="default_btn" class="btn btn-default active bt" style="width: 25%;">管理员</button>-->
+<!--    </div>-->
+
+
+<!--    <form class="form-signin f" action="" th:action="@{/manager/login}" method="post" >-->
+<!--        <p style="color:red;" th:text="${session.msg}" th:if="${not #strings.isEmpty(session.msg)}"></p>-->
+<!--        <label class="" id="lab1" style="color: white;width: 60px;height: 20px">用户名:</label>-->
+<!--        <input type="text" name="username" class="form-control ba aa" placeholder="Username" style="width: 330px;">-->
+<!--        <label class="" id="lab2" style="">密码:</label>-->
+<!--        <input type="password" name="password" class="form-control ba aa" placeholder="Password" style="width: 330px;margin-top: 10px">-->
+
+
+<!--        &lt;!&ndash;           <label class="" id="lab3">验证码:</label>&ndash;&gt;-->
+<!--        &lt;!&ndash;           <input id="code" name="code" placeholder="验证码" type="text" class="form-control ba" style="width:170px;float: left;margin-top: 10px;&ndash;&gt;-->
+<!--        &lt;!&ndash;margin-left: 7px;">&ndash;&gt;-->
+<!--        &lt;!&ndash;           &lt;!&ndash; 验证码 显示 &ndash;&gt;&ndash;&gt;-->
+<!--        &lt;!&ndash;           <img onclick="javascript:getvCode()" id="verifyimg" style="margin-left: 20px;float: left;margin-top: 16px;"/>&ndash;&gt;-->
+
+
+<!--        <button class="bt bt1" type="submit" style="width: 30%;margin-left: 35%;">登录</button>-->
+<!--&lt;!&ndash;        <button class="bt bt1" type="button" style="width: 30%;margin-left: 15%;" onclick="toCommonRegister()">注册</button>&ndash;&gt;-->
+
+<!--        <p class="mt-5 mb-3 text-muted" style="text-align: center">© One Time</p>-->
+
+<!--    </form>-->
+<!--</div>-->
+<div style="width: 35%; margin-left: 35%; margin-top: 175px; height: 375px;" class="b">
     <div class="btn-group" role="group" aria-label="..." style="width: 100%;text-align: center" >
-        <button type="button" onclick="toCommonLogin()"  class="btn btn-default  bt " style="width: 25%;">会议</button>
+        <button type="button" onclick="toCommonLogin()"  class="btn btn-default bt " style="width: 25%;">会议</button>
         <button type="button" onclick="toHotelLogin()"  class="btn btn-default bt" style="width: 25%;">酒店</button>
         <button type="button" onclick="toDriverLogin()" class="btn btn-default bt" style="width: 25%;">司机</button>
         <button type="button" onclick="toManagerLogin()" id="default_btn" class="btn btn-default active bt" style="width: 25%;">管理员</button>
@@ -112,46 +143,51 @@
 
     <form class="form-signin f" action="" th:action="@{/manager/login}" method="post" >
         <p style="color:red;" th:text="${session.msg}" th:if="${not #strings.isEmpty(session.msg)}"></p>
-        <label class="" id="lab1" style="color: white;width: 60px;height: 20px">用户名:</label>
-        <input type="text" name="username" class="form-control ba aa" placeholder="Username" style="width: 330px;">
-        <label class="" id="lab2" style="">密码:</label>
-        <input type="password" name="password" class="form-control ba aa" placeholder="Password" style="width: 330px;margin-top: 10px">
+        <table style="width: 100%;" cellspacing="25px;">
+            <tr>
+                <td colspan="1" style="height: 55px;"><label class="" id="lab1" style="color: white;width: 60px;height: 20px;text-align: center">用户名:</label></td>
+                <td colspan="7"><input type="text" name="username" class="form-control ba aa" placeholder="Username" style="width: 80%;float: left"></td>
+            </tr>
+            <tr>
+                <td colspan="1" style="text-align: center;height: 55px;"><label class="" id="lab2" style="text-align: center">密码:</label></td>
+                <td colspan="7"><input type="password" name="password" class="form-control ba aa" placeholder="Password" style="width: 80%;margin-top: 10px;float: left"></td>
+            </tr>
+            <tr>
+                <td colspan="1" style="height: 55px;"><label class="" id="lab3">验证码:</label></td>
+                <td colspan="1">
+                    <input id="code" name="code" placeholder="验证码" type="text" class="form-control ba" style="width:90%;float: left;margin-top: 10px;">
+                </td>
+                <td colspan="7"><img onclick="javascript:getvCode()" id="verifyimg" style="float: left;margin-top: 16px;margin-right: 75px;"/></td>
+            </tr>
+        </table>
 
 
-        <!--           <label class="" id="lab3">验证码:</label>-->
-        <!--           <input id="code" name="code" placeholder="验证码" type="text" class="form-control ba" style="width:170px;float: left;margin-top: 10px;-->
-        <!--margin-left: 7px;">-->
-        <!--           &lt;!&ndash; 验证码 显示 &ndash;&gt;-->
-        <!--           <img onclick="javascript:getvCode()" id="verifyimg" style="margin-left: 20px;float: left;margin-top: 16px;"/>-->
+        <button class="bt bt1" type="submit" style="width: 30%;margin-left: 35%;float: left; margin-top: 15px">登录</button>
 
-
-        <button class="bt bt1" type="submit" style="width: 30%;margin-left: 35%;">登录</button>
-<!--        <button class="bt bt1" type="button" style="width: 30%;margin-left: 15%;" onclick="toCommonRegister()">注册</button>-->
-
-        <p class="mt-5 mb-3 text-muted" style="text-align: center">© One Time</p>
+        <p class="mt-5 mb-3 text-muted" style="text-align: center;float: left;width: 100%;margin-top: 50px;">© One Time</p>
 
     </form>
 </div>
 <script type="text/javascript">
-    // getvCode();
-    //
-    // /**
-    //  * 获取验证码
-    //  * 将验证码写到login.html页面的id = verifyimg 的地方
-    //  */
-    // function getvCode() {
-    //     document.getElementById("verifyimg").src = timestamp("/verifyCode");
-    // }
-    // //为url添加时间戳
-    // function timestamp(url) {
-    //     var getTimestamp = new Date().getTime();
-    //     if (url.indexOf("?") > -1) {
-    //         url = url + "&timestamp=" + getTimestamp
-    //     } else {
-    //         url = url + "?timestamp=" + getTimestamp
-    //     }
-    //     return url;
-    // };
+    getvCode();
+
+    /**
+     * 获取验证码
+     * 将验证码写到login.html页面的id = verifyimg 的地方
+     */
+    function getvCode() {
+        document.getElementById("verifyimg").src = timestamp("/verifyCode");
+    }
+    //为url添加时间戳
+    function timestamp(url) {
+        var getTimestamp = new Date().getTime();
+        if (url.indexOf("?") > -1) {
+            url = url + "&timestamp=" + getTimestamp
+        } else {
+            url = url + "?timestamp=" + getTimestamp
+        }
+        return url;
+    };
     function toCommonLogin(){
         window.location.replace("/common/enter");
     }
