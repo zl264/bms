@@ -292,7 +292,6 @@ public class OrganizerController {
         organizerMapper.deleteParticipantFromCongress(commonId,congressId);
         organizerMapper.deleteParticipantFromDriver(commonId,congressId);
 
-
         int userId = commonMapper.getCommonIdByUsername((String) session.getAttribute("loginUser"));
         CongressVO congress = commonMapper.getCongressById(congressId);
         String organizerName = commonMapper.getUsernameById((int) congress.getOrganizerId());
