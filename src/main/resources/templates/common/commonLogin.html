@@ -135,10 +135,9 @@
 <!--</div>-->
 <div style="width: 35%; margin-left: 35%; margin-top: 175px; height: 375px;" class="b">
     <div class="btn-group" role="group" aria-label="..." style="width: 100%;text-align: center" >
-        <button type="button" onclick="toCommonLogin()" id="default_btn" class="btn btn-default active bt " style="width: 25%;">会议</button>
-        <button type="button" onclick="toHotelLogin()" class="btn btn-default bt" style="width: 25%;">酒店</button>
-        <button type="button" onclick="toDriverLogin()" class="btn btn-default bt" style="width: 25%;">司机</button>
-        <button type="button" onclick="toManagerLogin()" class="btn btn-default bt" style="width: 25%;">管理员</button>
+        <button type="button" onclick="toCommonLogin()" id="default_btn" class="btn btn-default active bt " style="width: 33%;">会议</button>
+        <button type="button" onclick="toHotelLogin()" class="btn btn-default bt" style="width: 33%;">酒店</button>
+        <button type="button" onclick="toDriverLogin()" class="btn btn-default bt" style="width: 34%;">司机</button>
     </div>
 
 
@@ -162,7 +161,7 @@
             </tr>
         </table>
 
-        <a style="width: 85%;float: left;text-align: right;margin-top: 10px;">忘记密码</a>
+        <a th:href="@{/common/loss}" style="width: 85%;float: left;text-align: right;margin-top: 10px;">忘记密码</a>
 
         <button class="bt bt1" type="submit" style="width: 30%;margin-left: 15%;float: left; margin-top: 10px">登录</button>
         <button class="bt bt1" type="button" style="width: 30%;margin-left: 15%;float: left; margin-top: 10px" onclick="toCommonRegister()">注册</button>

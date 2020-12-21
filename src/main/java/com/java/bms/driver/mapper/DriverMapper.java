@@ -201,4 +201,24 @@ public interface DriverMapper {
             "and userDriver.commonId = commonUser.commonId and congressNote.congressId = #{congressId}" +
             " and congressNote.commonId = userDriver.commonId")
     List<UserDriverVO> getList(int driverId,int congressId);
+
+    /**
+     * 判断用户名和手机号是否一致
+     * @param username
+     * @param tel
+     * @return
+     */
+    @Select("select count(*) from driver where username = #{username} and tel = #{tel}")
+    int usernameAndTelIsRight(String username,String tel);
+
+
+    /**
+     * 更新密码
+     * @param driverId
+     * @param password
+     * @return
+     */
+    @Update("update driverLogin set password = #{password} " +
+            "where id = #{driverId}")
+    int updatePassword(int driverId,String password);
 }

@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -64,7 +66,7 @@ public class HotelController {
      */
     @PostMapping(value = "/hotel/login")
     public String hotelLogin(@RequestParam("username") String username,
-                              @RequestParam("password") String password,
+                              @RequestParam("password") String password,@RequestParam("code") String code,
                               Map<String,Object> map, HttpSession session, Model model){
         if(StringUtils.isEmpty(username)||StringUtils.isEmpty(password)){
             session.setAttribute("msg","请输入用户名密码");
@@ -74,6 +76,14 @@ public class HotelController {
         if(userDo==null){
             session.setAttribute("msg","用户名密码错误");
             return "redirect:/hotel/enter";
+        }
+        if(StringUtils.isEmpty(code)){
+            session.setAttribute("msg","请输入验证码");
+            return "redirect:/common/enter";
+        }
+        if (!code.equals(session.getAttribute("VerifyCode"))){
+            session.setAttribute("msg","验证码错误");
+            return "redirect:/common/enter";
         }
         if(username.equals(userDo.getUsername())&&password.equals(userDo.getPassword())) {
 //            登录成功以后，防止表单重复提交，可以重定向到主页
@@ -116,6 +126,50 @@ public class HotelController {
             return "/hotel/hotelRegister";
         }
     }
+
+
+    /**
+     * 进入用户忘记密码界面
+     * @return
+     */
+    @RequestMapping("/hotel/loss")
+    public String enterLossPassword(){
+        return "/hotel/lossPassword";
+    }
+
+    /**
+     * 判断用户输入的用户名和手机号是否一致
+     * @param request
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("/hotel/equal")
+    public String hotelLossPassword(HttpServletRequest request, HttpSession session, Model model){
+        String username = (String)request.getParameter("username");
+        String tel = (String) request.getParameter("tel");
+
+        if(hotelMapper.usernameAndTelIsRight(username,tel)!=0){
+            model.addAttribute("switch",1);
+            int hotelId = hotelMapper.getHotelIdByHotelName(username);
+            model.addAttribute("hotelId",hotelId);
+        }else{
+            model.addAttribute("msg","用户名或手机号输入错误");
+        }
+
+        return "/hotel/lossPassword";
+    }
+
+    @RequestMapping("/hotel/updatePassword")
+    public String hotelUpdatePassword(HttpSession session,HttpServletRequest request){
+        int hotelId = Integer.parseInt(request.getParameter("hotelId"));
+        String password = request.getParameter("password");
+        hotelMapper.updatePassword(hotelId,password);
+
+        session.setAttribute("msg","修改密码成功");
+        return "/hotel/hotelLogin";
+    }
+
 
     /**
      * 进入酒店信息界面
@@ -455,12 +509,25 @@ public class HotelController {
         int isOrder = hotelMapper.isOrderHotel(hotelId,commonId);
         int isCheckIn = hotelMapper.isCheckInHotel(hotelId,commonId);
         int isFree = hotelMapper.isFree(hotelId,commonId);
+        long day = 0;
+        HotelNoteVO note = null;
+        if(isOrder==1){
+            note = hotelMapper.orderHotelNote(hotelId,commonId);
+            day = Duration.between(note.getCheckInStartTime(),note.getCheckInEndTime()).toDays();
+        }
+        if(isCheckIn==1){
+            note = hotelMapper.checkInHotel(hotelId,commonId);
+            day = Duration.between(note.getCheckInStartTime(),note.getCheckInEndTime()).toDays();
+        }
+
 
         model.addAttribute("hotel",hotel);
         model.addAttribute("isOrder",isOrder);
         model.addAttribute("isCheckIn",isCheckIn);
         model.addAttribute("isFree",isFree);
         model.addAttribute("commonId",commonId);
+        model.addAttribute("note",note);
+        model.addAttribute("day",day);
         return "/hotel/showHotel";
     }
 
@@ -502,12 +569,25 @@ public class HotelController {
         int isOrder = hotelMapper.isOrderHotel(hotelId,commonId);
         int isCheckIn = hotelMapper.isCheckInHotel(hotelId,commonId);
         int isFree = hotelMapper.isFree(hotelId,commonId);
+        long day = 0;
+        HotelNoteVO note = null;
+        if(isOrder==1){
+            note = hotelMapper.orderHotelNote(hotelId,commonId);
+            day = Duration.between(note.getCheckInStartTime(),note.getCheckInEndTime()).toDays();
+        }
+        if(isCheckIn==1){
+            note = hotelMapper.checkInHotel(hotelId,commonId);
+            day = Duration.between(note.getCheckInStartTime(),note.getCheckInEndTime()).toDays();
+        }
+
 
         model.addAttribute("hotel",hotel);
         model.addAttribute("isOrder",isOrder);
         model.addAttribute("isCheckIn",isCheckIn);
         model.addAttribute("isFree",isFree);
         model.addAttribute("commonId",commonId);
+        model.addAttribute("note",note);
+        model.addAttribute("day",day);
         return "/hotel/showHotel";
     }
 
@@ -524,6 +604,54 @@ public class HotelController {
         model.addAttribute("congress",congress);
         model.addAttribute("organizerName",organizerName);
         return "/common/hotelLookCongress";
+    }
+
+    /**
+     * 普通用户取消预约(取消申请预约和取消预约成功的记录)
+     * @param commonId
+     * @param hotelId
+     * @param applyType
+     * @param model
+     * @return
+     */
+    @RequestMapping("/hotel/commonCancelHotel")
+    public String commonCancelHotel(@RequestParam("commonId") int commonId,@RequestParam("hotelId") int hotelId,
+                                    @RequestParam("applyType") int applyType,Model model){
+        if(applyType==1){
+            hotelMapper.deleteHotelOrderNoteByHotelIdAndCommonId(hotelId,commonId);
+        }
+        if(applyType==2){
+            HotelNoteVO note = hotelMapper.checkInHotel(hotelId,commonId);
+            hotelMapper.deleteHotelCheckInNote(hotelId,commonId);
+            if(hotelMapper.isHaveCancelNote(hotelId,commonId)==0){
+                hotelMapper.insertHotelCancelNote(hotelId,commonId,note.getCommonPhone(),note.getCommonName());
+            }
+        }
+
+        HotelVO hotel = hotelMapper.getHotelByHotelId(hotelId);
+        int isOrder = hotelMapper.isOrderHotel(hotelId,commonId);
+        int isCheckIn = hotelMapper.isCheckInHotel(hotelId,commonId);
+        int isFree = hotelMapper.isFree(hotelId,commonId);
+        long day = 0;
+        HotelNoteVO note = null;
+        if(isOrder==1){
+            note = hotelMapper.orderHotelNote(hotelId,commonId);
+            day = Duration.between(note.getCheckInStartTime(),note.getCheckInEndTime()).toDays();
+        }
+        if(isCheckIn==1){
+            note = hotelMapper.checkInHotel(hotelId,commonId);
+            day = Duration.between(note.getCheckInStartTime(),note.getCheckInEndTime()).toDays();
+        }
+
+
+        model.addAttribute("hotel",hotel);
+        model.addAttribute("isOrder",isOrder);
+        model.addAttribute("isCheckIn",isCheckIn);
+        model.addAttribute("isFree",isFree);
+        model.addAttribute("commonId",commonId);
+        model.addAttribute("note",note);
+        model.addAttribute("day",day);
+        return "/hotel/showHotel";
     }
 
 

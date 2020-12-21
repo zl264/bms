@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
@@ -61,7 +62,7 @@ public class DriverController {
      */
     @PostMapping(value = "/driver/login")
     public String driverLogin(@RequestParam("username") String username,
-                              @RequestParam("password") String password,/*@RequestParam("code") String code,*/
+                              @RequestParam("password") String password,@RequestParam("code") String code,
                               Map<String,Object> map, HttpSession session, Model model){
         if(StringUtils.isEmpty(username)||StringUtils.isEmpty(password)){
             session.setAttribute("msg","请输入用户名密码");
@@ -73,14 +74,14 @@ public class DriverController {
             session.setAttribute("msg","用户名密码错误");
             return "redirect:/driver/enter";
         }
-//        if(StringUtils.isEmpty(code)){
-//            session.setAttribute("msg","请输入验证码");
-//            return "redirect:/driver/enter";
-//        }
-//        if (!code.equals(session.getAttribute("VerifyCode"))){
-//            session.setAttribute("msg","验证码错误");
-//            return "redirect:/driver/enter";
-//        }
+        if(StringUtils.isEmpty(code)){
+            session.setAttribute("msg","请输入验证码");
+            return "redirect:/driver/enter";
+        }
+        if (!code.equals(session.getAttribute("VerifyCode"))){
+            session.setAttribute("msg","验证码错误");
+            return "redirect:/driver/enter";
+        }
         if(username.equals(userDo.getUsername())&&password.equals(userDo.getPassword())) {
 //            登录成功以后，防止表单重复提交，可以重定向到主页
             DriverVO driverVO = driverMapper.getDriverByDriverId(userDo.getId());
@@ -145,6 +146,49 @@ public class DriverController {
             map.put("msg","出现错误，注册失败，请再次尝试或联系管理员");
             return "/driver/driverRegister";
         }
+    }
+
+
+    /**
+     * 进入司机用户忘记密码界面
+     * @return
+     */
+    @RequestMapping("/driver/loss")
+    public String enterLossPassword(){
+        return "/driver/lossPassword";
+    }
+
+    /**
+     * 判断司机输入的用户名和手机号是否一致
+     * @param request
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("/driver/equal")
+    public String driverLossPassword(HttpServletRequest request, HttpSession session, Model model){
+        String username = (String)request.getParameter("username");
+        String tel = (String) request.getParameter("tel");
+
+        if(driverMapper.usernameAndTelIsRight(username,tel)!=0){
+            model.addAttribute("switch",1);
+            int driverId = driverMapper.getDriverIdByUsername(username);
+            model.addAttribute("driverId",driverId);
+        }else{
+            model.addAttribute("msg","用户名或手机号输入错误");
+        }
+
+        return "/driver/lossPassword";
+    }
+
+    @RequestMapping("/driver/updatePassword")
+    public String driverUpdatePassword(HttpSession session,HttpServletRequest request){
+        int driverId = Integer.parseInt(request.getParameter("driverId"));
+        String password = request.getParameter("password");
+        driverMapper.updatePassword(driverId,password);
+
+        session.setAttribute("msg","修改密码成功");
+        return "/driver/driverLogin";
     }
 
 

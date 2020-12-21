@@ -149,15 +149,18 @@
                     </thead>
                     <tbody>
                     <tr >
-                        <td ></td>
-                        <td ></td>
-                        <td ></td>
+                        <td th:text="${note.getType()==1?'单人房':'双人房'}" ></td>
+                        <td th:text="${#temporals.format(note.getCheckInStartTime(),'yyyy-MM-dd HH:mm')}"></td>
+                        <td th:text="${day}"></td>
                         <td>
-                            <span >已申请预约</span>
-                            <span >已预约成功</span>
+                            <span th:if="${isOrder==1} and ${isCheckIn==0}">已申请预约</span>
+                            <span th:if="${isOrder==0} and ${isCheckIn==1}">已预约成功</span>
                         </td>
                         <td>
-                            <form >
+                            <form th:action="@{/hotel/commonCancelHotel}">
+                                <input type="hidden" name="hotelId" th:value="${note.getHotelId()}">
+                                <input type="hidden" name="commonId" th:value="${note.getCommonId()}">
+                                <input type="hidden" name="applyType" th:value="${isOrder==1?1:2}">
                                 <input class="btn btn-sm btn-primary" type="submit" value="取消预约">
                             </form>
                         </td>

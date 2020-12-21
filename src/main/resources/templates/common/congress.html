@@ -385,13 +385,6 @@
                         <input class="margintop" type="file" id="congressImage" name="file"/>
                         <input class="btn btn-sm btn-primary margintop" type="button" onclick="changeImage()" value="更换"/>
                     </form>
-                   <!-- <span class="btn btn-success fileinput-button">
-                         <span>上传</span>
-                         <input type="file">
-                    </span>
-                    <form method="post" enctype="multipart/form-data">
-                        <input class="btn btn-sm btn-primary margintop" type="button" onclick="changeImage()" value="更换"/>
-                    </form>-->
                     <div class="row margintop">
                         <h3>
                             <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
@@ -491,7 +484,9 @@
                                 <lable>暂未分配司机</lable>
                             </div>
                         </div>
-
+                        <div class="paddingtop" th:unless="${record.getArrivalPlace()}!=null and ${record.getArrivalTime()}!=null">
+                            如需接送服务请先填写到达时间和到达地点
+                        </div>
                     </div>
                 </div>
 
@@ -540,8 +535,6 @@
             formData.append("file",up_file);//将选择的文件添加到formdata中
             var congressId = [[${congress.getCongressId()}]];
             formData.append("congressId",congressId);
-            alert(congressId);
-            alert(1);
             $.ajax
             ({
                 url:'/congress/image',

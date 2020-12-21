@@ -87,10 +87,10 @@
                         <td th:text="${note.getCommonName()}"></td>
                         <td th:text="${note.getCommonPhone()}"></td>
                         <td>
-                            <form th:action="@{/hotel/confirm}" method="post">
+                            <form th:action="@{/hotel/cancel}" method="post">
                                 <input type="hidden" name="hotelId" id="hotelId" th:value="${note.getHotelId()}">
                                 <input type="hidden" name="commonId" id="commonId" th:value="${note.getCommonId()}">
-                                <input class="btn btn-sm btn-primary" type="submit" value="拒绝">
+                                <input class="btn btn-sm btn-primary" type="submit" value="确认">
                             </form>
                         </td>
                     </tr>

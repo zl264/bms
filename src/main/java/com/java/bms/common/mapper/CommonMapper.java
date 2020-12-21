@@ -176,6 +176,32 @@ public interface CommonMapper {
     @Update("update commonUser set image = #{image} where commonId = #{commonId}")
     int updateCommonHeadImage(String image,int commonId);
 
+    /**
+     * 更换会议头像
+     * @param image
+     * @param congressId
+     * @return
+     */
     @Update("update congress set image = #{image} where congressId = #{congressId}")
     int updateCongressImage(String image,int congressId);
+
+    /**
+     * 判断用户名和手机号是否一致
+     * @param username
+     * @param tel
+     * @return
+     */
+    @Select("select count(*) from commonUser where username = #{username} and tel = #{tel}")
+    int usernameAndTelIsRight(String username,String tel);
+
+
+    /**
+     * 更新密码
+     * @param commonId
+     * @param password
+     * @return
+     */
+    @Update("update commonLogin set password = #{password} " +
+            "where id = #{commonId}")
+    int updatePassword(int commonId,String password);
 }

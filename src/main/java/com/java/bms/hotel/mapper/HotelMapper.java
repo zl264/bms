@@ -58,6 +58,9 @@ public interface HotelMapper {
     @Select("select id from hotelLogin where username = #{hotelUsername}")
     int getHotelIdByHotelUsername(String hotelUsername);
 
+    @Select("select hotelId from hotel where hotelName = #{hotelName}")
+    int getHotelIdByHotelName(String hotelName);
+
     /**
      * 插入酒店信息
      * @param hotelName
@@ -277,6 +280,16 @@ public interface HotelMapper {
     int isOrderHotel(int hotelId,int commonId);
 
     /**
+     * 获取用户申请预约的记录
+     * @param hotelId
+     * @param commonId
+     * @return
+     */
+    @Select("select * from hotelOrderNote " +
+            "where hotelId = #{hotelId} and commonId = #{commonId}")
+    HotelNoteVO orderHotelNote(int hotelId,int commonId);
+
+    /**
      * 用户是否有预约成功记录
      * @param hotelId
      * @param commonId
@@ -285,6 +298,17 @@ public interface HotelMapper {
     @Select("select count(*) from hotelCheckInNote " +
             "where hotelId = #{hotelId} and commonId = #{commonId}")
     int isCheckInHotel(int hotelId,int commonId);
+
+
+    /**
+     * 用户申请预约的记录
+     * @param hotelId
+     * @param commonId
+     * @return
+     */
+    @Select("select * from hotelCheckInNote " +
+            "where hotelId = #{hotelId} and commonId = #{commonId}")
+    HotelNoteVO checkInHotel(int hotelId,int commonId);
 
     /**
      * 是否是会议参与者选择酒店，是否应该免费
@@ -343,4 +367,48 @@ public interface HotelMapper {
      */
     @Update("update hotel set image = #{image} where hotelId = #{hotelId}")
     int updateHotelImage(String image,int hotelId);
+
+
+    /**
+     * 插入用户取消预约的记录
+     * @param hotelId
+     * @param commonId
+     * @param commonPhone
+     * @param commonName
+     * @return
+     */
+    @Insert("insert into hotelCancelOrder(hotelId,commonId,commonPhone,commonName) " +
+            "values(#{hotelId},#{commonId},#{commonPhone},#{commonName})")
+    int insertHotelCancelNote(int hotelId,int commonId,String commonPhone,String commonName);
+
+    /**
+     * 是否有用取消预约的记录
+     * @param hotelId
+     * @param commonId
+     * @return
+     */
+    @Select("select count(*) from hotelCancelOrder " +
+            "where hotelId = #{hotelId} and commonId = #{commonId}")
+    int isHaveCancelNote(int hotelId,int commonId);
+
+
+    /**
+     * 判断用户名和手机号是否一致
+     * @param hotelName
+     * @param hotelPhone
+     * @return
+     */
+    @Select("select count(*) from hotel where hotelName = #{hotelName} and hotelPhone = #{hotelPhone}")
+    int usernameAndTelIsRight(String hotelName,String hotelPhone);
+
+
+    /**
+     * 更新密码
+     * @param hotelId
+     * @param password
+     * @return
+     */
+    @Update("update hotelLogin set password = #{password} " +
+            "where id = #{hotelId}")
+    int updatePassword(int hotelId,String password);
 }

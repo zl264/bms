@@ -24,7 +24,9 @@ public class AllConfig implements WebMvcConfigurer {
             "/driver/login","/driver/register","/hotel/login","/hotel/register","/manager/login",
             "/common/enter","/common/enterRegister","/hotel/enter","/hotel/enterRegister","/manager/enter","/driver/enter","/driver/enterRegister",
             "/common/commonLogin","/common/commonRegister","/hotel/hotelLogin","/hotel/hotelRegister","/manager/managerLogin","/driver/driverLogin","/driver/driverRegister",
-            "/verifyCode","/common/register1","/fileUpload","/images/**","/common/image"
+            "/verifyCode","/common/register1","/fileUpload","/images/**","/common/image","/common/loss","/common/equal",
+            "/common/updatePassword","/hotel/loss","/hotel/equal","/hotel/updatePassword","/driver/loss","/driver/equal",
+            "/driver/updatePassword"
     ));
 
     @Bean
@@ -58,8 +60,8 @@ public class AllConfig implements WebMvcConfigurer {
                  * addResourceHandler：访问映射路径
                  * addResourceLocations：资源绝对路径
                  */
-                registry.addResourceHandler("/images/**").addResourceLocations("file:D:/images/");
-//                registry.addResourceHandler("/images/**").addResourceLocations("file:/home/images/");
+//                registry.addResourceHandler("/images/**").addResourceLocations("file:D:/images/");
+                registry.addResourceHandler("/images/**").addResourceLocations("file:/home/images/");
             }
         };
         return adapter;
