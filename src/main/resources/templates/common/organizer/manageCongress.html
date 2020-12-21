@@ -8,48 +8,331 @@
     <title>查看已经参加的会议</title>
 
     <style>
-        .showCongress{
-            margin-top: 100px;
+        .paddingtop{
+            padding-top:10px ;
+        }
+        .line {
+            border-bottom: 2px solid #000000;
+            padding: 5px;
+        }
+        lable{
+            font-size:20px;
+        }
+        .rg_center{
+            border:5px solid #EEEEEE;
+            background-color: #e3e3e3;
+            margin-top: 20px;
+            padding:20px;
+            width: 800px;
+        }
+        .td_left{
+            width:300px;
+            text-align: right;
+            height:45px;
+        }
+        .td_right{
+            padding-left: 50px;
+        }
+        #title,#place,#registerEndTime,#registerStartTime,#endTime,#startTime{
+            width:250px;
+            height:40px;
+            border: 1px solid #000000;
+            /*设置边框圆角*/
+            border-radius: 5px;
+            padding-left: 10px;
+        }
+        #btn_sub{
+            width:200px;
+            height:40px;
+            background-color:#000000;
+            border: 1px solid #000000;
+            margin-top:10px;
+            font-size: 20px;
+            color: white;
+        }
+        .error{
+            color:#d43f3a;
+            font-size: 15px;
+            padding: 10px;
         }
     </style>
+
+    <script>
+        window.onload=function(){
+            document.getElementById("form1").onsubmit=function(){
+                return checkTitle() && checkContent() && checkPlace() && checkstartTime() &&
+                    checkendTime() && checkregisterStartTime() && checkregisterEndTime();
+            }
+            document.getElementById("title").onblur=checkTitle;
+            document.getElementById("place").onblur=checkPlace;
+            document.getElementById("content").onblur=checkContent;
+            document.getElementById("startTime").onblur=checkstartTime;
+            document.getElementById("endTime").onblur=checkendTime;
+            document.getElementById("registerStartTime").onblur=checkregisterStartTime;
+            document.getElementById("registerEndTime").onblur=checkregisterEndTime;
+        }
+
+        function checkTitle(){
+            var title=document.getElementById("title").value;
+            var s_title=document.getElementById("s_title");
+            if(title=='') {
+                s_title.innerHTML = " <span class=\"error\">该项不能为空</span>";
+                return false
+            }
+            else{
+                s_title.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+                return true;
+            }
+
+        }
+        function checkPlace(){
+            var place=document.getElementById("place").value;
+            var s_place=document.getElementById("s_place");
+            if(isnull(place)) {
+                s_place.innerHTML = " <span class=\"error\">该项不能为空</span>";
+                return false;
+            }
+            else{
+               s_place.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+                return true;
+            }
+
+        }
+        function checkContent(){
+            var content=document.getElementById("content").value;
+            var s_content=document.getElementById("s_content");
+            if(isnull(content)) {
+                s_content.innerHTML = " <span class=\"error\">该项不能为空</span>";
+                return false;
+            }
+            else{
+                s_content.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+                return true;
+            }
+
+        }
+        function checkstartTime(){
+            var startTime=document.getElementById("startTime").value;
+            var s_startTime=document.getElementById("s_startTime");
+            if(isnull(startTime)) {
+                s_startTime.innerHTML = " <span class=\"error\">该项不能为空</span>";
+                return false;
+            }
+            else{
+               s_startTime.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+                return true;
+            }
+
+        }
+        function checkendTime(){
+            var endTime=document.getElementById("endTime").value;
+            var s_endTime=document.getElementById("s_endTime");
+            if(isnull(endTime)) {
+                s_endTime.innerHTML = " <span class=\"error\">该项不能为空</span>";
+                return false;
+            }
+            else{
+               s_endTime.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+                return true;
+            }
+
+        }
+        function checkregisterStartTime(){
+            var registerStartTime=document.getElementById("registerStartTime").value;
+            var s_registerStartTime=document.getElementById("s_registerStartTime");
+            if(isnull(registerStartTime)) {
+                s_registerStartTime.innerHTML = " <span class=\"error\">该项不能为空</span>";
+                return false;
+            }
+            else{
+                s_registerStartTime.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+                return true;
+            }
+
+        }
+        function checkregisterEndTime(){
+            var registerEndTime=document.getElementById("registerEndTime").value;
+            var s_registerEndTime=document.getElementById("s_registerEndTime")
+            if(isnull(registerEndTime)) {
+                s_registerEndTime.innerHTML = " <span class=\"error\">该项不能为空</span>";
+                return false;
+            }
+            else{
+               s_registerEndTime.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+                return true;
+            }
+
+        }
+    </script>
     <!-- Bootstrap -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/dashboard.css" rel="stylesheet">
 
+    <script src="/js/html5shiv.min.js"></script>
+    <script src="/js/respond.min.js"></script>
 
-    <script src="../js/html5shiv.min.js"></script>
-    <script src="../js/respond.min.js"></script>
 
 </head>
 <body>
-<a th:href="@{/organizer/creat}"><button class="btn btn-sm btn-danger deleteBtn">创建会议</button></a>
-<div th:if="${allCongress.size()!=0}">
-    <div class="container showCongress" th:if="${allCongress!=null}">
-        <div class="row" >
-            <div class="col-sm-6 col-md-4 col-lg-3 " th:each="congress:${allCongress}">
-                <div class="thumbnail" style="height: 360px;">
-                    <a th:href="@{/congress/}+${congress.getCongressId()}" >
-                        <img class="lazy" th:src="'../img/'+${congress.getImage()}+'.jpg'" alt="会议图片" width="300" height="150">
-                    </a>
-                    <div class="caption">
-                        <h3>
-                            <a th:href="@{/congress/}+${congress.getCongressId()}" th:text="${congress.getTitle()}"></a>
-                        </h3>
-                        <p th:text="${#strings.substring(congress.getContent(),0,20)}" th:if="${congress.getContent().length()>20}"></p>
-                        <p th:text="${congress.getContent()}" th:if="${congress.getContent().length()<20}"></p>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" th:href="@{/}">首页</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#" th:href="@{/common/information}" style="margin-right: 50px;">
+                            <img class="img-circle" th:src="@{/images/head/}+${user.getImage()!=null?user.getImage():'0.jpg'}"
+                                 th:alt="${session.loginUser}" th:if="${session.user!=null}" width="30" height="30">
+                            <img th:if="${user==null}"
+                                 class="img-circle" src="/img/head/0.jpg" th:alt="${session.loginUser}" width="30" height="30">
+                        </a>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-right" th:action="@{/common/search}">
+                    <input type="text" name="information" class="form-control" placeholder="Search...">
+                    <button type="submit" class="btn btn-default">搜索</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+<div class="container-fluid">
+    <div class="row paddingtop">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="#" th:href="@{/common/returnMain}">主页</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="#" th:href="@{/organizer/manage}">创建会议</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="#" th:href="@{/participant/congress}">查看会议</a></li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="#" th:href="@{/participant/hotel}">查看酒店</a></li>
+            </ul>
+        </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="row line">
+                <h1 class="page-header ">
+                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                    <span>创建会议</span>
+                </h1>
+            </div>
+            <!--创建会议表单-->
+            <div class="row rg_center">
+                <form th:action="@{/organizer/congress}" id="form1" method="post">
+                    <table>
+                        <tr>
+                            <td class="td_left"><lable for="title">会议名称：</lable></td>
+                            <td class="td_right">
+                                <input type="text" name="title" id="title" placeholder="请输入会议名称">
+                                <span id="s_title"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td_left"><lable for="content">会议内容：</lable></td>
+                            <td class="td_right">
+                                <textarea style="width:250px; height:100px; border:solid 1px #000000; border-radius:5px; resize:none;" name="content" id="content"></textarea>
+                                <span id="s_content" style="margin-bottom: 10px"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td_left"><lable for="place">会议地点：</lable></td>
+                            <td class="td_right">
+                                <input type="text" name="place" id="place" placeholder="请输入会议地点">
+                                <span id="s_place"></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td_left"><lable for="startTime">会议开始时间：</lable></td>
+                            <td class="td_right">
+                                <input type="datetime-local" name="startTime" id="startTime" >
+                                <span id="s_startTime"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td_left"><lable for="endTime">会议结束时间：</lable></td>
+                            <td class="td_right">
+                                <input type="datetime-local" name="endTime" id="endTime" >
+                                <span id="s_endTime"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td_left"><lable for="registerStartTime">申请会议开始时间：</lable></td>
+                            <td class="td_right">
+                                <input type="datetime-local" name="registerStartTime" id="registerStartTime" >
+                                <span id="s_registerStartTime"></span>
+                            </td>
+                        <tr>
+                        <tr>
+                            <td class="td_left"><lable for="registerEndTime">申请会议结束时间：</lable></td>
+                            <td class="td_right">
+                                <input type="datetime-local" name="registerEndTime" id="registerEndTime" >
+                                <span id="s_registerEndTime"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                        <td colspan="2" align="center"><input type="submit" id="btn_sub" value="创建会议"></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="row line">
+                <h1>
+                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                    <span>我创建的会议</span>
+                </h1>
+            </div>
+
+            <div class="row placeholders paddingtop">
+                <div class="row" th:if="${allCongress.size()!=0}">
+                    <div class="row" th:if="${allCongress!=null}">
+                        <div class="col-xs-6 col-sm-3 placeholder" th:each="congress:${allCongress}">
+                            <div class="thumbnail" style="height: 360px;">
+                                <a th:href="@{/congress/}+${congress.getCongressId()}" >
+                                    <img class="lazy" th:src="@{/images/congress/}+${congress.getImage()!=null?congress.getImage():'0.jpg'}" alt="会议图片" style="height: 150px;width: 300px;">
+                                </a>
+                                <div class="caption">
+                                    <h3>
+                                        <a th:href="@{/congress/}+${congress.getCongressId()}" th:text="${congress.getTitle()}"></a>
+                                    </h3>
+                                    <p th:text="${#strings.substring(congress.getContent(),0,20)}" th:if="${congress.getContent().length()>20}"></p>
+                                    <p th:text="${congress.getContent()}" th:if="${congress.getContent().length()<20}"></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <div class="col-xs-6 col-sm-3 placeholder" >
+                    <div th:unless="${allCongress.size()!=0}" >
+                        你还木有创建会议
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
 
-<div th:unless="${allCongress.size()!=0}" >
-    你还没有创建会议
-</div>
-
 </body>
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-<script src="../js/jquery.min.js"></script>
+<script src="/js/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-<script src="../js/bootstrap.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/utils.js"></script>
 </html>

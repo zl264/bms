@@ -6,241 +6,569 @@
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <title th:text="${congress.getTitle()}"></title>
-
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .td1{
-            width: 300px;
+        .rg_center{
+            border:5px solid #EEEEEE;
+            background-color: #f9f9f9;
+            margin-top: 20px;
+            margin-left: 50px;
+            padding:20px;
+            width: 800px;
         }
-        table{
-            width: 50%;
-            text-align: center;
-            margin-top: 150px;
+        .td_left{
+            width:200px;
+            text-align: right;
+            height:45px;
+            font-size: 15px;
+        }
+        .td_right{
+            padding-left: 50px;
+            font-size: 15px;
+        }
+        .paddingtop{
+            padding-top:10px ;
+        }
+        .margintop{
+            margin-top: 15px;
+        }
+        .line {
+            border-bottom: 2px solid #000000;
+            padding: 5px;
+        }
+        #arrivalPlace,#arrivalTime{
+            width:250px;
+            height:40px;
+            border: 1px solid #000000;
+            /*设置边框圆角*/
+            border-radius: 5px;
+            padding-left: 10px;
+        }
+        .btn_sub{
+            width:200px;
+            height:40px;
+            background-color:#000000;
+            border: 1px solid #000000;
+            margin-top:10px;
+            margin-left: 300px;
+            font-size: 20px;
+            color: white;
+        }
+        #btn1{
+            width:200px;
+            height:40px;
+            background-color:#000000;
+            border: 1px solid #000000;
+            font-size: 20px;
+            color: white;
         }
     </style>
 
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/dashboard.css" rel="stylesheet">
 
+    <script src="/js/html5shiv.min.js"></script>
+    <script src="/js/respond.min.js"></script>
 </head>
 <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" th:href="@{/commonMain}">返回</a>
+            </div>
+            </div>
+        </div>
+    </nav>
 
-<!--判断进入这个会议的是不是会议组织者-->
-<div th:if="${session.loginUser} eq ${organizerName}">
-    <h2>会议的基本信息</h2>
-    <form style="text-align: left;margin-top: 150px;margin-left: 300px" method="post" th:action="@{/organizer/alter}">
-        <input type="hidden" name="congressId" th:value="${congress.getCongressId()}" th:if="${congress.getCongressId()}">
-        会议名称:<input type="text" name="title" th:value="${congress.getTitle()}"/><br>
-        内容:<textarea name="content" th:text="${congress.getContent()}"></textarea><br>
-        地点:<input type="text" name="place" th:value="${congress.getPlace()}"/><br>
-        开始时间:
-        <input type="text" name="startTimeYear" th:value="${congress.getStartTime().getYear()}"/>年
-        <input type="text" name="startTimeMonth" th:value="${congress.getStartTime().getMonthValue()}"/>月
-        <input type="text" name="startTimeDay" th:value="${congress.getStartTime().getDayOfMonth()}"/>日
-        <input type="text" name="startTimeHour" th:value="${congress.getStartTime().getHour()}"/>点
-        <input type="text" name="startTimeMinute" th:value="${congress.getStartTime().getMinute()}"/>分<br>
-        结束时间:
-        <input type="text" name="endTimeYear" th:value="${congress.getEndTime().getYear()}"/>年
-        <input type="text" name="endTimeMonth" th:value="${congress.getEndTime().getMonthValue()}"/>月
-        <input type="text" name="endTimeDay" th:value="${congress.getEndTime().getDayOfMonth()}"/>日
-        <input type="text" name="endTimeHour" th:value="${congress.getEndTime().getHour()}"/>点
-        <input type="text" name="endTimeMinute" th:value="${congress.getEndTime().getMinute()}"/>分<br>
-        报名会议开始时间:
-        <input type="text" name="registerStartTimeYear" th:value="${congress.getRegisterStartTime().getYear()}"/>年
-        <input type="text" name="registerStartTimeMonth" th:value="${congress.getRegisterStartTime().getMonthValue()}"/>月
-        <input type="text" name="registerStartTimeDay" th:value="${congress.getRegisterStartTime().getDayOfMonth()}"/>日
-        <input type="text" name="registerStartTimeHour" th:value="${congress.getRegisterStartTime().getHour()}"/>点
-        <input type="text" name="registerStartTimeMinute" th:value="${congress.getRegisterStartTime().getMinute()}"/>分<br>
-        报名会议结束时间:
-        <input type="text" name="registerEndTimeYear" th:value="${congress.getRegisterEndTime().getYear()}"/>年
-        <input type="text" name="registerEndTimeMonth" th:value="${congress.getRegisterEndTime().getMonthValue()}"/>月
-        <input type="text" name="registerEndTimeDay" th:value="${congress.getRegisterEndTime().getDayOfMonth()}"/>日
-        <input type="text" name="registerEndTimeHour" th:value="${congress.getRegisterEndTime().getHour()}"/>点
-        <input type="text" name="registerEndTimeMinute" th:value="${congress.getRegisterEndTime().getMinute()}"/>分<br>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">保存</button>
-    </form>
+    <div class="container-fluid">
+        <div class="row paddingtop">
+            <div class="col-sm-3 col-md-2 sidebar">
+            <!--显示侧边栏-->
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <!--判断进入这个会议的是不是会议组织者-->
+                <div th:if="${session.loginUser} eq ${organizerName}">
+                    <div class="row line">
+                        <h1 class="page-header ">
+                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                            <span>会议基本信息</span>
+                        </h1>
+                    </div>
+                    <div class="row rg_center">
+                        <form th:action="@{/organizer/congress}" method="post">
+                            <table>
+                                <tr>
+                                    <td class="td_left"><lable for="title">会议名称：</lable></td>
+                                    <td class="td_right"><input type="text" name="title" id="title" th:value="${congress.getTitle()}"></td>
+                                </tr>
+                                <tr>
+                                    <td class="td_left"><lable for="content">会议内容：</lable></td>
+                                    <td class="td_right"><textarea style="width:250px; height:100px; border:solid 1px #000000; border-radius:5px; resize:none;" name="content" th:text="${congress.getContent()}"></textarea>
+                                </tr>
+                                <tr>
+                                    <td class="td_left"><lable for="place">会议地点：</lable></td>
+                                    <td class="td_right"><input type="text" name="place" id="place" th:value="${congress.getPlace()}"></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="td_left"><lable for="startTime">会议开始时间：</lable></td>
+                                    <td class="td_right"><input type="datetime-local" name="startTime" id="startTime" th:value="${congress.getStartTime()}"></td>
+                                </tr>
+                                <tr>
+                                    <td class="td_left"><lable for="endTime">会议结束时间：</lable></td>
+                                    <td class="td_right"><input type="datetime-local" name="endTime" id="endTime" th:value="${congress.getEndTime()}"></td>
+                                </tr>
+                                <tr>
+                                    <td class="td_left"><lable for="registerStartTime">申请会议开始时间：</lable></td>
+                                    <td class="td_right"><input type="datetime-local" name="registerStartTime" id="registerStartTime" th:value="${congress.getRegisterStartTime()}"></td>
+                                <tr>
+                                <tr>
+                                    <td class="td_left"><lable for="registerEndTime" >申请会议结束时间：</lable></td>
+                                    <td class="td_right"><input type="datetime-local" name="registerEndTime" id="registerEndTime" th:value="${congress.getRegisterEndTime()}"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" align="center"><input type="submit" class="btn_sub" value="保存"></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                    <!--参会人员信息-->
+                    <div class="row line">
+                        <h1>
+                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                            <span>参加会议的人员</span>
+                        </h1>
+                    </div>
+                    <div class="margintop" th:if="${participants.size()==0}">
+                        <label>暂无参会人员</label>
+                    </div>
+                    <div class="table-responsive" th:if="${participants.size()!=0}">
+                        <table class="table table-striped table-sm">
+                            <thead>
+                                <tr>
+                                    <th>用户名</th>
+                                    <th>姓名</th>
+                                    <th>年龄</th>
+                                    <th>性别</th>
+                                    <th>身份</th>
+                                    <th>电话号码</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="participant:${participants}">
+                                    <td th:text="${participant.getUsername()}"></td>
+                                    <td th:text="${participant.getName()}"></td>
+                                    <td th:text="${participant.getAge()}"></td>
+                                    <td th:text="${participant.getSex()}"></td>
+                                    <td th:text="${participant.getIdentity()}"></td>
+                                    <td th:text="${participant.getTel()}"></td>
+                                    <td>
+                                        <a class="btn btn-sm btn-primary" th:href=" @{/organizer/delete/participant}+
+                        '?commonId='+${participant.getCommonId()}+'&congressId='+${congress.getCongressId()}">删除</a>
+                                        <!--<button th:attr="del_uri=@{/emp/}+${emp.id}" class="btn btn-sm btn-danger deleteBtn">删除</button>-->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--需要接送的人员-->
+                    <div class="row line">
+                        <h1>
+                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                            <span>需要接送的人员</span>
+                        </h1>
+                    </div>
+                    <div class="margintop" th:if="${allInformationParticipants.size()==0}">
+                        <label>暂无需要接送人员</label>
+                    </div>
+                    <div class="table-responsive" th:if="${allInformationParticipants.size()!=0}">
+                            <!--        显示到达地点的人数-->
+                        <!--<div th:if="${allArrivalPlace.size()!=0}">
+                                <thead>
+                                    <tr>
+                                        <th>到达地点</th>
+                                        <th>人数</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="aPlace:${allArrivalPlace}">
+                                        <th th:text="${aPlace.getArrivalPlace()}" th:if="${aPlace.getArrivalPlace()!=null}"></th>
+                                        <th th:text="${aPlace.getNum() }" th:if="${aPlace.getNum()!=0}"></th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>-->
+                        <table class="table table-striped table-sm">
+                            <thead>
+                                <tr>
+                                    <th>名称</th>
+                                    <th>姓名</th>
+                                    <th>年龄</th>
+                                    <th>性别</th>
+                                    <th>身份</th>
+                                    <th>电话号码</th>
+                                    <th>到达地点</th>
+                                    <th>到达时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="allInformationParticipant:${allInformationParticipants}">
+                                    <td th:text="${allInformationParticipant.getUsername()}"></td>
+                                    <td th:text="${allInformationParticipant.getName()}"></td>
+                                    <td th:text="${allInformationParticipant.getAge()}"></td>
+                                    <td th:text="${allInformationParticipant.getSex()}"></td>
+                                    <td th:text="${allInformationParticipant.getIdentity()}"></td>
+                                    <td th:text="${allInformationParticipant.getTel()}"></td>
+                                    <td th:text="${allInformationParticipant.getArrivalPlace()}"></td>
+                                    <td th:text="${#temporals.format(allInformationParticipant.getArrivalTime(),'yyyy-MM-dd HH:mm')}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                            <!-- 分配司机-->
+                            <form>
+                                <input type="hidden" id="congress" th:value="${congress.getCongressId()}">
+                                <input type="button" onclick="allocationFunc()" value="给参会人员分配司机">
+                            </form>
+
+                    </div>
+
+                    <!--酒店信息-->
+                    <div class="row line">
+                        <h1>
+                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                            <span>酒店信息</span>
+                        </h1>
+                    </div>
+                    <div class="row margintop">
+                        <h3>
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            <span>查看所有酒店</span>
+                        </h3>
+                    </div>
+                    <table class="table table-striped table-sm" th:if="${allHotel.size()!=0}">
+                        <thead>
+                        <tr>
+                            <th>酒店名称</th>
+                            <th>酒店电话</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="hotel:${allHotel}">
+                            <td th:text="${hotel.getHotelName()}"></td>
+                            <td th:text="${hotel.getHotelPhone()}"></td>
+                            <td>
+                                <form th:if="${!hasHotel.contains(hotel) and !applyHotel.contains(hotel)}" th:action="@{/organizer/applyHotel}" method="post">
+                                    <input type="hidden" name="hotelId" id="hotelId" th:value="${hotel.getHotelId()}">
+                                    <input type="hidden" name="congressId" id="congressId1" th:value="${congress.getCongressId()}">
+                                    <input class="btn btn-sm btn-primary" type="submit" value="申请酒店">
+                                </form>
+                                <span th:if="${applyHotel.contains(hotel)}">已申请</span>
+                                <span th:if="${hasHotel.contains(hotel)}">已添加</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="margintop" th:if="${allHotel.size()==0}">
+                        <label>暂无需要酒店</label>
+                    </div>
+
+                    <div class="row margintop">
+                        <h3>
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            <span>会议已有酒店</span>
+                        </h3>
+                    </div>
+                    <table class="table table-striped table-sm" th:if="${hasHotel.size()!=0}">
+                        <thead>
+                        <tr>
+                            <th>酒店名称</th>
+                            <th>酒店电话</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="hotel:${hasHotel}">
+                            <td th:text="${hotel.getHotelName()}"></td>
+                            <td th:text="${hotel.getHotelPhone()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="margintop" th:if="${hasHotel.size()==0}">
+                        <label>该会议暂无酒店</label>
+                    </div>
 
 
-    <h2>参加会议的人员</h2>
-<!--    <h5>填写了到达时间和到达地点的人员</h5>-->
-    <div th:if="${participants.size()==0}">
-        暂无参会人员
+                    <!--车队信息-->
+                    <div class="row line">
+                        <h1>
+                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                            <span>车队信息</span>
+                        </h1>
+                    </div>
+                    <div class="row margintop">
+                        <h3>
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            <span>查看所有司机</span>
+                        </h3>
+                    </div>
+                    <table class="table table-striped table-sm" th:if="${allDriver.size()!=0}">
+                        <thead>
+                        <tr>
+                            <th>司机名称</th>
+                            <th>司机电话</th>
+                            <th>载客容量</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="driver:${allDriver}">
+                            <td th:text="${driver.getUsername()}"></td>
+                            <td th:text="${driver.getTel()}"></td>
+                            <td th:text="${driver.getCapacity()}"></td>
+                            <td>
+                                <form th:if="${!hasDriver1.contains(driver) and !applyDriver.contains(driver)}" th:action="@{/organizer/applyDriver}" method="post">
+                                    <input type="hidden" name="driverId" id="driverId" th:value="${driver.getDriverId()}">
+                                    <input type="hidden" name="congressId" id="congressId" th:value="${congress.getCongressId()}">
+                                    <input class="btn btn-sm btn-primary" type="submit" value="申请司机">
+                                </form>
+                                <span th:if="${applyDriver.contains(driver)}">已申请</span>
+                                <span th:if="${hasDriver1.contains(driver)}">已添加</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="margintop" th:if="${allDriver.size()==0}">
+                        <label>暂无需要司机</label>
+                    </div>
+
+                    <div class="row margintop">
+                        <h3>
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            <span>会议已有司机</span>
+                        </h3>
+                    </div>
+                    <table class="table table-striped table-sm" th:if="${hasDriver.size()!=0}">
+                        <thead>
+                        <tr>
+                            <th>司机名称</th>
+                            <th>司机电话</th>
+                            <th>载客容量</th>
+                            <th>已分配人数</th>
+                            <th>接送人员名单</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="driver:${hasDriver}">
+                            <td th:text="${driver.getUsername()}"></td>
+                            <td th:text="${driver.getTel()}"></td>
+                            <td th:text="${driver.getCapacity()}"></td>
+                            <td th:text="${driverHaveNum[driver.getDriverId()]}"></td>
+                            <td><a th:href="@{/organizer/driver/list/}+${congress.getCongressId()}+'/'+${driver.getDriverId()}">接送人员名单</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="margintop" th:if="${hasDriver.size()==0}">
+                        <label>该会议暂无司机</label>
+                    </div>
+                </div>
+
+                    <!--判断进入这个会议的是不是非会议组织者-->
+                <div th:unless="${session.loginUser} eq ${organizerName}">
+                    <div class="row line">
+                        <h1 class="page-header ">
+                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                            <span>会议基本信息</span>
+                        </h1>
+                    </div>
+                    <div class="row rg_center">
+                        <table>
+                            <tr>
+                                <td colspan="2" align="center" th:text="${congress.getTitle()}"></td>
+                            </tr>
+                            <tr>
+                                <td class="td_left">组织者:</td>
+                                <td class="td_right" th:text="${organizerName}"></td>
+                            </tr>
+                            <tr>
+                                <td class="td_left">内容:</td>
+                                <td class="td_right" th:text="${congress.getContent()}"></td>
+                            </tr>
+                            <tr>
+                                <td class="td_left">地点:</td>
+                                <td class="td_right" th:text="${congress.getPlace()}"></td>
+                            </tr>
+                            <tr>
+                                <td class="td_left">会议开始时间:</td>
+                                <td class="td_right" th:text="${#temporals.format(congress.getStartTime(),'yyyy-MM-dd HH:mm')}"></td>
+                            </tr>
+                            <tr>
+                                <td class="td_left">会议结束时间:</td>
+                                <td class="td_right" th:text="${#temporals.format(congress.getEndTime(),'yyyy-MM-dd HH:mm')}"></td>
+                            </tr>
+                            <tr>
+                                <td class="td_left">报名会议开始时间:</td>
+                                <td class="td_right" th:text="${#temporals.format(congress.getRegisterStartTime(),'yyyy-MM-dd HH:mm')}"></td>
+                            </tr>
+                            <tr>
+                                <td class="td_left">报名会议结束时间:</td>
+                                <td class="td_right" th:text="${#temporals.format(congress.getRegisterEndTime(),'yyyy-MM-dd HH:mm')}"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <form  th:if="${record}!=null">
+                            <input type="hidden" id="congressIdInExit" name="congressId" th:value="${congress.getCongressId()}">
+                            <button class="btn_sub" onclick="participantExit()">退出会议</button>
+                        </form>
+                        <form th:unless="${record}!=null" style="margin-top: 50px;" th:action="@{/participant/attend}">
+                            <input type="hidden" name="congressId" th:value="${congress.getCongressId()}">
+                            <button class="btn_sub" th:if="${canRegisterCongress}!=null and ${participantInformation}!=null">参加会议</button>
+                            <span th:if="${participantInformation}==null">请填写完个人信息之后再参加会议</span>
+                            <span th:if="${canRegisterCongress}==null and ${participantInformation}!=null">该会议未在报名时间范围内</span>
+                        </form>
+                    </div>
+                    <!-- <input th:if="${error}" th:text="${error}"/>-->
+                    <!--    当前用户是否已经参加会议-->
+                    <div th:if="${record}!=null" >
+                        <div class="row line">
+                            <h1 class="paddingtop">
+                                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                                <span>接送信息</span>
+                            </h1>
+                        </div>
+                        <form th:action="@{/organizer/arrival/}+${congress.getCongressId()}" method="post">
+                            <span style="color: red" th:if="${record.getArrivalPlace()==null}">注意：请填写到达时间和地点，不填写无法安排接送</span><br>
+                            <label>到达地点：</label>
+                            <input type="text" name="arrivalPlace" id="arrivalPlace" th:value="${record.getArrivalPlace()!=null?record.getArrivalPlace():''}"><br>
+                            <label class="margintop">到达时间：</label>
+                            <input class="margintop" type="datetime-local" name="arrivalTime" id="arrivalTime" th:value="${record.getArrivalTime()!=null?record.getArrivalTime():''}"><br>
+                            <input class="margintop" type="submit" id="btn1" value="保存"/>
+                            <!--        onclick="setArrivalInformation()"-->
+                        </form>
+                        <div class="row line">
+                            <h1 class="paddingtop">
+                                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                                <span>接送司机信息</span>
+                            </h1>
+                        </div>
+                        <div th:if="${record.getArrivalPlace()}!=null and ${record.getArrivalTime()}!=null">
+                            <div class="paddingtop" th:if="${participantDriver!=null}">
+                                <label>司机名称:</label> <span th:text="${participantDriver.getUsername()}"></span><br>
+                                <label>司机电话:</label> <span th:text="${participantDriver.getTel()}"></span><br>
+                                <label>接送时间:</label> <span th:text="${#temporals.format(participantDriver.getTime(),'yyyy-MM-dd HH:mm')}"></span><br>
+                                <label>接送地点:</label> <span th:text="${participantDriver.getPlace()}"></span>
+                            </div>
+                            <div class="paddingtop" th:unless="${participantDriver!=null}">
+                                <lable>暂未分配司机</lable>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <form method="post" enctype="multipart/form-data">
+                    <label>更换会议图像</label>
+                    <input type="file" id="congressImage" name="file"/>
+                    <input type="button" onclick="changeImage()" value="更换"/>
+                </form>
+                <p>会议图片:</p>
+                <img style="width: 150px;height: 150px;" th:src="@{/images/congress/}+${congress.getImage()!=null?congress.getImage():'0.jpg'}"/>
+            </div>
+        </div>
     </div>
-    <div class="table-responsive" th:if="${participants.size()!=0}">
-        <table class="table table-striped table-sm">
-            <thead>
-            <tr>
-                <th>昵称</th>
-                <th>姓名</th>
-                <th>年龄</th>
-                <th>性别</th>
-                <th>身份</th>
-                <th>电话号码</th>
-                <th>身份证号</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="participant:${participants}">
-                <td th:text="${participant.getUsername()}"></td>
-                <td th:text="${participant.getName()}"></td>
-                <td th:text="${participant.getAge()}"></td>
-                <td th:text="${participant.getSex()}"></td>
-                <td th:text="${participant.getIdentity()}"></td>
-                <td th:text="${participant.getTel()}"></td>
-                <td th:text="${participant.getIdCardNo()}"></td>
-                <td>
-                    <a class="btn btn-sm btn-primary" th:href=" @{/organizer/delete/participant}+
-                    '?commonId='+${participant.getCommonId()}+'&congressId='+${congress.getCongressId()}">删除</a>
-<!--                    <button th:attr="del_uri=@{/emp/}+${emp.id}" class="btn btn-sm btn-danger deleteBtn">删除</button>-->
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <h5>填写了到达时间和到达地点的人员</h5>
-    <div th:if="${allInformationParticipants.size()==0}">
-        暂时没人填写到达时间和到达地点
-    </div>
-    <div class="table-responsive" th:if="${allInformationParticipants.size()!=0}">
-        <table class="table table-striped table-sm">
-            <thead>
-            <tr>
-                <th>昵称</th>
-                <th>姓名</th>
-                <th>年龄</th>
-                <th>性别</th>
-                <th>身份</th>
-                <th>电话号码</th>
-                <th>身份证号</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="allInformationParticipant:${allInformationParticipants}">
-                <td th:text="${allInformationParticipant.getUsername()}"></td>
-                <td th:text="${allInformationParticipant.getName()}"></td>
-                <td th:text="${allInformationParticipant.getAge()}"></td>
-                <td th:text="${allInformationParticipant.getSex()}"></td>
-                <td th:text="${allInformationParticipant.getIdentity()}"></td>
-                <td th:text="${allInformationParticipant.getTel()}"></td>
-                <td th:text="${allInformationParticipant.getIdCardNo()}"></td>
-            </tr>
-            </tbody>
-        </table>
-        <button>给参会人员分配司机</button>
-    </div>
-
-    <h2>酒店</h2>
 
 
 
+    <!--用户名<p th:text="${session.loginUser}"></p>-->
 
-    <h2>车队</h2>
-    <a th:href="@{/organizer/driver/}+${congress.getCongressId()}" style="display: block;background-color: #31b0d5;">查看所有司机</a>
-    <h5>会议已有的司机</h5>
-    <ul style="text-align: center;margin-top: 10px">
-        <li th:each="driver:${hasDriver}">
-            司机呢称:<span th:text="${driver.getUsername()}"></span>
-            司机电话:<span th:text="${driver.getTel()}"></span>
-            载客容量:<span th:text="${driver.getCapacity()}"></span>
-        </li>
-    </ul>
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="/js/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="/js/bootstrap.min.js"></script>
 
-</div>
+    <script src="/js/common.js"></script>
+    <script>
+        function allocationFunc(){
+            initAJAX();
+            var congressId = document.getElementById("congress").value;
+            xmlHttp.open("GET", "/organizer/allocation?congressId="+congressId, true);
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState == 4) {
+                    window.location.href = "/congress/"+congressId;
+                }
+            }
+            xmlHttp.send();
+        }
+        function participantExit(){
+            initAJAX();
+            var congressId = document.getElementById("congressIdInExit").value;
+            xmlHttp.open("POST", "/participant/exit?congressId="+congressId, true);
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState == 4) {
+                    window.location.replace("/congress/"+congressId);
+                }
+            }
+            xmlHttp.send();
+        }
+        function changeImage()
+        {
+            var up_file = document.getElementById("congressImage").files[0];//找到id为file的组件，当然这里是input组件
+            var formData = new FormData();//新建一个formdata用于存储数据
+            formData.append("file",up_file);//将选择的文件添加到formdata中
+            var congressId = [[${congress.getCongressId()}]];
+            formData.append("congressId",congressId);
+            alert(congressId);
+            alert(1);
+            $.ajax
+            ({
+                url:'/congress/image',
+                dataType:'json',
+                type:'POST',
+                async: true,
+                data: formData,
+                processData : false,
+                contentType : false,
+                success: function(data)
+                {
+                    // window.location.reload();
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                },
+                complete: function (XMLHttpRequest, textStatus) {
+                    window.location.reload();
+                }
+            });
+        }
+    </script>
+    <!--<script th:inline="javascript">-->
+    <!--    function setArrivalInformation(){-->
+    <!--        var arrivalPlace = document.getElementById("arrivalPlace");-->
+    <!--        var arrivalTimeYear = document.getElementById("arrivalTimeYear");-->
+    <!--        var arrivalTimeMonth = document.getElementById("arrivalTimeMonth");-->
+    <!--        var arrivalTimeDay = document.getElementById("arrivalTimeDay");-->
+    <!--        var arrivalTimeHour = document.getElementById("arrivalTimeHour");-->
+    <!--        var arrivalTimeMinute = document.getElementById("arrivalTimeMinute");-->
+    <!--        xmlHttp.open("POST", "/organizer/arrival/"+[[${congress.getCongressId()}]]+"?arrivalPlace="-->
+    <!--            +arrivalPlace.value+"?arrivalTimeYear=" +arrivalTimeYear.value+"?arrivalTimeMonth=" +arrivalTimeMonth.value-->
+    <!--            +"?arrivalTimeDay=" +arrivalTimeDay.value+"?arrivalTimeHour=" +arrivalTimeHour.value-->
+    <!--            +"?arrivalTimeMinute=" +arrivalTimeMinute.value, true);-->
+    <!--        xmlHttp.onreadystatechange = function () {-->
+    <!--            if (xmlHttp.readyState == 4) {-->
+    <!--                var data = xmlHttp.responseText;-->
+    <!--                var obj = JSON.parse(data);-->
 
-<!--判断进入这个会议的是不是非会议组织者-->
-<div th:unless="${session.loginUser} eq ${organizerName}">
-    <div>
-        <table>
-            <caption th:text="${congress.getTitle()}"></caption>
-            <tr>
-                <td class="td1">组织者:</td>
-                <td th:text="${organizerName}"></td>
-            </tr>
-            <tr>
-                <td class="td1">内容:</td>
-                <td th:text="${congress.getContent()}"></td>
-            </tr>
-            <tr>
-                <td class="td1">地点:</td>
-                <td th:text="${congress.getPlace()}"></td>
-            </tr>
-            <tr>
-                <td class="td1">开始时间:</td>
-                <td th:text="${#temporals.format(congress.getStartTime(),'yyyy-MM-dd HH:mm')}"></td>
-            </tr>
-            <tr>
-                <td class="td1">结束时间:</td>
-                <td th:text="${#temporals.format(congress.getEndTime(),'yyyy-MM-dd HH:mm')}"></td>
-            </tr>
-            <tr>
-                <td class="td1">会议开始时间:</td>
-                <td th:text="${#temporals.format(congress.getRegisterStartTime(),'yyyy-MM-dd HH:mm')}"></td>
-            </tr>
-            <tr>
-                <td class="td1">会议结束时间:</td>
-                <td th:text="${#temporals.format(congress.getRegisterEndTime(),'yyyy-MM-dd HH:mm')}"></td>
-            </tr>
-        </table>
-    </div>
-    <input th:if="${error}" th:text="${error}"/>
-<!--    当前用户是否已经参加会议-->
-    <form th:if="${record}!=null" style="margin-top: 50px;">
-        <input type="hidden" name="congressId" th:value="${congress.getCongressId()}">
-        <button class="btn btn-lg btn-primary btn-block" style="text-align: center">退出会议</button>
-    </form>
-
-    <form th:unless="${record}!=null" style="margin-top: 50px;" th:action="@{/participant/attend}">
-        <input type="hidden" name="congressId" th:value="${congress.getCongressId()}">
-        <button class="btn btn-lg btn-primary btn-block" th:if="${canRegisterCongress}!=null and ${participantInformation}!=null" style="text-align: center">参加会议</button>
-        <span th:if="${canRegisterCongress}==null">未在报名时间范围内</span>
-        <span th:if="${participantInformation}==null">请填写完个人信息之后再参加会议</span>
-    </form>
-    <form th:if="${record}!=null" th:action="@{/organizer/arrival/}+${congress.getCongressId()}" method="post">
-        <span style="color: red" th:if="${record.getArrivalPlace()==null}">注意：请填写到达时间和地点，不填写无法安排接送</span><br>
-        到达地点：<input type="text" name="arrivalPlace" th:value="${record.getArrivalPlace()!=null?record.getArrivalPlace():''}"><br>
-        到达时间：<input type="text" name="arrivalTimeYear" style="width: 50px" th:value="${record.getArrivalTime()!=null?record.getArrivalTime().getYear():''}">年
-        <input type="text" name="arrivalTimeMonth" style="width: 50px" th:value="${record.getArrivalTime()!=null?record.getArrivalTime().getMonthValue():''}">月
-        <input type="text" name="arrivalTimeDay" style="width: 50px" th:value="${record.getArrivalTime()!=null?record.getArrivalTime().getDayOfMonth():''}">日
-        <input type="text" name="arrivalTimeHour" style="width: 50px" th:value="${record.getArrivalTime()!=null?record.getArrivalTime().getHour():''}">时
-        <input type="text" name="arrivalTimeMinute" style="width: 50px" th:value="${record.getArrivalTime()!=null?record.getArrivalTime().getMinute():''}">分
-        <input type="submit" value="保存"/>
-<!--        onclick="setArrivalInformation()"-->
-    </form>
-</div>
-
-<!--用户名<p th:text="${session.loginUser}"></p>-->
-
-<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-<script src="js/jquery.min.js"></script>
-<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-<script src="js/bootstrap.min.js"></script>
-
-<script src="js/common.js"></script>
-<!--<script th:inline="javascript">-->
-<!--    function setArrivalInformation(){-->
-<!--        var arrivalPlace = document.getElementById("arrivalPlace");-->
-<!--        var arrivalTimeYear = document.getElementById("arrivalTimeYear");-->
-<!--        var arrivalTimeMonth = document.getElementById("arrivalTimeMonth");-->
-<!--        var arrivalTimeDay = document.getElementById("arrivalTimeDay");-->
-<!--        var arrivalTimeHour = document.getElementById("arrivalTimeHour");-->
-<!--        var arrivalTimeMinute = document.getElementById("arrivalTimeMinute");-->
-<!--        xmlHttp.open("POST", "/organizer/arrival/"+[[${congress.getCongressId()}]]+"?arrivalPlace="-->
-<!--            +arrivalPlace.value+"?arrivalTimeYear=" +arrivalTimeYear.value+"?arrivalTimeMonth=" +arrivalTimeMonth.value-->
-<!--            +"?arrivalTimeDay=" +arrivalTimeDay.value+"?arrivalTimeHour=" +arrivalTimeHour.value-->
-<!--            +"?arrivalTimeMinute=" +arrivalTimeMinute.value, true);-->
-<!--        xmlHttp.onreadystatechange = function () {-->
-<!--            if (xmlHttp.readyState == 4) {-->
-<!--                var data = xmlHttp.responseText;-->
-<!--                var obj = JSON.parse(data);-->
-
-<!--                arrivalPlace.value = obj["arrivalPlace"];-->
-<!--                alert(obj["arrivalTime"]);-->
-<!--            }-->
-<!--        }-->
-<!--    xmlHttp.send();-->
-<!--    }-->
-<!--</script>-->
+    <!--                arrivalPlace.value = obj["arrivalPlace"];-->
+    <!--                alert(obj["arrivalTime"]);-->
+    <!--            }-->
+    <!--        }-->
+    <!--    xmlHttp.send();-->
+    <!--    }-->
+    <!--</script>-->
 </body>
 </html>

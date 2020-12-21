@@ -15,7 +15,7 @@ public class CongressVO {
     private String title;
     private String content;
     private String place;
-    private long image;
+    private String image;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private LocalDateTime registerStartTime;

@@ -16,5 +16,6 @@ public class CommonUserVO {
     private String identity;
     private int commonId;
     private String tel;
+    private String image;
 
 }

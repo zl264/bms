@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh_CN" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" xmlns:th="http://www.w3.org/1999/xhtml">
+<!doctype html>
+<html lang="zh_CN" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>查看酒店</title>
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="https://oss.liuyanzhao.com/static/hotel/static/front/images/favicon.png">
+        <!-- Bootstrap core CSS -->
+        <link href="https://oss.liuyanzhao.com/static/hotel/static/front/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <!--Default CSS-->
+        <link href="https://oss.liuyanzhao.com/static/hotel/static/front/css/default.css" rel="stylesheet" type="text/css">
+        <!--Custom CSS-->
+        <link href="https://oss.liuyanzhao.com/static/hotel/static/front/css/style.css" rel="stylesheet" type="text/css">
+        <!--Plugin CSS-->
+        <link href="https://oss.liuyanzhao.com/static/hotel/static/front/css/plugin.css" rel="stylesheet" type="text/css">
+        <link href="https://oss.liuyanzhao.com/static/hotel/static/plugins/toast/css/jquery.toast.min.css" rel="stylesheet" type="text/css">
+        <!--Font Awesome-->
+        <!--        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+        <!--        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">-->
+        <link rel="stylesheet" href="https://oss.liuyanzhao.com/static/hotel/static/plugins/font-awesome/css/font-awesome.min.css">
+    </head>
+    <body>
+        <!-- Preloader -->
+        <!--        <div id="preloader">-->
+        <!--            <div id="status"></div>-->
+        <!--        </div>-->
+        <!-- Preloader Ends -->
+
+        <!-- header start -->
+        <header class="main_header_area">
+            <!-- Navigation Bar -->
+            <div class="header_menu affix-top">
+                <nav class="navbar navbar-default">
+                    <div class="container">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="">南昌大学分店</a>
+                        </div>
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                    </div><!-- /.container-fluid -->
+                    <div id="slicknav-mobile"></div>
+                </nav>
+            </div>
+            <!-- Navigation Bar Ends -->
+        </header>
+        <!-- header Ends -->
+
+<!-- breadcrumb starts -->
+<section class="breadcrumb-outer">
+    <div class="container">
+        <div class="breadcrumb-content">
+            <h2>希望您有一段美好的旅途</h2>
+        </div>
+    </div>
+</section>
+<!-- breadcrumb Ends -->
+
+    <div style="margin: 10px;border: 1px solid red;">
+        <p style="font-size: 1.2em;">
+		酒店描述
+        </p>
+    </div>
+<!-- room list starts -->
+<section class="room-list">
+    <div class="container">
+        <div class="list-content">
+            <div class="row">
+                <div class="col-md-4 col-sm-6 col-xs-6">
+                    <div class="room-item">
+                        <div class="room-image">
+                            <img src="img/singleroom.jpg" alt="image">
+                        </div>
+                        <div class="room-content">
+                            <div class="room-title">
+                                <h4>单人间</h4>
+                                <p><i class="fa fa-tag"></i> ¥99/天</p>
+                            </div>
+                            <div class="room-services mar-bottom-15">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                        <i class="fa fa-bed" aria-hidden="true"></i> 单间
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                        <i class="fa fa-building" aria-hidden="true"></i> S001
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="height: 72px;overflow: hidden;">单人单间。。。</p>
+                            <div class="room-btns">
+                                <a href="#" th:href="@{/hotel/bookRoom}" class="btn btn-orange mar-right-10">预定</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-6">
+                    <div class="room-item">
+                        <div class="room-image">
+                            <img src="img/doubleroom.jpg" alt="image">
+                        </div>
+                        <div class="room-content">
+                            <div class="room-title">
+                                <h4>双人间</h4>
+                                <p><i class="fa fa-tag"></i> ¥120/天</p>
+                            </div>
+                            <div class="room-services mar-bottom-15">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                        <i class="fa fa-bed" aria-hidden="true"></i>双人间
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                        <i class="fa fa-building" aria-hidden="true"></i> S002
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="height: 72px;overflow: hidden;">双人间。。。</p>
+                            <div class="room-btns">
+                                <a href="#" th:href="@{/hotel/bookRoom}" class="btn btn-orange mar-right-10">预定</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-6">
+                    <div class="room-item">
+                        <div class="room-image">
+                            <img src="img/singleroom.jpg" alt="image">
+                        </div>
+                        <div class="room-content">
+                            <div class="room-title">
+                                <h4>大床房</h4>
+                                <p><i class="fa fa-tag"></i> ¥150/天</p>
+                            </div>
+                            <div class="room-services mar-bottom-15">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                        <i class="fa fa-bed" aria-hidden="true"></i>单人大床房
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                        <i class="fa fa-building" aria-hidden="true"></i> S003
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="height: 72px;overflow: hidden;">单人大床房。。。</p>
+                            <div class="room-btns">
+                                <a href="#" th:href="@{/hotel/bookRoom}" class="btn btn-orange mar-right-10">预定</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- room list Ends -->
+</body>
+</html>
+
+
+

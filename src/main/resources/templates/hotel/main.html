@@ -30,9 +30,9 @@
     <div class="ui container">
         <div class="ui inverted secondary stackable menu">
             <p2 class="ui teal header">欢迎你</p2>
-            <p2 class="ui teal header">何鹏</p2>
+            <p2 class="ui teal header" th:text="${session.hotelUsername}"></p2>
             <div class="menu">
-                <a href="/hotelLogin" class="ui teal item">注销</a>
+                <a href="#" th:href="@{/hotel/hotelLogin}" class="ui teal item">注销</a>
             </div>
         </div>
     </div>
@@ -43,72 +43,134 @@
         <div class="ui stackable grid">
             <!--左-->
             <div class="five wide column">
-                <h2><a href="#" th:href="@{/main}"><i class="home icon"></i>酒店信息</a></h2><br>
-                <h2><a href="#" th:href="@{/hotel/searchRoom}"><i class="home icon"></i>客房查询</a></h2><br>
-                <h2><a href="#" th:href="@{/hotel/orderNote}"><i class="home icon"></i>预定记录</a></h2><br>
-                <h2><a href="#" th:href="@{/hotel/checkInNote}"><i class="home icon"></i>成功记录</a></h2><br>
-                <h2><a href="#" th:href="@{/hotel/orderFailNote}"><i class="home icon"></i>失败记录</a></h2><br>
+                <h2><a href="#" th:href="@{/hotel/hotelInformation}"><i class="home icon"></i>酒店信息</a></h2><br>
+                <h2><a href="#" th:href="@{/hotel/orderNote}"><i class="home icon"></i>预约记录</a></h2><br>
+                <h2><a href="#" th:href="@{/hotel/checkInNote}"><i class="home icon"></i>预约成功</a></h2><br>
+                <h2><a href="#" th:href="@{/hotel/relatedCongress}"><i class="home icon"></i>相关会议</a></h2><br>
+                <h2><a href="#" th:href="@{/hotel/cancelNote}"><i class="home icon"></i>取消预约</a></h2><br>
             </div>
             <!--右-->
             <div class="eleven wide column">
                 <div class="ui teal segment">
-                    <h2 ><i class="home icon"></i>注册酒店</h2>
-                    <div>
-                        <form>
-                            <table border="1" bordercolor="blue" cellspacing="0">
-                                <tr>
-                                    <td>酒店ID</td>
-                                    <td><input class="cut"type="text" name="hotelid" required/>*</td>
-                                </tr>
-                                <tr>
-                                    <td>酒店电话</td>
-                                    <td><input class="cut"type="text" name="hotelphone" required/>*</td>
-                                </tr>
-                                <tr>
-                                    <td>酒店地址</td>
-                                    <td><input class="cut"type="text" name="hotellocation" required/>*</td>
-                                </tr>
-                                <tr>
-                                    <td>单人房价格</td>
-                                    <td><input class="cut"type="text" name="singleroomprice" required/>*</td>
-                                </tr>
-                                <tr>
-                                    <td>双人房价格</td>
-                                    <td><input class="cut"type="text" name="doubleroomprice" required/>*</td>
-                                </tr>
-                                <tr>
-                                    <td>单人房总量</td>
-                                    <td><input class="cut"type="text" name="totalsingleroom" required/>*</td>
-                                </tr>
-                                <tr>
-                                    <td>单人房剩余</td>
-                                    <td><input class="cut"type="text" name="remainsingleroom" required/>*</td>
-                                </tr>
-                                <tr>
-                                    <td>双人房总量</td>
-                                    <td><input class="cut"type="text" name="totaldoubleroom" required/>*</td>
-                                </tr>
-                                <tr>
-                                    <td>双人房剩余</td>
-                                    <td><input class="cut"type="text" name="remaindoubleroom" required/>*</td>
-                                </tr>
-                                <tr>
-                                    <td>酒店描述</td>
-                                    <td><textarea type="submit" rows="5" cols="60" maxlength="10"></textarea></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td align="center"><input action="" type="submit" name="sub" value="提交">
-                                        <input action="" type="submit" name="res" value="重填"></td>
-                                </tr>
-                            </table>
-                        </form>
+<!--                    如果当前酒店用户未注册-->
+                    <div th:if="${session.hotel==null}">
+                        <h2 ><i class="home icon"></i>注册酒店</h2>
+                        <div>
+                            <form class="form-signin" th:action="@{/hotel/createHotel}" method="post">
+                                <table border="1" bordercolor="blue" cellspacing="0">
+                                    <tr>
+                                        <td>酒店名称</td>
+                                        <td><input type="text" name="hotelName" class="form-control" placeholder="HotelName" ></td>
+                                    </tr>
+                                    <tr>
+                                        <td>酒店联系电话</td>
+                                        <td><input type="text" name="hotelPhone" class="form-control" placeholder="HotelPhone" ></td>
+                                    </tr>
+                                    <tr>
+                                        <td>酒店地址</td>
+                                        <td><input type="text" name="hotelLocation" class="form-control" placeholder="HotelLocation"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>单人房价格</td>
+                                        <td><input type="text" name="singleRoomPrice" class="form-control" placeholder="SingleRoomPrice"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>双人房价格</td>
+                                        <td><input type="text" name="doubleRoomPrice" class="form-control" placeholder="DoubleRoomPrice"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>单人房总量</td>
+                                        <td><input type="text" name="totalSingleRoom" class="form-control" placeholder="TotalSingleRoom"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>单人房剩余</td>
+                                        <td><input type="text" name="remainSingleRoom" class="form-control" placeholder="RemainSingleRoom"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>双人房总量</td>
+                                        <td><input type="text" name="totalDoubleRoom" class="form-control" placeholder="TotalDoubleRoom"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>双人房剩余</td>
+                                        <td><input type="text" name="remainDoubleRoom" class="form-control" placeholder="RemainDoubleRoom"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>酒店描述</td>
+                                        <td><textarea type="text" name="hotelDescription" class="form-control" placeholder="HotelDescription" rows="5" cols="60" maxlength="1000"></textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td align="center">
+                                            <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+                                            <button class="btn btn-lg btn-primary btn-block" type="reset">重置</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+
+
+<!--                    如果当前酒店用户已经注册-->
+                    <div th:if="${session.hotel!=null}">
+                        <h2 ><i class="home icon"></i>酒店信息</h2>
+                        <div>
+                            <form class="form-signin" th:action="@{/hotel/createHotel}" method="post">
+                                <table border="1" bordercolor="blue" cellspacing="0">
+                                    <tr>
+                                        <td>酒店名称</td>
+                                        <td><input th:value="${session.hotel.getHotelName()}" type="text" name="hotelName" class="form-control" placeholder="HotelName" ></td>
+                                    </tr>
+                                    <tr>
+                                        <td>酒店联系电话</td>
+                                        <td><input th:value="${session.hotel.getHotelPhone()}" type="text" name="hotelPhone" class="form-control" placeholder="HotelPhone" ></td>
+                                    </tr>
+                                    <tr>
+                                        <td>酒店地址</td>
+                                        <td><input th:value="${session.hotel.getHotelLocation()}" type="text" name="hotelLocation" class="form-control" placeholder="HotelLocation"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>单人房价格</td>
+                                        <td><input th:value="${session.hotel.getSingleRoomPrice()}" type="text" name="singleRoomPrice" class="form-control" placeholder="SingleRoomPrice"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>双人房价格</td>
+                                        <td><input th:value="${session.hotel.getDoubleRoomPrice()}" type="text" name="doubleRoomPrice" class="form-control" placeholder="DoubleRoomPrice"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>单人房总量</td>
+                                        <td><input th:value="${session.hotel.getTotalSingleRoom()}" type="text" name="totalSingleRoom" class="form-control" placeholder="TotalSingleRoom"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>单人房剩余</td>
+                                        <td><input th:value="${session.hotel.getRemainSingleRoom()}" type="text" name="remainSingleRoom" class="form-control" placeholder="RemainSingleRoom"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>双人房总量</td>
+                                        <td><input th:value="${session.hotel.getTotalDoubleRoom()}" type="text" name="totalDoubleRoom" class="form-control" placeholder="TotalDoubleRoom"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>双人房剩余</td>
+                                        <td><input th:value="${session.hotel.getRemainDoubleRoom()}" type="text" name="remainDoubleRoom" class="form-control" placeholder="RemainDoubleRoom"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>酒店描述</td>
+                                        <td><textarea th:text="${session.hotel.getHotelDescription()}" type="text" name="hotelDescription" class="form-control" placeholder="HotelDescription" rows="5" cols="60" maxlength="1000"></textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td align="center">
+                                            <button class="btn btn-lg btn-primary btn-block" type="submit">保存</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
 

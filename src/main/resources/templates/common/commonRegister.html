@@ -13,32 +13,377 @@
 
     <script src="/js/html5shiv.min.js"></script>
     <script src="/js/respond.min.js"></script>
+    <style>
+        *{
+            margin:0px;
+            padding:0px;
 
+        }
+        body{
+            background-color: rgb(20,20,20);
+        }
+        lable{
+            font-size:20px;
+            color: white;
+        }
+        .rg_layout{
+            width:1125px;
+            height:600px;
+            /*border:5px solid #EEEEEE;*/
+            background-color: rgba(15,15,15,0.8);
+            margin: auto;
+            margin-top: 50px;
+            padding-top: 30px;
+        }
+        .rg_left{
+            float:left;
+            margin:15px;
+        }
+        .rg_left >p:first-child{
+            color:white;
+            font-size:20px;
+        }
+        .rg_left >p:last-child{
+            color:#A6A6A6;
+            font-size:20px;
+        }
+        .rg_center{
+            float:left;
+            width: 710px;
+        }
+        .rg_right{
+            /* 	border:1px solid red; */
+            float:right;
+            margin: 15px;
+        }
+        .rg_right > p:first-child{
+            font-size: 15px;
+            color: white;
+        }
+        .rg_right p a{
+            color:#eea236;
+        }
+        .td_left{
+            width:200px;
+            text-align: right;
+            height:45px;
+        }
+        .td_right{
+            padding-left: 50px;
+        }
+        #name,#sex,#age,#idCardNo,#identity,#tel,#username,#password,#password1{
+            width:251px;
+            height:40px;
+            border: 1px solid #000000;
+            /*设置边框圆角*/
+            border-radius: 5px;
+            padding-left: 10px;
+        }
+        #btn_sub{
+            width:200px;
+            height:40px;
+            background-color: rgba(5,5,5,0);
+            color: white;
+            border: 1px solid #000000;
+            margin-top:50px;
+            font-size: 20px;
+        }
+        .error{
+            color:#d43f3a;
+            font-size: 15px;
+            padding: 10px;
+        }
+        .glyphicon-ok{
+            color: red;
+        }
+    </style>
 </head>
 <body>
-<div class="row">
-    <div class="col-lg-4 col-lg-offset-2">
-        <form class="form-signin" action="" th:action="@{/common/register}" method="post">
+<div class="rg_layout">
+    <div class="rg_left">
+        <p>用户注册</p>
+        <p>USER REGISTER</p>
+    </div>
 
-            <h1 class="h3 mb-3 font-weight-normal">注册</h1>
-            <p style="color:#ff0000;" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
-            <label class="sr-only">用户名:</label>
-            <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
-            <label class="sr-only">密码:</label>
-            <input type="text" name="password" class="form-control" placeholder="Password" required="">
+    <div class="rg_center">
+        <div class="rg_form">
+            <p id="msg" style="color:red;height: 30px"></p>
+            <p th:text="${msg}" th:if="${msg!=null}" style="color:red;height: 30px"></p>
+            <form id="loginForm" th:action="@{/common/register1}" method="post">
+                <table>
+                    <tr>
+                        <td class="td_left"><lable for="username">用户名：</lable></td>
+                        <td class="td_right">
+                            <input type="text" name="username" id="username" placeholder="请输入用户名" >
+                            <span id="s_username"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><lable for="password">密码：</lable></td>
+                        <td class="td_right">
+                            <input type="password" name="password" id="password" placeholder="请输入密码" >
+                            <span id="s_password"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><lable for="password1">确认密码：</lable></td>
+                        <td class="td_right">
+                            <input type="password" name="password1" id="password1" placeholder="请再次输入密码" >
+                            <span id="s_password1"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><lable for="name">姓名：</lable></td>
+                        <td class="td_right">
+                            <input type="text" name="name" id="name" placeholder="请输入姓名" >
+                            <span id="s_name"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><lable for="sex">性别：</lable></td>
+                        <td class="td_right">
+                            <input type="text" name="sex" id="sex" placeholder="请输入性别" >
+                            <span id="s_sex"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><lable for="idCardNo">身份证号：</lable></td>
+                        <td class="td_right">
+                            <input type="text" name="idCardNo" id="idCardNo" placeholder="请输入身份证号" >
+                            <span id="s_idCardNo"></span>
+                        </td>
+                    </tr>
 
-            <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
-            <button class="btn btn-lg btn-primary btn-block" type="reset">取消</button>
-
-            <p class="mt-5 mb-3 text-muted">© One Time</p>
-
-        </form>
+                    <tr>
+                        <td class="td_left"><lable for="identity">身份：</lable></td>
+                        <td class="td_right">
+                            <input type="text" name="identity" id="identity" placeholder="请输入身份" >
+                            <span id="s_identity"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><lable for="age">年龄：</lable></td>
+                        <td class="td_right">
+                            <input type="text" name="age" id="age" placeholder="请输入年龄" >
+                            <span id="s_age"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><lable for="tel">电话号码：</lable></td>
+                        <td class="td_right">
+                            <input type="text" name="tel" id="tel" placeholder="请输入电话号码" >
+                            <span id="s_tel"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center"><input type="submit" id="btn_sub" value="注册"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div class="rg_right">
+        <p>注册完成，点击<a th:href="@{/common/enter}">返回登录</a></p>
     </div>
 </div>
+<script>
+    window.onload=function(){
+        document.getElementById("loginForm").onsubmit=function(){
+            return checkName() && checkUsername() && checkPassword() && checkPassword1() &&
+                checkSex() && checkIdCardNo() && checkIdentity() && checkAge() && checkTel();
+        }
+        document.getElementById("name").onblur=checkName;
+        document.getElementById("username").onblur=checkUsername;
+        document.getElementById("password").onblur=checkPassword;
+        document.getElementById("password1").onblur=checkPassword1;
+        document.getElementById("sex").onblur=checkSex;
+        document.getElementById("idCardNo").onblur=checkIdCardNo;
+        document.getElementById("identity").onblur=checkIdentity;
+        document.getElementById("age").onblur=checkAge;
+        document.getElementById("tel").onblur=checkTel;
+    }
+
+    function checkName(){
+        var name=document.getElementById("name").value;
+        var s_name=document.getElementById("s_name");
+        if(isnull(name)) {
+            s_name.innerHTML = " <span class=\"error\">该项不能为空</span>";
+            return false
+        }
+        else{
+            s_name.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+            return true;
+        }
+
+    }
+    function checkUsername(){
+        var username=document.getElementById("username").value;
+        var s_username=document.getElementById("s_username");
+        if(isnull(username)) {
+            s_username.innerHTML = " <span class=\"error\">该项不能为空</span>";
+            return false;
+        }
+        else{
+            s_username.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+            return true;
+        }
+
+    }
+    function checkPassword(){
+        var password=document.getElementById("password").value;
+        var s_password=document.getElementById("s_password");
+        if(isnull(password)) {
+            s_password.innerHTML = " <span class=\"error\">该项不能为空</span>";
+            return false;
+        }
+        else{
+            s_password.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+            return true;
+        }
+
+    }
+    function checkPassword1(){
+        var password1=document.getElementById("password1").value;
+        var s_password1=document.getElementById("s_password1");
+        if(isnull(password1)) {
+            s_password1.innerHTML = " <span class=\"error\">该项不能为空</span>";
+            return false;
+        }
+        else{
+            s_password1.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+            return true;
+        }
+
+    }
+    function checkSex(){
+        var sex=document.getElementById("sex").value;
+        var s_sex=document.getElementById("s_sex");
+        if(isnull(sex)) {
+            s_sex.innerHTML = " <span class=\"error\">该项不能为空</span>";
+            return false;
+        }
+        else{
+            s_sex.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+            return true;
+        }
+
+    }
+    function checkIdCardNo(){
+        var idCardNo=document.getElementById("idCardNo").value;
+        var s_idCardNo=document.getElementById("s_idCardNo");
+        if(isnull(idCardNo)) {
+            s_idCardNo.innerHTML = " <span class=\"error\">该项不能为空</span>";
+            return false;
+        }
+        else{
+            s_idCardNo.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+            return true;
+        }
+
+    }
+    function checkIdentity(){
+        var identity=document.getElementById("identity").value;
+        var s_identity=document.getElementById("s_identity")
+        if(isnull(identity)) {
+            s_identity.innerHTML = " <span class=\"error\">该项不能为空</span>";
+            return false;
+        }
+        else{
+            s_identity.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+            return true;
+        }
+
+    }
+    function checkAge(){
+        var age=document.getElementById("age").value;
+        var s_age=document.getElementById("s_age")
+        if(isnull(age)) {
+            s_age.innerHTML = " <span class=\"error\">该项不能为空</span>";
+            return false;
+        }
+        else{
+            s_age.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+            return true;
+        }
+
+    }
+    function checkTel(){
+        var tel=document.getElementById("tel").value;
+        var s_tel=document.getElementById("s_tel")
+        if(isnull(tel)) {
+            s_tel.innerHTML = " <span class=\"error\">该项不能为空</span>";
+            return false;
+        }
+        else{
+            s_tel.innerHTML="<span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span>";
+            return true;
+        }
+
+    }
+
+
+
+    // function commit(){
+    //     var name = document.getElementById("name").value;
+    //     var username = document.getElementById("username").value;
+    //     var password = document.getElementById("password").value;
+    //     var password1 = document.getElementById("password1").value;
+    //     var sex = document.getElementById("sex").value;
+    //     var idCardNo = document.getElementById("idCardNo").value;
+    //     var identity = document.getElementById("identity").value;
+    //     var age = document.getElementById("age").value;
+    //     var tel = document.getElementById("tel").value;
+    //     var msg = document.getElementById("msg");
+    //     if(isnull(username)){
+    //         msg.innerHTML = "请输入用户名";
+    //         return ;
+    //     }
+    //     if(isnull(password)){
+    //         msg.innerHTML = "请输入密码";
+    //         return ;
+    //     }
+    //     if(isnull(password1)){
+    //         msg.innerHTML = "请输入确认密码";
+    //         return ;
+    //     }
+    //     if(isnull(name)){
+    //         msg.innerHTML = "请输入您的姓名";
+    //         return ;
+    //     }
+    //     if(isnull(sex)){
+    //         msg.innerHTML = "请输入您的性别";
+    //         return ;
+    //     }
+    //     if(isnull(idCardNo)){
+    //         msg.innerHTML = "请输入您的身份证号";
+    //         return ;
+    //     }
+    //     if(isnull(identity)){
+    //         msg.innerHTML = "请输入您的身份";
+    //         return ;
+    //     }
+    //     if(isnull(age)){
+    //         msg.innerHTML = "请输入您的年龄";
+    //         return ;
+    //     }
+    //     if(isnull(tel)){
+    //         msg.innerHTML = "请输入您的电话号码";
+    //         return ;
+    //     }
+    //     if(password!=password1){
+    //         msg.innerHTML = "两次输入密码不一致";
+    //         return ;
+    //     }
+    //     document.getElementById("loginForm").submit();
+    // }
+
+</script>
 
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 <script src="/js/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="/js/bootstrap.min.js"></script>
+<script src="/js/mouse.js"></script>
+<script src="/js/utils.js"></script>
 </body>
 </html>

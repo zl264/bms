@@ -1,22 +1,28 @@
 package com.java.bms.common.mapper;
 
+import com.java.bms.common.DO.ArrivalPlaceCountDO;
 import com.java.bms.common.DO.CongressNoteVO;
+import com.java.bms.common.VO.CommonUserAllInformationVO;
 import com.java.bms.common.VO.CommonUserVO;
 import com.java.bms.common.VO.CongressVO;
 import com.java.bms.common.VO.CommonUserVO;
+import com.java.bms.hotel.VO.HotelVO;
 import com.java.bms.other.DO.UserDO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 对于普通用户登录注册的数据库访问的控制
  */
 @Mapper
+@Repository
 public interface CommonMapper {
 
     /**
@@ -119,11 +125,57 @@ public interface CommonMapper {
 
 
     /**
-     * 通过会议ID获取参与者信息
+     * 通过会议ID获取填写了到达时间和到达地点的参与者信息
      * @param congressId
      * @return
      */
-    @Select("select commonUser.* from congressNote,commonUser where congressNote.congressId " +
+    @Select("select commonUser.*,congressNote.arrivalPlace,congressNote.arrivalTime " +
+            " from congressNote,commonUser where congressNote.congressId " +
             "= #{congressId} and congressNote.commonId = commonUser.commonId and congressNote.arrivalPlace is not null")
-    List<CommonUserVO> getAllInformationParticipantIdByCongressId(int congressId);
+    List<CommonUserAllInformationVO> getAllInformationParticipantIdByCongressId(int congressId);
+
+
+    @Select("select arrivalPlace,count(arrivalPlace) num from congressNote " +
+            "where congressId = #{congressId} " +
+            "group by arrivalPlace ")
+    List<ArrivalPlaceCountDO> getAllParticipantPlaceByCongressId(int congressId);
+
+    /**
+     * 模糊搜索会议
+     * @param information
+     * @return
+     */
+    @Select("select * from congress where title like concat('%',#{information},'%') or " +
+            "content like concat('%',#{information},'%') or place like concat('%',#{information},'%')")
+    List<CongressVO> searchCongressByInformation(String information);
+
+
+    /**
+     * 模糊搜索会议
+     * @param information
+     * @return
+     */
+    @Select("select * from hotel where hotelName like concat('%',#{information},'%') or " +
+            "hotelDescription like concat('%',#{information},'%') or hotelLocation like concat('%',#{information},'%')")
+    List<HotelVO> searchHotelByInformation(String information);
+
+    /**
+     * 通过用户ID获取用户信息
+     * @param commonId
+     * @return
+     */
+    @Select("select * from commonUser where commonId = #{commonId}")
+    CommonUserVO getCommonUserByCommonId(int commonId);
+
+    /**
+     * 更换普通用户头像
+     * @param image
+     * @param commonId
+     * @return
+     */
+    @Update("update commonUser set image = #{image} where commonId = #{commonId}")
+    int updateCommonHeadImage(String image,int commonId);
+
+    @Update("update congress set image = #{image} where congressId = #{congressId}")
+    int updateCongressImage(String image,int congressId);
 }
