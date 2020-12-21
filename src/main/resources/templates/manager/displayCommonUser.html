@@ -118,7 +118,7 @@
                 <form th:action="@{/manageUser/display}" method="post">
                     <table>
                             <tr th:each="user:${allUser}">
-                                <td><input  type="text" name="id" id="id" placeholder="请输入id"  th:value="${user.getCommonId()}"></td>
+                                <td><input  type="text" name="commonId" id="commonId" placeholder="请输入id"  th:value="${user.getCommonId()}"></td>
                                 <td><input  type="text" name="username" id="username" placeholder="请输入用户名"  th:value="${user.getUsername()}"></td>
                                 <td><input  type="text" name="name" id="name" placeholder="请输入name"  th:value="${user.getName()}"></td>
                                 <td><input  type="text" name="sex" id="sex" placeholder="请输入sex"  th:value="${user.getSex()}"></td>
@@ -133,16 +133,16 @@
 <!--                                <td>${allUser.identity}</td>-->
 <!--                                <td>${allUser.age}</td>-->
 <!--                                <td>${allUser.tel}</td>-->
-                                <td class="td_left"><a class="btn btn-default btn-sm" href="update.jsp"></a><input type="button" name="修改" value="修改"></td>
-                                <td class="td_left"><a class="btn btn-default btn-sm" href="/manageUser/delete"><input type="button" name="删除" value="删除"></a></td>
+<!--                                <td class="td_left"><a class="btn btn-default btn-sm"></a><input type="submit" name="修改" value="修改"></td>-->
+                                <td class="td_left"><a class="btn btn-default btn-sm" th:href="@{/manageUser/delete}+'?commonId='+${user.getCommonId()}"><input type="button" name="删除" value="删除"></a></td>
                             </tr>
                     </table>
                 </form>
             </div>
         </div>
-        <tr>
-            <td colspan="8" align="center"><a class="btn btn-primary" href="add.jsp">添加联系人</a></td>
-        </tr>
+<!--        <tr>-->
+<!--            <td colspan="8" align="center"><a class="btn btn-primary" href="add.jsp">添加联系人</a></td>-->
+<!--        </tr>-->
     </table>
 </div>
 </body>

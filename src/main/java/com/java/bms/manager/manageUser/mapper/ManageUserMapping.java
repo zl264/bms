@@ -24,14 +24,14 @@ public interface ManageUserMapping {
     /**
      * 删除指定的用户登录信息
      */
-    @Delete("delete from commonLogin where id = #{commonId} and username = #{username}")
-    int deleteCommonUserLogin(int commonId,String username);
+    @Delete("delete from commonLogin where id = #{commonId}")
+    int deleteCommonUserLogin(int commonId);
 
     /**
      * 删除指定的用户基本信息
      */
-    @Delete("delete from commonUser where id = #{commonId} and username = #{username}")
-    int deleteCommonUser(int commonId,String username);
+    @Delete("delete from commonUser where commonId = #{commonId}")
+    int deleteCommonUser(int commonId);
 
     /**
      * 修改成员信息
