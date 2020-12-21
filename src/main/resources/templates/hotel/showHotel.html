@@ -5,68 +5,172 @@
     <title th:text="${hotel.getHotelName()}"></title>
     <!-- Bootstrap -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/dashboard.css" rel="stylesheet">
+
+    <script src="/js/html5shiv.min.js"></script>
+    <script src="/js/respond.min.js"></script>
+    <style>
+        .rg_center{
+            border:5px solid #EEEEEE;
+            background-color: #f9f9f9;
+            margin-top: 20px;
+            margin-left: 50px;
+            padding:20px;
+            width: 800px;
+        }
+        .td_left{
+            width:200px;
+            text-align: right;
+            height:45px;
+            font-size: 15px;
+        }
+        .td_right{
+            padding-left: 50px;
+            font-size: 15px;
+        }
+        .paddingtop{
+            padding-top:10px ;
+        }
+        .margintop{
+            margin-top: 15px;
+        }
+        .line {
+            border-bottom: 2px solid #000000;
+            padding: 5px;
+        }
+        .checkInStartTime,.dayNumber{
+            width:250px;
+            height:40px;
+            border: 1px solid #000000;
+            /*设置边框圆角*/
+            border-radius: 5px;
+            padding-left: 10px;
+        }
+    </style>
 </head>
 <body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" th:href="@{/participant/hotel}">返回</a>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row paddingtop">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <!--显示侧边栏-->
+        </div>
 
-<table>
-    <tr>
-        <td style="width: 200px">酒店标题</td>
-        <td th:text="${hotel.getHotelName()}"></td>
-    </tr>
-    <tr>
-        <td style="width: 200px">酒店电话</td>
-        <td th:text="${hotel.getHotelPhone()}"></td>
-    </tr>
-    <tr>
-        <td style="width: 200px">酒店地址</td>
-        <td th:text="${hotel.getHotelLocation()}"></td>
-    </tr>
-    <tr>
-        <td style="width: 200px">酒店描述</td>
-        <td th:text="${hotel.getHotelDescription()}"></td>
-    </tr>
-    <tr>
-        <td style="width: 200px">酒店单人房价格</td>
-        <td th:text="${isFree==0?hotel.getSingleRoomPrice():0}"></td>
-    </tr>
-    <tr>
-        <td style="width: 200px">酒店剩余单人房数量</td>
-        <td th:text="${hotel.getRemainSingleRoom()}"></td>
-    </tr>
-    <tr>
-        <td style="width: 200px">酒店双人房价格</td>
-        <td th:text="${isFree==0?hotel.getDoubleRoomPrice():0}"></td>
-    </tr>
-    <tr>
-        <td style="width: 200px">酒店剩余双人房数量</td>
-        <td th:text="${hotel.getRemainDoubleRoom()}"></td>
-    </tr>
-</table>
-<div th:if="${isCheckIn==0} and ${isOrder} ==0">
-    <form th:action="@{/hotel/commonApply}" method="post">
-        <input type="hidden" name="type" value="1">
-        <input type="hidden" name="hotelId" th:value="${hotel.getHotelId()}">
-        <input type="hidden" name="commonId" th:value="${commonId}">
-        入住时间:<input type="datetime-local" name="checkInStartTime">
-        入住天数:<input type="text" name="dayNumber">
-        <input type="submit" value="预约单人房" th:if="${hotel.getRemainSingleRoom()!=0}">
-        <span th:if="${hotel.getRemainSingleRoom()==0}">暂无空闲单人房</span>
-    </form>
-    <form th:action="@{/hotel/commonApply}" method="post">
-        <input type="hidden" name="type" value="2">
-        <input type="hidden" name="hotelId" th:value="${hotel.getHotelId()}">
-        <input type="hidden" name="commonId" th:value="${commonId}">
-        入住时间:<input type="datetime-local" name="checkInStartTime">
-        入住天数:<input type="text" name="dayNumber">
-        <input type="submit" value="预约双人房" th:if="${hotel.getRemainDoubleRoom()!=0}">
-        <span th:if="${hotel.getRemainDoubleRoom()==0}">暂无空闲双人房</span>
-    </form>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="row line">
+                <h1 class="page-header ">
+                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                    <span>酒店基本信息</span>
+                </h1>
+            </div>
+            <div class="row rg_center">
+                <table>
+                    <tr>
+                        <td class="td_left">酒店标题</td>
+                        <td class="td_right" th:text="${hotel.getHotelName()}"></td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">酒店电话</td>
+                        <td class="td_right" th:text="${hotel.getHotelPhone()}"></td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">酒店地址</td>
+                        <td class="td_right" th:text="${hotel.getHotelLocation()}"></td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">酒店描述</td>
+                        <td class="td_right" th:text="${hotel.getHotelDescription()}"></td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">酒店单人房价格</td>
+                        <td class="td_right" th:text="${isFree==0?hotel.getSingleRoomPrice():0}"></td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">酒店剩余单人房数量</td>
+                        <td class="td_right" th:text="${hotel.getRemainSingleRoom()}"></td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">酒店双人房价格</td>
+                        <td class="td_right" th:text="${isFree==0?hotel.getDoubleRoomPrice():0}"></td>
+                    </tr>
+                    <tr>
+                        <td class="td_left">酒店剩余双人房数量</td>
+                        <td class="td_right" th:text="${hotel.getRemainDoubleRoom()}"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="row line">
+                <h1 class="page-header ">
+                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                    <span>酒店预约申请</span>
+                </h1>
+            </div>
+            <div th:if="${isCheckIn==0} and ${isOrder} ==0">
+                <form th:action="@{/hotel/commonApply}" method="post">
+                    <input type="hidden" name="type" value="1">
+                    <input type="hidden" name="hotelId" th:value="${hotel.getHotelId()}">
+                    <input type="hidden" name="commonId" th:value="${commonId}">
+                    <label style="margin-left: 50px"class="margintop">入住时间:</label><input  class="checkInStartTime" type="datetime-local" name="checkInStartTime">
+                    <label class="margintop">入住天数:</label><input class="dayNumber" type="text" name="dayNumber">
+                    <input type="submit" value="预约单人房" th:if="${hotel.getRemainSingleRoom()!=0}">
+                    <span th:if="${hotel.getRemainSingleRoom()==0}">暂无空闲单人房</span>
+                </form>
+                <form th:action="@{/hotel/commonApply}" method="post">
+                    <input type="hidden" name="type" value="2">
+                    <input type="hidden" name="hotelId" th:value="${hotel.getHotelId()}">
+                    <input type="hidden" name="commonId" th:value="${commonId}">
+                    <label style="margin-left: 50px"class="margintop">入住时间:</label><input class="checkInStartTime" type="datetime-local" name="checkInStartTime">
+                    <label class="margintop">入住天数:</label><input class="dayNumber" type="text" name="dayNumber">
+                    <input type="submit" value="预约双人房" th:if="${hotel.getRemainDoubleRoom()!=0}">
+                    <span th:if="${hotel.getRemainDoubleRoom()==0}">暂无空闲双人房</span>
+                </form>
+            </div>
+            <div class="row" th:if="${isOrder==1} and ${isCheckIn==0} or ${isOrder==0} and ${isCheckIn==1}">
+                <table class="table table-striped table-sm" >
+                    <thead>
+                    <tr>
+                        <th>房间类型</th>
+                        <th>入住时间</th>
+                        <th>入住天数</th>
+                        <th>预约状态</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr >
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td>
+                            <span >已申请预约</span>
+                            <span >已预约成功</span>
+                        </td>
+                        <td>
+                            <form >
+                                <input class="btn btn-sm btn-primary" type="submit" value="取消预约">
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+              <!--  <label th:if="${isOrder==1} and ${isCheckIn==0}">房间类型：     入住时间：     入住天数：     已申请预约     取消预约</label>
+                <label th:if="${isOrder==0} and ${isCheckIn==1}">房间类型：     入住时间：     入住天数：     已预约成功     取消预约</label>-->
+            </div>
+        </div>
+    </div>
 </div>
-<span th:if="${isOrder==1} and ${isCheckIn==0}">已申请预约</span>
-<span th:if="${isOrder==0} and ${isCheckIn==1}">已预约成功</span>
-<div>
 
-</div>
 </body>
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 <script src="/js/jquery.min.js"></script>
