@@ -77,31 +77,35 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <div class="row line">
-        <h1 class="page-header ">
-            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-            <span>全部会议</span>
-        </h1>
-    </div>
 
-    <div class="row placeholders paddingtop">
-        <div class="col-xs-6 col-sm-3 placeholder" th:each="congress:${session.allCongress}">
-            <div class="thumbnail" style="height: 360px;">
-                <a th:href="@{/congress/}+${congress.getCongressId()}" >
-                    <img class="lazy" th:src="'img/'+${congress.getImage()}+'.jpg'" alt="会议图片" width="300" height="150">
-                </a>
-                <div class="caption">
-                    <h3>
-                        <a th:href="@{/congress/}+${congress.getCongressId()}" th:text="${congress.getTitle()}"></a>
-                    </h3>
-                    <p th:text="${#strings.substring(congress.getContent(),0,20)}" th:if="${congress.getContent().length()>20}"></p>
-                    <p th:text="${congress.getContent()}" th:if="${congress.getContent().length()<20}"></p>
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="row line">
+            <h1 class="page-header ">
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                <span>全部会议</span>
+            </h1>
+        </div>
+
+        <div class="row placeholders paddingtop">
+            <div class="col-xs-6 col-sm-3 placeholder" th:each="congress:${session.allCongress}">
+                <div class="thumbnail" style="height: 360px;">
+                    <a th:href="@{/congress/}+${congress.getCongressId()}" >
+                        <!--                                    <img class="lazy" th:src="'/img/congress/'+${congress.getImage()}+'.jpg'" alt="会议图片" width="300" height="150">-->
+                        <img class="lazy" th:src="@{/images/congress/}+${congress.getImage()!=null?congress.getImage():'0.jpg'}" alt="会议图片" style="height: 150px;width: 300px;">
+                    </a>
+                    <div class="caption">
+                        <h3>
+                            <a th:href="@{/congress/}+${congress.getCongressId()}" th:text="${congress.getTitle()}"></a>
+                        </h3>
+                        <p th:text="${#strings.substring(congress.getContent(),0,20)}" th:if="${congress.getContent().length()>20}"></p>
+                        <p th:text="${congress.getContent()}" th:if="${congress.getContent().length()<20}"></p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
 
 
 <!--&lt;!&ndash;显示每一个会议&ndash;&gt;-->
