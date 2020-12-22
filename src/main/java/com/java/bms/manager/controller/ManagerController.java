@@ -41,7 +41,7 @@ public class ManagerController {
      */
     @PostMapping(value = "/manager/login")
     public String commonLogin(@RequestParam("username") String username,
-                              @RequestParam("password") String password,
+                              @RequestParam("password") String password,@RequestParam("code") String code,
                               Map<String,Object> map, HttpSession session, Model model){
         if(StringUtils.isEmpty(username)||StringUtils.isEmpty(password)){
             session.setAttribute("msg","请输入用户名密码");
@@ -51,6 +51,14 @@ public class ManagerController {
         if(userDo==null){
             session.setAttribute("msg","用户名密码错误");
             return "redirect:/manager/enter";
+        }
+        if(StringUtils.isEmpty(code)){
+            session.setAttribute("msg","请输入验证码");
+            return "redirect:/common/enter";
+        }
+        if (!code.equals(session.getAttribute("VerifyCode"))){
+            session.setAttribute("msg","验证码错误");
+            return "redirect:/common/enter";
         }
         if(username.equals(userDo.getUsername())&&password.equals(userDo.getPassword())) {
 //            登录成功以后，防止表单重复提交，可以重定向到主页

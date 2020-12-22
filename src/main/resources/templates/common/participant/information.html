@@ -26,7 +26,7 @@
         }
         .rg_layout{
             width:900px;
-            height:500px;
+            height:700px;
             border:5px solid #EEEEEE;
             background-color: white;
             margin: auto;
@@ -85,6 +85,9 @@
             font-size: 20px;
             color: white;
         }
+        .margintop{
+            margin-top: 15px;
+        }
     </style>
 </head>
 
@@ -142,6 +145,9 @@
                 <form th:action="@{/common/createinformation}" method="post">
                     <table>
                         <tr>
+                            <td colspan="2"><h2>个人信息</h2></td>
+                        </tr>
+                        <tr>
                             <td class="td_left"><lable for="name">姓名：</lable></td>
                             <td class="td_right"><input type="text" name="name" id="name"  placeholder="请输入姓名" th:value="${user!=null?user.getName():''}"></td>
                         </tr>
@@ -169,15 +175,20 @@
                         <tr>
                             <td colspan="2" align="center"><input type="submit" id="btn_sub" value="保存"></td>
                         </tr>
+                        <tr>
+                            <td colspan="2"><h2>头像</h2></td>
+                        </tr>
+                        <tr>
+                            <td class="td_left"><img style="width: 150px;height: 150px;" th:src="@{/images/head/}+${user.getImage()!=null?user.getImage():'0.jpg'}"/></td>
+                            <td class="td_right">
+                                <form method="post" enctype="multipart/form-data">
+                                    <input class="margintop" type="file" id="headImage" name="file"/>
+                                    <input class="btn btn-sm btn-primary margintop" type="button" onclick="changeImage()" value="更换"/>
+                                </form>
+                            </td>
+                        </tr>
                     </table>
                 </form>
-                <form method="post" enctype="multipart/form-data">
-                    <label>更换头像</label>
-                    <input type="file" id="headImage" name="file"/><span id="inf"></span>
-                    <input type="button" onclick="changeImage()" value="更换"/>
-                </form>
-                <p>头像:</p>
-                <img style="width: 150px;height: 150px;" th:src="@{/images/head/}+${user.getImage()!=null?user.getImage():'0.jpg'}"/>
             </div>
         </div>
         <div class="rg_right">

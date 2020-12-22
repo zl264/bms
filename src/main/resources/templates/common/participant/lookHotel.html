@@ -89,7 +89,7 @@
                         <div class="col-xs-6 col-sm-3 placeholder" th:each="sHotel:${successHotel}">
                             <div class="thumbnail" style="height: 360px;">
                                 <a  th:href="@{/hotel/show}+'?hotelId='+${sHotel.getHotelId()}+'&&commonId='+${commonId}">
-                                    <img th:src="'/images/hotel/'+${sHotel.getImage()!=null?sHotel.getImage():'0.jpg'}" alt="酒店图片" width="300" height="150">
+                                    <img th:src="@{/images/hotel/}+${sHotel.getImage()!=null?sHotel.getImage():'0.jpg'}" alt="酒店图片" width="300" height="150">
                                 </a>
                                 <div class="caption">
                                     <h3>
@@ -105,7 +105,7 @@
 
                 <div class="col-xs-6 col-sm-3 placeholder" >
                     <div th:unless="${successHotel.size()!=0}" >
-                        没有预约成功的酒店
+                        <label>没有预约成功的酒店</label>
                     </div>
                 </div>
             </div>
@@ -128,7 +128,7 @@
                                 <div class="col-xs-6 col-sm-3 placeholder" th:each="cHotel:${congressHotels.get(eCongress)}">
                                     <div class="thumbnail" style="height: 360px;">
                                         <a  th:href="@{/hotel/show}+'?hotelId='+${cHotel.getHotelId()}+'&&commonId='+${commonId}">
-                                            <img th:src="'/images/hotel/'+${cHotel.getImage()!=null?cHotel.getImage():'0.jpg'}" alt="酒店图片" width="300" height="150">
+                                            <img th:src="@{/images/hotel/}+${cHotel.getImage()!=null?cHotel.getImage():'0.jpg'}" alt="酒店图片" width="300" height="150">
                                         </a>
                                         <div class="caption">
                                             <h3>
@@ -160,7 +160,7 @@
                         <div class="col-xs-6 col-sm-3 placeholder" th:each="aHotel:${allHotel}">
                             <div class="thumbnail" style="height: 360px;">
                                 <a  th:href="@{/hotel/show}+'?hotelId='+${aHotel.getHotelId()}+'&&commonId='+${commonId}">
-                                    <img th:src="'/images/hotel/'+${aHotel.getImage()!=null?aHotel.getImage():'0.jpg'}" alt="酒店图片" width="300" height="150">
+                                    <img th:src="@{/images/hotel/}+${aHotel.getImage()!=null?aHotel.getImage():'0.jpg'}" alt="酒店图片" width="300" height="150">
                                 </a>
                                 <div class="caption">
                                     <h3>

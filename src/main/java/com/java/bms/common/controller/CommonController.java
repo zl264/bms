@@ -78,7 +78,7 @@ public class CommonController {
      */
     @PostMapping(value = "/common/login")
     public String commonLogin(@RequestParam("username") String username,
-                              @RequestParam("password") String password,/*@RequestParam("code") String code,*/
+                              @RequestParam("password") String password,@RequestParam("code") String code,
                               Map<String, Object> map, HttpSession session, Model model) {
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             session.setAttribute("msg", "请输入用户名密码");
@@ -90,14 +90,14 @@ public class CommonController {
             session.setAttribute("msg", "用户名密码错误");
             return "redirect:/common/enter";
         }
-//        if(StringUtils.isEmpty(code)){
-//            session.setAttribute("msg","请输入验证码");
-//            return "redirect:/common/enter";
-//        }
-//        if (!code.equals(session.getAttribute("VerifyCode"))){
-//            session.setAttribute("msg","验证码错误");
-//            return "redirect:/common/enter";
-//        }
+        if(StringUtils.isEmpty(code)){
+            session.setAttribute("msg","请输入验证码");
+            return "redirect:/common/enter";
+        }
+        if (!code.equals(session.getAttribute("VerifyCode"))){
+            session.setAttribute("msg","验证码错误");
+            return "redirect:/common/enter";
+        }
         if (username.equals(userDo.getUsername()) && password.equals(userDo.getPassword())) {
 //            登录成功以后，防止表单重复提交，可以重定向到主页
             session.setAttribute("loginUser", username);
@@ -187,6 +187,48 @@ public class CommonController {
     }
 
     /**
+     * 进入用户忘记密码界面
+     * @return
+     */
+    @RequestMapping("/common/loss")
+    public String enterLossPassword(){
+        return "/common/lossPassword";
+    }
+
+    /**
+     * 判断用户输入的用户名和手机号是否一致
+     * @param request
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("/common/equal")
+    public String commonLossPassword(HttpServletRequest request,HttpSession session,Model model){
+        String username = (String)request.getParameter("username");
+        String tel = (String) request.getParameter("tel");
+
+        if(commonMapper.usernameAndTelIsRight(username,tel)!=0){
+            model.addAttribute("switch",1);
+            int commonId = commonMapper.getCommonIdByUsername(username);
+            model.addAttribute("commonId",commonId);
+        }else{
+            model.addAttribute("msg","用户名或手机号输入错误");
+        }
+
+        return "/common/lossPassword";
+    }
+
+    @RequestMapping("/common/updatePassword")
+    public String commonUpdatePassword(HttpSession session,HttpServletRequest request){
+        int commonId = Integer.parseInt(request.getParameter("commonId"));
+        String password = request.getParameter("password");
+        commonMapper.updatePassword(commonId,password);
+
+        session.setAttribute("msg","修改密码成功");
+        return "/common/commonLogin";
+    }
+
+    /**
      * 通过会议ID查找会议
      *
      * @param id    会议ID
@@ -260,9 +302,11 @@ public class CommonController {
         List<CongressVO> searchCongress = commonMapper.searchCongressByInformation(information);
         List<HotelVO> searchHotel = commonMapper.searchHotelByInformation(information);
         int commonId = commonMapper.getCommonIdByUsername((String)session.getAttribute("loginUser"));
+        CommonUserVO user = commonMapper.getCommonUserByCommonId(commonId);
         model.addAttribute("searchCongress",searchCongress);
         model.addAttribute("searchHotel",searchHotel);
         model.addAttribute("commonId",commonId);
+        model.addAttribute("user",user);
         return "/common/search";
     }
 
