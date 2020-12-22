@@ -168,9 +168,6 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/dashboard.css" rel="stylesheet">
 
-    <script src="/js/html5shiv.min.js"></script>
-    <script src="/js/respond.min.js"></script>
-
 
 </head>
 <body>
@@ -189,9 +186,9 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li>
                         <a href="#" th:href="@{/common/information}" style="margin-right: 50px;">
-                            <img class="img-circle" th:src="@{/images/head/}+${user.getImage()!=null?user.getImage():'0.jpg'}"
+                            <img class="img-circle" th:src="@{/images/head/}+${session.user.getImage()!=null?session.user.getImage():'0.jpg'}"
                                  th:alt="${session.loginUser}" th:if="${session.user!=null}" width="30" height="30">
-                            <img th:if="${user==null}"
+                            <img th:if="${session.user==null}"
                                  class="img-circle" src="/img/head/0.jpg" th:alt="${session.loginUser}" width="30" height="30">
                         </a>
                     </li>

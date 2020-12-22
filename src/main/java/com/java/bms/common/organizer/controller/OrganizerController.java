@@ -452,6 +452,7 @@ public class OrganizerController {
                                  Model model){
         List<CommonUserVO> userList = organizerMapper.getList(congressId,driverId);
         model.addAttribute("list",userList);
+        model.addAttribute("congressId",congressId);
         return "/common/organizer/list";
     }
 
