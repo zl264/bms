@@ -17,5 +17,6 @@ public class DriverVO {
     private String sex;
     private int age;
     private String idCardNo;
+    private String image;
 }
 

@@ -20,4 +20,5 @@ public class CommonUserAllInformationVO {
     private String tel;
     private String arrivalPlace;
     private LocalDateTime arrivalTime;
+    private String image;
 }

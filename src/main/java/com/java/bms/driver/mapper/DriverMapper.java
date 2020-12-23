@@ -191,6 +191,15 @@ public interface DriverMapper {
     int deleteCongressDriver(int driverId,int congressId);
 
     /**
+     * 删除司机所有的接送任务
+     * @param driverId
+     * @param congressId
+     * @return
+     */
+    @Delete("delete from userDriver where driverId = #{driverId} and congressId = #{congressId}")
+    int deleteUserDriver(int driverId,int congressId);
+
+    /**
      * 获取司机接送的人员名单
      * @param driverId
      * @param congressId
@@ -221,4 +230,13 @@ public interface DriverMapper {
     @Update("update driverLogin set password = #{password} " +
             "where id = #{driverId}")
     int updatePassword(int driverId,String password);
+
+    /**
+     * 更新司机图片
+     * @param image
+     * @param driverId
+     * @return
+     */
+    @Update("update driver set image = #{image} where driverId = #{driverId}")
+    int updateDriverImage(String image,int driverId);
 }

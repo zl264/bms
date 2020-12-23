@@ -192,7 +192,7 @@
                 </h1>
             </div>
             <div class="row rg_center" th:if="${session.hotel!=null}">
-                <form class="form-signin" th:action="@{/hotel/createHotel}" method="post">
+                <form class="form-signin" th:action="@{/hotel/updateHotel}" method="post">
                     <table>
                         <tr>
                             <td class="td_left">酒店名称</td>
@@ -240,6 +240,54 @@
                     </table>
                 </form>
             </div>
+            <div class="row" th:if="${session.hotel!=null}">
+                <form method="post" enctype="multipart/form-data">
+                    <input class="margintop" type="file" id="hotelImage" name="file"/><span id="inf"></span>
+                    <input class="margintop btn btn-sm btn-primary" type="button" onclick="changeImage()" value="更换"/>
+                </form>
+                <div class="row margintop">
+                    <h3>
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        <span>酒店图片</span>
+                    </h3>
+                </div>
+                <img style="width: 150px;height: 150px;" th:src="@{/images/hotel/}+${session.hotel.getImage()!=null?session.hotel.getImage():'0.jpg'}"/>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function changeImage()
+    {
+        var up_file = document.getElementById("hotelImage").files[0];//找到id为file的组件，当然这里是input组件
+        var formData = new FormData();//新建一个formdata用于存储数据
+        formData.append("file",up_file);//将选择的文件添加到formdata中
+        var hotelId = [[${session.hotel.getHotelId()}]];
+        formData.append("hotelId",hotelId);
+        $.ajax
+        ({
+            url:'/hotel/image',
+            dataType:'test json',
+            type:'POST',
+            async: true,
+            data: formData,
+            processData : false,
+            contentType : false,
+            success: function(data)
+            {
+                window.location.reload();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+                window.location.reload();
+            }
+        });
+    }
+</script>
 
 <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
 

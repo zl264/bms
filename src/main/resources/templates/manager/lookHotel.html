@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title th:text="${hotel.getHotelName()}"></title>
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="css/me.css">
+    <link href="/css/dashboard.css" rel="stylesheet">
+
+
+    <style>
+        .rg_center{
+            border:5px solid #EEEEEE;
+            background-color: #f9f9f9;
+            margin-top: 20px;
+            margin-left: 50px;
+            padding:20px;
+            width: 800px;
+        }
+        .td_left{
+            width:200px;
+            text-align: right;
+            height:45px;
+            font-size: 15px;
+        }
+        .td_right{
+            padding-left: 50px;
+            font-size: 15px;
+        }
+        .paddingtop{
+            padding-top:10px ;
+        }
+        .margintop{
+            margin-top: 15px;
+        }
+        .line {
+            border-bottom: 2px solid #000000;
+            padding: 5px;
+        }
+        .btn_sub{
+            width:200px;
+            height:40px;
+            background-color:#000000;
+            border: 1px solid #000000;
+            margin-top:10px;
+            margin-left: 300px;
+            font-size: 20px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" th:href="@{/manager/allHotel}">返回</a>
+        </div>
+    </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row paddingtop">
+        <div class="col-sm-3 col-md-2 sidebar">
+
+        </div>
+
+
+        <!--右-->
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+            <div class="row line" th:if="${hotel!=null}">
+                <h1 class="page-header ">
+                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                    <span>酒店信息</span>
+                </h1>
+            </div>
+            <div class="row rg_center" th:if="${hotel!=null}">
+                <form class="form-signin" th:action="@{/manager/updateHotel}" method="post">
+                    <input type="hidden" name="hotelId" th:value="${hotel.getHotelId()}">
+                    <table>
+                        <tr>
+                            <td class="td_left">酒店名称</td>
+                            <td class="td_right"><input th:value="${hotel.getHotelName()}" type="text" name="hotelName" class="form-control" placeholder="HotelName" ></td>
+                        </tr>
+                        <tr>
+                            <td class="td_left">酒店联系电话</td>
+                            <td class="td_right"><input th:value="${hotel.getHotelPhone()}" type="text" name="hotelPhone" class="form-control" placeholder="HotelPhone" ></td>
+                        </tr>
+                        <tr>
+                            <td class="td_left">酒店地址</td>
+                            <td class="td_right"><input th:value="${hotel.getHotelLocation()}" type="text" name="hotelLocation" class="form-control" placeholder="HotelLocation"></td>
+                        </tr>
+                        <tr>
+                            <td class="td_left">单人房价格</td>
+                            <td class="td_right"><input th:value="${hotel.getSingleRoomPrice()}" type="text" name="singleRoomPrice" class="form-control" placeholder="SingleRoomPrice"></td>
+                        </tr>
+                        <tr>
+                            <td class="td_left">双人房价格</td>
+                            <td class="td_right"><input th:value="${hotel.getDoubleRoomPrice()}" type="text" name="doubleRoomPrice" class="form-control" placeholder="DoubleRoomPrice"></td>
+                        </tr>
+                        <tr>
+                            <td class="td_left">单人房总量</td>
+                            <td class="td_right"><input th:value="${hotel.getTotalSingleRoom()}" type="text" name="totalSingleRoom" class="form-control" placeholder="TotalSingleRoom"></td>
+                        </tr>
+                        <tr>
+                            <td class="td_left">单人房剩余</td>
+                            <td class="td_right"><input th:value="${hotel.getRemainSingleRoom()}" type="text" name="remainSingleRoom" class="form-control" placeholder="RemainSingleRoom"></td>
+                        </tr>
+                        <tr>
+                            <td class="td_left">双人房总量</td>
+                            <td class="td_right"><input th:value="${hotel.getTotalDoubleRoom()}" type="text" name="totalDoubleRoom" class="form-control" placeholder="TotalDoubleRoom"></td>
+                        </tr>
+                        <tr>
+                            <td class="td_left">双人房剩余</td>
+                            <td class="td_right"><input th:value="${hotel.getRemainDoubleRoom()}" type="text" name="remainDoubleRoom" class="form-control" placeholder="RemainDoubleRoom"></td>
+                        </tr>
+                        <tr>
+                            <td class="td_left">酒店描述</td>
+                            <td class="td_right"><textarea th:text="${hotel.getHotelDescription()}" type="text" name="hotelDescription" class="form-control" placeholder="HotelDescription" rows="5" cols="60" maxlength="1000"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center"><input type="submit" class="btn_sub" value="保存"></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="row line" th:if="${hotel!=null}">
+                <h1 class="page-header ">
+                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                    <span>更换酒店图片</span>
+                </h1>
+            </div>
+            <div class="row" th:if="${hotel!=null}">
+                <form method="post" enctype="multipart/form-data">
+                    <input class="margintop" type="file" id="hotelImage" name="file"/><span id="inf"></span>
+                    <input class="margintop btn btn-sm btn-primary" type="button" onclick="changeImage()" value="更换"/>
+                </form>
+                <div class="row margintop">
+                    <h3>
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        <span>酒店图片</span>
+                    </h3>
+                </div>
+                <img style="width: 150px;height: 150px;" th:src="@{/images/hotel/}+${hotel.getImage()!=null?hotel.getImage():'0.jpg'}"/>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function changeImage()
+    {
+        var up_file = document.getElementById("hotelImage").files[0];//找到id为file的组件，当然这里是input组件
+        var formData = new FormData();//新建一个formdata用于存储数据
+        formData.append("file",up_file);//将选择的文件添加到formdata中
+        var hotelId = [[${hotel.getHotelId()}]];
+        formData.append("hotelId",hotelId);
+        $.ajax
+        ({
+            url:'/hotel/image',
+            dataType:'test json',
+            type:'POST',
+            async: true,
+            data: formData,
+            processData : false,
+            contentType : false,
+            success: function(data)
+            {
+                // window.location.reload();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+                window.location.reload();
+            }
+        });
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script src="/js/jquery.min.js"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script src="/js/bootstrap.min.js"></script>
+</body>
+</html>

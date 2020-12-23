@@ -43,7 +43,10 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li>
                         <a href="#" th:href="@{/driver/information}" style="margin-right: 50px;">
-                            <img class="img-circle" src="/img/head/0.jpg" th:alt="${session.loginUser}" width="30" height="30">
+                            <img class="img-circle" th:src="@{/images/driver/}+${session.driver.getImage()!=null?session.driver.getImage():'0.jpg'}"
+                                 th:alt="${session.loginUser}" th:if="${session.driver!=null}" width="30" height="30">
+                            <img class="img-circle" src="/img/head/0.jpg" th:alt="${session.loginUser}" width="30" height="30"
+                                 th:if="${session.driver==null}">
                         </a>
                     </li>
                 </ul>
@@ -99,34 +102,6 @@
                 <div class="paddingtop" th:if="${session.applyCongresses.size()==0}">
                     <label>暂时没有申请</label>
                 </div>
-                    <!--<ul class="list-group" style="width: 80%;text-align: center">
-                        <li class="list-group-item" th:each="applyCongress:${session.applyCongresses}">
-                            <a th:href="@{/other/congress/}+${applyCongress.getCongressId()}" th:text="${applyCongress.getTitle()}" style="display: block;"></a>
-                            <form method="post" th:action="@{/driver/agree}">
-                                <input type="hidden" id="congressId" name="congressId" th:value="${applyCongress.getCongressId()}">
-                                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                                <input type="submit" value="同意">
-                                &emsp;&emsp;&emsp;
-                                &lt;!&ndash;                            <input type="button" th:href="@{/driver/refuse/}+${applyCongress.getCongressId()}" value="拒绝">&ndash;&gt;
-                                <input type="button" th:onclick="'javascript:refuse('+${applyCongress.getCongressId()}+')' " value="拒绝">
-                                <script>
-                                    function refuse(congressId){
-                                        initAJAX();
-                                        xmlHttp.open("POST", "/driver/refuse/"+congressId, true);
-                                        xmlHttp.onreadystatechange = function () {
-                                            if (xmlHttp.readyState == 4) {
-                                                window.location.replace("/driver/refresh");
-                                            }
-                                        }
-                                        xmlHttp.send();
-                                    }
-                                </script>
-                            </form>
-                        </li>
-                    </ul>
-                <div th:if="${session.applyCongresses.size()==0}">
-                    暂时没有申请
-                </div>-->
 
                 <div class="row line">
                     <h1>
@@ -152,6 +127,9 @@
                                 <a class="paddingtop" th:href="@{/driver/list/}+${aCongress.getCongressId()}" style="display: block;">接送人员名单</a>
                             </li>
                         </ul>
+                    </div>
+                    <div class="paddingtop" th:if="${session.allCongress.size()==0}">
+                        <label>暂时没有申请</label>
                     </div>
                 </div>
                 <div class="row line">
@@ -184,133 +162,6 @@
             </div>
         </div>
     </div>
-
-    <!--上导航栏-->
-    <!--<ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">主页</a>
-        </li>
-        <li role="presentation"><a href="#information" aria-controls="information" role="tab" data-toggle="tab">个人信息</a>
-        </li>
-
-    </ul>-->
-
-    <!-- Tab panes -->
-    <!--<div class="tab-content">
-
-        <div role="tabpanel" class="tab-pane active" id="home">
-            <h3>申请的会议列表</h3>
-            <div th:if="${session.applyCongresses.size()!=0}">
-                <ul class="list-group" style="width: 80%;text-align: center">
-                    <li class="list-group-item" th:each="applyCongress:${session.applyCongresses}">
-                        <a th:href="@{/other/congress/}+${applyCongress.getCongressId()}" th:text="${applyCongress.getTitle()}" style="display: block;background-color: #31b0d5;"></a>
-                        <form method="post" th:action="@{/driver/agree}">
-                            <input type="hidden" id="congressId" name="congressId" th:value="${applyCongress.getCongressId()}">
-                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                            <input type="submit" value="同意">
-                            &emsp;&emsp;&emsp;
-&lt;!&ndash;                            <input type="button" th:href="@{/driver/refuse/}+${applyCongress.getCongressId()}" value="拒绝">&ndash;&gt;
-                            <input type="button" th:onclick="'javascript:refuse('+${applyCongress.getCongressId()}+')' " value="拒绝">
-
-                        </form>
-                    </li>
-                </ul>
-            </div>
-            <div th:if="${session.applyCongresses.size()==0}">
-                暂时没有申请
-            </div>
--->
-           <!-- <hr style="background-color: red;height: 3px" color="red">-->
-
-
-          <!--  <div>
-                <div th:if="${session.allCongress.size()!=0}">
-                    <span>接送时间</span>
-                    <ul class="list-group" style="width: 80%;text-align: center">
-                        <li class="list-group-item" th:each="aCongress:${session.allCongress}">
-                            <a th:href="@{/other/congress/}+${aCongress.getCongressId()}" th:text="${aCongress.getTitle()}" style="display: block;background-color: #31b0d5;"></a>
-                            <form method="post" th:action="@{/driver/addTime}">
-                                <input type="hidden" name="congressId" th:value="${aCongress.getCongressId()}">
-                                接送时间:
-                                <input type="datetime-local" name="pinkUpTime" th:value="${aCongress.getTime()!=null?aCongress.getTime():''}">
-                                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;接送地点:
-                                <span th:text="${aCongress.getPlace()}" th:if="${aCongress.getPlace()!=null}"></span>
-                                <span th:text="暂未给出接送地点" th:if="${aCongress.getPlace()==null}"></span>
-                                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                                <input type="submit" value="保存">
-                            </form>
-                            <a th:href="@{/driver/list/}+${aCongress.getCongressId()}" style="display: block;background-color: #31b0d5;">接送人员名单</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <h3>要去接送的会议列表</h3>
-            <div th:if="${session.congresses.size()!=0}">
-                <ul class="list-group" style="width: 80%;text-align: center">
-                    <li class="list-group-item" th:each="congress:${session.congresses}">
-                        <a th:href="@{/other/congress/}+${congress.getCongressId()}" th:text="${congress.getTitle()}" style="display: block;background-color: #31b0d5;"></a>
-                        <a th:href="@{/driver/list/}+${congress.getCongressId()}" style="display: block;background-color: #31b0d5;">接送人员名单</a>
-                        时间:<span th:text="${congress.getTime()}"></span>
-                        地点:<span th:text="${congress.getPlace()}"></span>
-                        <a th:href="@{/driver/complete/}+${congress.getCongressId()}" style="display: block;background-color: #31b0d5;">接送完成</a>
-                    </li>
-                </ul>
-            </div>
-
-            <div th:if="${session.congresses.size()==0}">
-                暂时没有接送任务
-            </div>
-        </div>-->
-<!--        司机信息-->
-      <!--  <div role="tabpanel" class="tab-pane" id="information">
-            <div class="container-fluid">
-                <div class="row">
-                    <main role="main" class="col-lg-8 col-lg-offset-2">
-                        <form style="text-align: left; margin-top: 150px;margin-left: 300px;"
-                              th:action="@{/driver/addinformation}" method="post" >
-                            <div class="input-group">
-                                <span class="input-group-addon" id="sizing-addon1">姓名：&emsp;&emsp;</span>
-                                <input type="text" name="name" class="form-control" placeholder="姓名"
-                                       aria-describedby="sizing-addon2" th:value="${session.driver!=null?session.driver.getName():''}">
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon" id="sizing-addon2">年龄：&emsp;&emsp;</span>
-                                <input type="text" name="age" class="form-control" placeholder="年龄"
-                                       aria-describedby="sizing-addon2" th:value="${session.driver!=null?session.driver.getAge():''}">
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon" id="sizing-addon3">身份证号：</span>
-                                <input type="text" name="idCardNo" class="form-control" placeholder="身份证号"
-                                       aria-describedby="sizing-addon2" th:value="${session.driver!=null?session.driver.getIdCardNo():''}">
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon" id="sizing-addon4">车牌号：</span>
-                                <input type="text" name="licensePlateNumber" class="form-control" placeholder="车牌号"
-                                       aria-describedby="sizing-addon2"
-                                       th:value="${session.driver!=null?session.driver.getLicensePlateNumber():''}">
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon" id="sizing-addon5">性别：&emsp;&emsp;</span>
-                                <input type="text" name="sex" class="form-control" placeholder="性别"
-                                       aria-describedby="sizing-addon2" th:value="${session.driver!=null?session.driver.getSex():''}">
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon" id="sizing-addon6">电话号码：</span>
-                                <input type="text" name="tel" class="form-control" placeholder="电话号码"
-                                       aria-describedby="sizing-addon2" th:value="${session.driver!=null?session.driver.getTel():''}">
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon" id="sizing-addon7">载客量：</span>
-                                <input type="text" name="capacity" class="form-control" placeholder="载客量"
-                                       aria-describedby="sizing-addon2" th:value="${session.driver!=null?session.driver.getCapacity():''}">
-                            </div>
-                            <button class="btn btn-lg btn-primary btn-block" type="submit">保存</button>
-                         </form>
-                    </main>
-                </div>
-            </div>
-        </div>
-    </div>-->
 </div>
 <script>
     function refuse(congressId){

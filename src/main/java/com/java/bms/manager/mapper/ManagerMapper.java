@@ -4,8 +4,10 @@ import com.java.bms.common.DO.CongressNoteVO;
 import com.java.bms.common.VO.CommonUserVO;
 import com.java.bms.common.VO.CongressVO;
 import com.java.bms.other.DO.UserDO;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -13,6 +15,7 @@ import java.util.List;
  * 对于管理员登录的数据库访问的控制
  */
 @Mapper
+@Repository
 public interface ManagerMapper {
     /**
      * 通过用户名和密码来查找输入的用户名密码是否正确
@@ -63,12 +66,70 @@ public interface ManagerMapper {
     @Select("select * from congressNote where commonId = #{commonId} and congressId = #{congressId}")
     CongressNoteVO getCongressNoteByCommonIdAndCongressId(int commonId, long congressId);
 
+    /**
+     * 获取所有普通用户的信息
+     * @return
+     */
+    @Select("select * from commonUser")
+    List<CommonUserVO> getAllCommonUser();
 
-//    /**
-//     * 通过会议ID获取参与者信息
-//     * @param congressId
-//     * @return
-//     */
-//    @Select("select * from congressNote,commonUser where congressNote.congressId = #{congressId} and congressNote.commonId = commonUser.commonId")
-//    List<CommonUserVO> getParticipantIdByCongressId(int congressId);
+    /**
+     * 删除指定的用户登录信息
+     */
+    @Delete("delete from commonLogin where id = #{commonId}")
+    int deleteCommonLogin(int commonId);
+
+    /**
+     * 删除指定的用户基本信息
+     */
+    @Delete("delete from commonUser where commonId = #{commonId}")
+    int deleteCommonUser(int commonId);
+
+    /**
+     * 删除用户创建的会议
+     * @param organizerId
+     * @return
+     */
+    @Delete("delete from congress where organizerId =  #{organizerId}")
+    int deleteCongressByOrganizerId(int organizerId);
+
+    /**
+     * 删除参会记录
+     * @param commonId
+     * @return
+     */
+    @Delete("delete from congressNote where commonId = #{commonId}")
+    int deleteCongressNoteByCommonId(int commonId);
+
+    /**
+     * 通过用户Id删除取消预约记录
+     * @param commonId
+     * @return
+     */
+    @Delete("delete from hotelCancelOrder where commonId = #{commonId}")
+    int deleteHotelCancelOrderByCommonId(int commonId);
+
+    /**
+     * 通过用户名删除预约成功记录
+     * @param commonId
+     * @return
+     */
+    @Delete("delete from hotelCheckInNote where commonId = #{commonId}")
+    int deleteHotelCheckInNoteByCommonId(int commonId);
+
+    /**
+     * 删除用户申请预约记录
+     * @param commonId
+     * @return
+     */
+    @Delete("delete from hotelOrderNote where commonId = #{commonId}")
+    int deleteHotelOrderNoteByCommonId(int commonId);
+
+    /**
+     * 通过用户名删除司机接送记录
+     * @param commonId
+     * @return
+     */
+    @Delete("delete from userDriver where commonId = #{commonId}")
+    int deleteUserDriverByCommonId(int commonId);
 }

@@ -70,7 +70,7 @@ public interface CommonMapper {
     int updateInformation(String username,String name,int age, String idCardNo, String identity,String sex, long commonId,String tel);
 
     @Select("select * from commonUser where username=#{username}")
-    CommonUserVO HaveInfomation(String username);
+    CommonUserVO  HaveInfomation(String username);
 
     /**
      * 查询数据库中的所有会议

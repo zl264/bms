@@ -4,10 +4,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title th:text="${user.getUsername()}"></title>
+
+
     <!-- Bootstrap -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
-    <title>司机信息</title>
+
     <style>
         *{
             margin:0px;
@@ -64,7 +68,7 @@
         .td_right{
             padding-left: 50px;
         }
-        #name,#sex,#age,#idCardNo,#capaticy,#tel,#licensePlateNumber{
+        #name,#sex,#age,#idCardNo,#identity,#tel{
             width:251px;
             height:40px;
             border: 1px solid #000000;
@@ -81,8 +85,12 @@
             font-size: 20px;
             color: white;
         }
+        .margintop{
+            margin-top: 15px;
+        }
     </style>
 </head>
+
 <body>
 <div class="rg_layout">
     <div class="rg_left">
@@ -92,37 +100,36 @@
 
     <div class="rg_center">
         <div class="rg_form">
-            <form th:action="@{/driver/addinformation}" method="post">
+            <form th:action="@{/manager/createinformation}" method="post">
+                <input type="hidden" name="commonId" th:value="${user.getCommonId()}">
                 <table>
                     <tr>
-                        <td class="td_left"><lable for="name">姓名：</lable></td>
-                        <td class="td_right"><input type="text" name="name" id="name"  th:value="${session.driver!=null?session.driver.getName():''}"></td>
+                        <td colspan="2"><h2>个人信息</h2></td>
                     </tr>
                     <tr>
-                        <td class="td_left"><lable for="age">年龄：</lable></td>
-                        <td class="td_right"><input type="text" name="age" id="age"  th:value="${session.driver!=null?session.driver.getAge():''}"></td>
+                        <td class="td_left"><lable for="name">姓名：</lable></td>
+                        <td class="td_right"><input type="text" name="name" id="name"  placeholder="请输入姓名" th:value="${user!=null?user.getName():''}"></td>
                     </tr>
                     <tr>
                         <td class="td_left"><lable for="sex">性别：</lable></td>
-                        <td class="td_right"><input type="text" name="sex" id="sex" th:value="${session.driver!=null?session.driver.getSex():''}"></td>
+                        <td class="td_right"><input type="text" name="sex" id="sex" placeholder="请输入性别" th:value="${user!=null?user.getSex():''}"></td>
                     </tr>
                     <tr>
                         <td class="td_left"><lable for="idCardNo">身份证号：</lable></td>
-                        <td class="td_right"><input type="text" name="idCardNo" id="idCardNo" th:value="${session.driver!=null?session.driver.getIdCardNo():''}"></td>
+                        <td class="td_right"><input type="text" name="idCardNo" id="idCardNo" placeholder="请输入身份证号" th:value="${user!=null?user.getIdCardNo():''}"></td>
                     </tr>
 
                     <tr>
-                        <td class="td_left"><lable for="licensePlateNumber">车牌号：</lable></td>
-                        <td class="td_right"><input type="text" name="licensePlateNumber" id="licensePlateNumber" th:value="${session.driver!=null?session.driver.getLicensePlateNumber():''}"></td>
+                        <td class="td_left"><lable for="identity">身份：</lable></td>
+                        <td class="td_right"><input type="text" name="identity" id="identity" placeholder="请输入身份" th:value="${user!=null?user.getIdentity():''}"></td>
                     </tr>
-
+                    <tr>
+                        <td class="td_left"><lable for="age">年龄：</lable></td>
+                        <td class="td_right"><input type="text" name="age" id="age" placeholder="请输入年龄" th:value="${user!=null?user.getAge():''}"></td>
+                    </tr>
                     <tr>
                         <td class="td_left"><lable for="tel">电话号码：</lable></td>
-                        <td class="td_right"><input type="text" name="tel" id="tel" th:value="${session.driver!=null?session.driver.getTel():''}"></td>
-                    </tr>
-                    <tr>
-                        <td class="td_left"><lable for="capacity">载客量：</lable></td>
-                        <td class="td_right"><input type="text" name="capacity" id="capaticy" th:value="${session.driver!=null?session.driver.getCapacity():''}"></td>
+                        <td class="td_right"><input type="text" name="tel" id="tel" placeholder="请输入电话号码" th:value="${user!=null?user.getTel():''}"></td>
                     </tr>
                     <tr>
                         <td colspan="2" align="center"><input type="submit" id="btn_sub" value="保存"></td>
@@ -131,7 +138,7 @@
                         <td colspan="2"><h2>头像</h2></td>
                     </tr>
                     <tr>
-                        <td class="td_left"><img style="width: 150px;height: 150px;" th:src="@{/images/driver/}+${session.driver.getImage()!=null?session.driver.getImage():'0.jpg'}"/></td>
+                        <td class="td_left"><img style="width: 150px;height: 150px;" th:src="@{/images/head/}+${user.getImage()!=null?user.getImage():'0.jpg'}"/></td>
                         <td class="td_right">
                             <form method="post" enctype="multipart/form-data">
                                 <input class="margintop" type="file" id="headImage" name="file"/>
@@ -144,7 +151,7 @@
         </div>
     </div>
     <div class="rg_right">
-        <p>修改完成，点击<a th:href="@{/driver/refresh}">返回主页</a></p>
+        <p>修改完成，点击<a th:href="@{/manager/returnMain}">返回主页</a></p>
     </div>
 </div>
 </body>
@@ -154,11 +161,11 @@
         var up_file = document.getElementById("headImage").files[0];//找到id为file的组件，当然这里是input组件
         var formData = new FormData();//新建一个formdata用于存储数据
         formData.append("file",up_file);//将选择的文件添加到formdata中
-        var driverId = [[${session.driver.getDriverId()}]];
-        formData.append("driverId",driverId);
+        var commonId = [[${user.getCommonId()}]];
+        formData.append("commonId",commonId);
         $.ajax
         ({
-            url:'/driver/image',
+            url:'/common/image',
             dataType:'test json',
             type:'POST',
             async: true,
@@ -182,4 +189,5 @@
 <script src="/js/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="/js/bootstrap.min.js"></script>
+<script src="/js/utils.js"></script>
 </html>

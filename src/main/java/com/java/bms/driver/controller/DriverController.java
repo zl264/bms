@@ -101,6 +101,11 @@ public class DriverController {
         return "/driver/driverLogin";
     }
 
+    /**
+     * 刷新司机主页
+     * @param session
+     * @return
+     */
     @RequestMapping("/driver/refresh")
     public String refresh(HttpSession session){
         int driverId = driverMapper.getDriverIdByUsername((String)session.getAttribute("loginUser"));
@@ -129,6 +134,13 @@ public class DriverController {
     @PostMapping(value = "/driver/register")
     public String driverRegister(@RequestParam("username") String username,
                                  @RequestParam("password") String password,
+                                 @RequestParam("name") String name,
+                                 @RequestParam("sex") String sex,
+                                 @RequestParam("idCardNo") String idCardNo,
+                                 @RequestParam("age") int age,
+                                 @RequestParam("tel") String tel,
+                                 @RequestParam("licensePlateNumber") String licensePlateNumber,
+                                 @RequestParam("capacity") int capacity,
                                  Map<String,Object> map, HttpSession session){
         if(StringUtils.isEmpty(username)||StringUtils.isEmpty(password)){
             map.put("msg","请输入要注册的用户名密码");
@@ -140,7 +152,11 @@ public class DriverController {
         }
         int result = driverMapper.driverRegister(username,password);
         if(result==1){
+            int driverId = driverMapper.getDriverIdByUsername(username);
+            driverMapper.addDriverInformation(driverId,username,name,tel,capacity,licensePlateNumber,sex,
+                    age,idCardNo);
             map.put("msg","注册成功，请登录");
+            session.setAttribute("msg","注册成功，请登录");
             return "/driver/driverLogin";
         } else{
             map.put("msg","出现错误，注册失败，请再次尝试或联系管理员");
@@ -181,6 +197,12 @@ public class DriverController {
         return "/driver/lossPassword";
     }
 
+    /**
+     * 修改密码
+     * @param session
+     * @param request
+     * @return
+     */
     @RequestMapping("/driver/updatePassword")
     public String driverUpdatePassword(HttpSession session,HttpServletRequest request){
         int driverId = Integer.parseInt(request.getParameter("driverId"));
@@ -192,11 +214,19 @@ public class DriverController {
     }
 
 
+    /**
+     * 进入司机信息界面
+     * @param map
+     * @param session
+     * @return
+     * @throws UnsupportedEncodingException
+     */
     @RequestMapping(value = "/driver/information")
     public String DriverInformation(Map<String, Object> map, HttpSession session) throws UnsupportedEncodingException {
         int driverId = driverMapper.getDriverIdByUsername((String) session.getAttribute("loginUser"));
         DriverVO driver = driverMapper.getDriverByDriverId(driverId);
         map.put("driver", driver);
+        session.setAttribute("driver",driver);
         return "/driver/driverInformation";
     }
 
@@ -325,7 +355,7 @@ public class DriverController {
     public void refuseCongress(@PathVariable("congressId") int congressId,HttpSession session){
         int driverId = driverMapper.getDriverIdByUsername((String)session.getAttribute("loginUser"));
         driverMapper.deleteApplyCongressByDriverIdAndCongressId(driverId,congressId);
-        driverMapper.addDriverRefuseCongress(driverId,congressId);
+//        driverMapper.addDriverRefuseCongress(driverId,congressId);
 //        DriverVO driverVO = driverMapper.getDriverByDriverId(driverId);
 //        List<CongressApplyDriverDO> applyCongresses = driverMapper.getApplyCongressesByDriverId(driverId);
 //        List<CongressDriver> congresses = driverMapper.getCongressByDriverId(driverId);
@@ -368,6 +398,7 @@ public class DriverController {
     public String taskComplete(@PathVariable("congressId") int congressId,HttpSession session){
         int driverId = driverMapper.getDriverIdByUsername((String)session.getAttribute("loginUser"));
         driverMapper.deleteCongressDriver(driverId,congressId);
+        driverMapper.deleteUserDriver(driverId,congressId);
 
         DriverVO driverVO = driverMapper.getDriverByDriverId(driverId);
         List<CongressApplyDriverDO> applyCongresses = driverMapper.getApplyCongressesByDriverId(driverId);

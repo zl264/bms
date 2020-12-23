@@ -167,6 +167,7 @@ public class CommonController {
         int result = commonMapper.commonRegister(username, password);
         if (result == 1) {
             map.put("msg", "注册成功，请登录");
+            session.setAttribute("msg","注册成功，请登录");
             int commonId = commonMapper.getCommonIdByUsername(username);
             commonMapper.createInformation(username,name,age,idCardNo,identity,sex,commonId,tel);
             return "/common/commonLogin";
@@ -326,6 +327,18 @@ public class CommonController {
     }
 
 
+    /**
+     * 修改用户信息
+     * @param name
+     * @param age
+     * @param idCardNo
+     * @param identity
+     * @param sex
+     * @param tel
+     * @param map
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "/common/createinformation")
     public String createInformation( @RequestParam("name") String name,
                                      @RequestParam("age") int age, @RequestParam("idCardNo") String idCardNo,

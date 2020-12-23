@@ -160,6 +160,8 @@
         var up_file = document.getElementById("headImage").files[0];//找到id为file的组件，当然这里是input组件
         var formData = new FormData();//新建一个formdata用于存储数据
         formData.append("file",up_file);//将选择的文件添加到formdata中
+        var commonId = [[${user.getCommonId()}]];
+        formData.append("commonId",commonId);
         $.ajax
         ({
             url:'/common/image',

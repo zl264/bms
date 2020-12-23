@@ -1,6 +1,7 @@
 package com.java.bms.common.organizer.mapper;
 
 import com.java.bms.common.DO.ArrivalPlaceCountDO;
+import com.java.bms.common.VO.CommonUserAllInformationVO;
 import com.java.bms.common.VO.CommonUserVO;
 import com.java.bms.common.VO.CongressHaveDriverVO;
 import com.java.bms.common.VO.CongressVO;
@@ -246,10 +247,12 @@ public interface OrganizerMapper {
      * @param driverId
      * @return
      */
-    @Select("select commonUser.* from commonUser,userDriver " +
+    @Select("select commonUser.*,congressNote.arrivalPlace,congressNote.arrivalTime" +
+            " from commonUser,userDriver,congressNote " +
             "where commonUser.commonId = userDriver.commonId and userDriver.congressId = #{congressId} " +
-            "and userDriver.driverId = #{driverId}")
-    List<CommonUserVO> getList(int congressId,int driverId);
+            "and userDriver.driverId = #{driverId} and congressNote.commonId = commonUser.commonId " +
+            "and congressNote.congressId = userDriver.congressId ")
+    List<CommonUserAllInformationVO> getList(int congressId, int driverId);
 
     @Update("update congressDriver set Place = #{Place}" +
             " where congressId = #{congressId} and driverId = #{driverId}")

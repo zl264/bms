@@ -92,7 +92,8 @@
 
     <div class="rg_center">
         <div class="rg_form">
-            <form th:action="@{/driver/addinformation}" method="post">
+            <form th:action="@{/manager/addinformation}" method="post">
+                <input type="hidden" name="driverId" th:value="${session.driver.getDriverId()}">
                 <table>
                     <tr>
                         <td class="td_left"><lable for="name">姓名：</lable></td>
@@ -144,7 +145,7 @@
         </div>
     </div>
     <div class="rg_right">
-        <p>修改完成，点击<a th:href="@{/driver/refresh}">返回主页</a></p>
+        <p>修改完成，点击<a th:href="@{/manager/allDriver}">返回主页</a></p>
     </div>
 </div>
 </body>

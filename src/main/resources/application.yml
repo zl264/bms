@@ -3,6 +3,7 @@ spring:
     username: root
     password: z!3@7JTk74mh1eWR
     url: jdbc:mysql://42.192.131.235:3306/test1.1?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2b8
+#    url: jdbc:mysql://localhost:3306/test1.1?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2b8
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     #   数据源其他配置

@@ -66,29 +66,6 @@
     </style>
 </head>
 <body>
-<!--<nav class="ui inverted attached segment">
-    <div class="ui container">
-        <div class="ui inverted secondary stackable menu">
-            <p2 class="ui teal header">欢迎你</p2>
-            <p2 class="ui teal header" th:text="${session.hotelUsername}"></p2>
-            <div class="menu">
-                <a href="#" th:href="@{/hotel/hotelLogin}" class="ui teal item">注销</a>
-            </div>
-        </div>
-    </div>
-</nav>
-
-<div class="m-padded-tb-large m-container-small">
-    <div class="ui container">
-        <div class="ui stackable grid">
-            &lt;!&ndash;左&ndash;&gt;
-            <div class="five wide column">
-                <h2><a href="#" th:href="@{/hotel/hotelInformation}"><i class="home icon"></i>酒店信息</a></h2><br>
-                <h2><a href="#" th:href="@{/hotel/orderNote}"><i class="home icon"></i>预约记录</a></h2><br>
-                <h2><a href="#" th:href="@{/hotel/checkInNote}"><i class="home icon"></i>预约成功</a></h2><br>
-                <h2><a href="#" th:href="@{/hotel/relatedCongress}"><i class="home icon"></i>相关会议</a></h2><br>
-                <h2><a href="#" th:href="@{/hotel/cancelNote}"><i class="home icon"></i>取消预约</a></h2><br>
-            </div>-->
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -192,47 +169,47 @@
                 </h1>
             </div>
             <div class="row rg_center" th:if="${hotel!=null}">
-                <form class="form-signin" th:action="@{/hotel/createHotel}" method="post">
+                <form class="form-signin" th:action="@{/hotel/updateHotel}" method="post">
                     <table>
                         <tr>
                             <td class="td_left">酒店名称</td>
-                            <td class="td_right"><input th:value="${session.hotel.getHotelName()}" type="text" name="hotelName" class="form-control" placeholder="HotelName" ></td>
+                            <td class="td_right"><input th:value="${hotel.getHotelName()}" type="text" name="hotelName" class="form-control" placeholder="HotelName" ></td>
                         </tr>
                         <tr>
                             <td class="td_left">酒店联系电话</td>
-                            <td class="td_right"><input th:value="${session.hotel.getHotelPhone()}" type="text" name="hotelPhone" class="form-control" placeholder="HotelPhone" ></td>
+                            <td class="td_right"><input th:value="${hotel.getHotelPhone()}" type="text" name="hotelPhone" class="form-control" placeholder="HotelPhone" ></td>
                         </tr>
                         <tr>
                             <td class="td_left">酒店地址</td>
-                            <td class="td_right"><input th:value="${session.hotel.getHotelLocation()}" type="text" name="hotelLocation" class="form-control" placeholder="HotelLocation"></td>
+                            <td class="td_right"><input th:value="${hotel.getHotelLocation()}" type="text" name="hotelLocation" class="form-control" placeholder="HotelLocation"></td>
                         </tr>
                         <tr>
                             <td class="td_left">单人房价格</td>
-                            <td class="td_right"><input th:value="${session.hotel.getSingleRoomPrice()}" type="text" name="singleRoomPrice" class="form-control" placeholder="SingleRoomPrice"></td>
+                            <td class="td_right"><input th:value="${hotel.getSingleRoomPrice()}" type="text" name="singleRoomPrice" class="form-control" placeholder="SingleRoomPrice"></td>
                         </tr>
                         <tr>
                             <td class="td_left">双人房价格</td>
-                            <td class="td_right"><input th:value="${session.hotel.getDoubleRoomPrice()}" type="text" name="doubleRoomPrice" class="form-control" placeholder="DoubleRoomPrice"></td>
+                            <td class="td_right"><input th:value="${hotel.getDoubleRoomPrice()}" type="text" name="doubleRoomPrice" class="form-control" placeholder="DoubleRoomPrice"></td>
                         </tr>
                         <tr>
                             <td class="td_left">单人房总量</td>
-                            <td class="td_right"><input th:value="${session.hotel.getTotalSingleRoom()}" type="text" name="totalSingleRoom" class="form-control" placeholder="TotalSingleRoom"></td>
+                            <td class="td_right"><input th:value="${hotel.getTotalSingleRoom()}" type="text" name="totalSingleRoom" class="form-control" placeholder="TotalSingleRoom"></td>
                         </tr>
                         <tr>
                             <td class="td_left">单人房剩余</td>
-                            <td class="td_right"><input th:value="${session.hotel.getRemainSingleRoom()}" type="text" name="remainSingleRoom" class="form-control" placeholder="RemainSingleRoom"></td>
+                            <td class="td_right"><input th:value="${hotel.getRemainSingleRoom()}" type="text" name="remainSingleRoom" class="form-control" placeholder="RemainSingleRoom"></td>
                         </tr>
                         <tr>
                             <td class="td_left">双人房总量</td>
-                            <td class="td_right"><input th:value="${session.hotel.getTotalDoubleRoom()}" type="text" name="totalDoubleRoom" class="form-control" placeholder="TotalDoubleRoom"></td>
+                            <td class="td_right"><input th:value="${hotel.getTotalDoubleRoom()}" type="text" name="totalDoubleRoom" class="form-control" placeholder="TotalDoubleRoom"></td>
                         </tr>
                         <tr>
                             <td class="td_left">双人房剩余</td>
-                            <td class="td_right"><input th:value="${session.hotel.getRemainDoubleRoom()}" type="text" name="remainDoubleRoom" class="form-control" placeholder="RemainDoubleRoom"></td>
+                            <td class="td_right"><input th:value="${hotel.getRemainDoubleRoom()}" type="text" name="remainDoubleRoom" class="form-control" placeholder="RemainDoubleRoom"></td>
                         </tr>
                         <tr>
                             <td class="td_left">酒店描述</td>
-                            <td class="td_right"><textarea th:text="${session.hotel.getHotelDescription()}" type="text" name="hotelDescription" class="form-control" placeholder="HotelDescription" rows="5" cols="60" maxlength="1000"></textarea></td>
+                            <td class="td_right"><textarea th:text="${hotel.getHotelDescription()}" type="text" name="hotelDescription" class="form-control" placeholder="HotelDescription" rows="5" cols="60" maxlength="1000"></textarea></td>
                         </tr>
                         <tr>
                             <td colspan="2" align="center"><input type="submit" class="btn_sub" value="保存"></td>
@@ -258,69 +235,7 @@
                     </h3>
                 </div>
                 <img style="width: 150px;height: 150px;" th:src="@{/images/hotel/}+${hotel.getImage()!=null?hotel.getImage():'0.jpg'}"/>
-                   <!-- &lt;!&ndash;                    如果当前酒店用户已经注册&ndash;&gt;
-                    <div th:if="${hotel!=null}">
-                        <h2 ><i class="home icon"></i>酒店信息</h2>
-                        <div>
-                            <form class="form-signin" th:action="@{/hotel/createHotel}" method="post">
-                                <table border="1" bordercolor="blue" cellspacing="0">
-                                    <tr>
-                                        <td>酒店名称</td>
-                                        <td><input th:value="${hotel.getHotelName()}" type="text" name="hotelName" class="form-control" placeholder="HotelName" ></td>
-                                    </tr>
-                                    <tr>
-                                        <td>酒店联系电话</td>
-                                        <td><input th:value="${hotel.getHotelPhone()}" type="text" name="hotelPhone" class="form-control" placeholder="HotelPhone" ></td>
-                                    </tr>
-                                    <tr>
-                                        <td>酒店地址</td>
-                                        <td><input th:value="${hotel.getHotelLocation()}" type="text" name="hotelLocation" class="form-control" placeholder="HotelLocation"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>单人房价格</td>
-                                        <td><input th:value="${hotel.getSingleRoomPrice()}" type="text" name="singleRoomPrice" class="form-control" placeholder="SingleRoomPrice"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>双人房价格</td>
-                                        <td><input th:value="${hotel.getDoubleRoomPrice()}" type="text" name="doubleRoomPrice" class="form-control" placeholder="DoubleRoomPrice"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>单人房总量</td>
-                                        <td><input th:value="${hotel.getTotalSingleRoom()}" type="text" name="totalSingleRoom" class="form-control" placeholder="TotalSingleRoom"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>单人房剩余</td>
-                                        <td><input th:value="${hotel.getRemainSingleRoom()}" type="text" name="remainSingleRoom" class="form-control" placeholder="RemainSingleRoom"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>双人房总量</td>
-                                        <td><input th:value="${hotel.getTotalDoubleRoom()}" type="text" name="totalDoubleRoom" class="form-control" placeholder="TotalDoubleRoom"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>双人房剩余</td>
-                                        <td><input th:value="${hotel.getRemainDoubleRoom()}" type="text" name="remainDoubleRoom" class="form-control" placeholder="RemainDoubleRoom"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>酒店描述</td>
-                                        <td><textarea th:text="${hotel.getHotelDescription()}" type="text" name="hotelDescription" class="form-control" placeholder="HotelDescription" rows="5" cols="60" maxlength="1000"></textarea></td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td align="center">
-                                            <button class="btn btn-lg btn-primary btn-block" type="submit">保存</button>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </form>
-                        </div>
-                        <h2 ><i class="home icon"></i>酒店图片</h2>
-                        <form method="post" enctype="multipart/form-data">
-                            <input type="file" id="hotelImage" name="file"/><span id="inf"></span>
-                            <input type="button" onclick="changeImage()" value="更换"/>
-                        </form>
-                        <p>酒店图片:</p>
-                        <img style="width: 150px;height: 150px;" th:src="@{/images/hotel/}+${hotel.getImage()!=null?hotel.getImage():'0.jpg'}"/>
-                    </div>-->
+
             </div>
         </div>
     </div>
@@ -331,6 +246,8 @@
         var up_file = document.getElementById("hotelImage").files[0];//找到id为file的组件，当然这里是input组件
         var formData = new FormData();//新建一个formdata用于存储数据
         formData.append("file",up_file);//将选择的文件添加到formdata中
+        var hotelId = [[${hotel.getHotelId()}]];
+        formData.append("hotelId",hotelId);
         $.ajax
         ({
             url:'/hotel/image',

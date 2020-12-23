@@ -120,6 +120,7 @@ public class HotelController {
         int result = hotelMapper.commonRegister(username,password);
         if(result==1){
             map.put("msg","注册成功，请登录");
+            session.setAttribute("msg","注册成功，请登录");
             return "/hotel/hotelLogin";
         } else{
             map.put("msg","出现错误，注册失败，请再次尝试或联系管理员");
@@ -213,8 +214,19 @@ public class HotelController {
         hotelMapper.deleteHotelOrderNoteByHotelIdAndCommonId(hotelId,commonId);
         hotelMapper.insertHotelCheckInNote(note.getHotelId(),note.getCommonId(),note.getCommonPhone(),note.getTime(),
                 note.getCheckInStartTime(),note.getCheckInEndTime(),note.getCommonName(),note.getType());
-        List<HotelNoteVO> hotelOrderNotes = hotelMapper.getHotelOrderNoteByHotelId(hotelId);
         HotelVO hotel = hotelMapper.getHotelByHotelId(hotelId);
+        if(note.getType()==1){
+            if(hotel.getRemainSingleRoom()>0){
+                hotelMapper.updateSingleRoom(hotelId,hotel.getRemainSingleRoom()-1);
+            }
+        }else{
+            if(hotel.getRemainDoubleRoom()>0){
+                hotelMapper.updateDoubleRoom(hotelId,hotel.getRemainDoubleRoom()-1);
+            }
+        }
+
+        List<HotelNoteVO> hotelOrderNotes = hotelMapper.getHotelOrderNoteByHotelId(hotelId);
+        hotel = hotelMapper.getHotelByHotelId(hotelId);
         model.addAttribute("hotelOrderNotes",hotelOrderNotes);
         model.addAttribute("hotel",hotel);
         return "/hotel/orderNote";
@@ -234,8 +246,9 @@ public class HotelController {
         HotelNoteVO note = hotelMapper.getHotelOrderNoteByHotelIdAndCommonId(hotelId,commonId);
         HotelVO hotel = hotelMapper.getHotelByHotelId(hotelId);
         hotelMapper.deleteHotelOrderNoteByHotelIdAndCommonId(hotelId,commonId);
-        hotelMapper.insertHotelOrderFailNote(hotelId,note.getCommonId(),hotel.getHotelPhone(),1,note.getTime(),
-                note.getCheckInStartTime(),note.getCheckInEndTime());
+//        hotelMapper.insertHotelOrderFailNote(hotelId,note.getCommonId(),hotel.getHotelPhone(),1,note.getTime(),
+//                note.getCheckInStartTime(),note.getCheckInEndTime());
+
         List<HotelNoteVO> hotelOrderNotes = hotelMapper.getHotelOrderNoteByHotelId(hotelId);
         model.addAttribute("hotelOrderNotes",hotelOrderNotes);
         model.addAttribute("hotel",hotel);
@@ -552,17 +565,18 @@ public class HotelController {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime checkInStartTime = LocalDateTime.parse(checkInStartTimeStr.replaceAll("T", " ") + ":00", df);
         LocalDateTime checkInEndTime = checkInStartTime.plusDays(dayNumber);
+
         if(type==1){
             if(hotel.getRemainSingleRoom()>0){
                 hotelMapper.insertOrder(hotelId,commonId,commonUserVO.getTel(),now,checkInStartTime,checkInEndTime,
                         commonUserVO.getName(),1);
-                hotelMapper.updateSingleRoom(hotelId,hotel.getRemainSingleRoom()-1);
+//                hotelMapper.updateSingleRoom(hotelId,hotel.getRemainSingleRoom()-1);
             }
         }else{
             if(hotel.getRemainDoubleRoom()>0){
                 hotelMapper.insertOrder(hotelId,commonId,commonUserVO.getTel(),now,checkInStartTime,checkInEndTime,
                         commonUserVO.getName(),2);
-                hotelMapper.updateDoubleRoom(hotelId,hotel.getRemainDoubleRoom()-1);
+//                hotelMapper.updateDoubleRoom(hotelId,hotel.getRemainDoubleRoom()-1);
             }
         }
         hotel = hotelMapper.getHotelByHotelId(hotelId);

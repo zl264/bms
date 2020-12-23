@@ -450,7 +450,7 @@ public class OrganizerController {
     @RequestMapping("/organizer/driver/list/{congressId}/{driverId}")
     public String driverNeedList(@PathVariable("congressId") int congressId,@PathVariable("driverId") int driverId,
                                  Model model){
-        List<CommonUserVO> userList = organizerMapper.getList(congressId,driverId);
+        List<CommonUserAllInformationVO> userList = organizerMapper.getList(congressId,driverId);
         model.addAttribute("list",userList);
         model.addAttribute("congressId",congressId);
         return "/common/organizer/list";

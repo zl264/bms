@@ -101,7 +101,8 @@
                         </h1>
                     </div>
                     <div class="row rg_center">
-                        <form th:action="@{/organizer/congress}" method="post">
+                        <form th:action="@{/organizer/alter}" method="post">
+                            <input type="hidden" name="congressId" th:value="${congress.getCongressId()}">
                             <table>
                                 <tr>
                                     <td class="td_left"><lable for="title">会议名称：</lable></td>

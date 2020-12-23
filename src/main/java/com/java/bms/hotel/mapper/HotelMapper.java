@@ -97,7 +97,7 @@ public interface HotelMapper {
      * @return
      */
     @Update("update hotel set hotelName=#{hotelName},hotelPhone=#{hotelPhone},hotelLocation=#{hotelLocation},singleRoomPrice=#{singleRoomPrice},doubleRoomPrice=#{doubleRoomPrice},totalSingleRoom=#{totalSingleRoom}," +
-            "remainSingleRoom=#{remainSingleRoom},totalDoubleRoom=#{totalDoubleRoom},remainDoubleRoom=#{remainDoubleRoom},hotelDescription=#{hotelDescription} where hotelId=#{hotelId})")
+            "remainSingleRoom=#{remainSingleRoom},totalDoubleRoom=#{totalDoubleRoom},remainDoubleRoom=#{remainDoubleRoom},hotelDescription=#{hotelDescription} where hotelId=#{hotelId}")
     int updateHotel(String hotelName, long hotelId, String hotelPhone, String hotelLocation, int singleRoomPrice, int doubleRoomPrice, int totalSingleRoom, int remainSingleRoom, int totalDoubleRoom, int remainDoubleRoom, String hotelDescription);
 
     /**

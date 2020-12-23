@@ -46,14 +46,24 @@
                     <span>接送人员名单</span>
                 </h1>
             </div>
-            <ul class="list-group" th:if="${list.size()!=0}">
-                <li class="list-group-item" th:each="inf:${list}">
-                    <label>用户名:</label><span th:text="${inf.getUsername()}"></span>
-                    <br>
-                    <label>电话:</label><span th:text="${inf.getTel()}"></span>
-                    <br>
-                </li>
-            </ul>
+            <table class="table table-striped table-sm" th:if="${list.size()!=0}">
+                <thead>
+                <tr>
+                    <th>用户名</th>
+                    <th>电话</th>
+                    <th>到达地点</th>
+                    <th>到达时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="inf:${list}">
+                    <td th:text="${inf.getUsername()}"></td>
+                    <td th:text="${inf.getTel()}"></td>
+                    <td th:text="${inf.getArrivalPlace()}"></td>
+                    <td th:text="${#temporals.format(inf.getArrivalTime(),'yyyy-MM-dd HH:mm')}"></td>
+                </tr>
+                </tbody>
+            </table>
             <label th:if="${list.size()==0}">暂未分配接送人员</label>
         </div>
     </div>
