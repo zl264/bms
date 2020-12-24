@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * 会议司机记录的VO类
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

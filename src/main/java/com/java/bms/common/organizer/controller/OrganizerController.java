@@ -285,7 +285,15 @@ public class OrganizerController {
     }
 
 
-
+    /**
+     * 会议组织者删除参会人员
+     * @param commonId
+     * @param congressId
+     * @param model
+     * @param session
+     * @param map
+     * @return
+     */
     @RequestMapping("/organizer/delete/participant")
     public String deleteParticipant(@RequestParam("commonId") int commonId, @RequestParam("congressId") int congressId,
                                     Model model, HttpSession session, Map<String,Integer> map){
@@ -352,6 +360,7 @@ public class OrganizerController {
 
     /**
      * 分配人员
+     * 给会议参与者分配司机
      * @param request
      */
     @RequestMapping("/organizer/allocation")

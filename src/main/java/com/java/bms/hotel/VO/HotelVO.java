@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+/**
+ * 酒店信息的VO类
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

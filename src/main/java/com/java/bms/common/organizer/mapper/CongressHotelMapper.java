@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * 会议酒店的mapper接口
+ */
 @Mapper
 @Repository
 public interface CongressHotelMapper {

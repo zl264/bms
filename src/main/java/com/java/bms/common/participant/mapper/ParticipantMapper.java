@@ -12,6 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * 参与者对数据库操作的mapper接口
+ */
 @Mapper
 @Repository
 public interface ParticipantMapper {

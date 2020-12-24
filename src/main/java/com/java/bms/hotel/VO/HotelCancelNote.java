@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+/**
+ * 取消预约酒店的记录的VO类
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

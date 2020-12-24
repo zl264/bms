@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * 普通用户所有信息的VO类
+ * 包含会议到达时间和到达地点
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

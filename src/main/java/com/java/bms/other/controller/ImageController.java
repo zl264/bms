@@ -20,6 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 
+/**
+ * 更换图片的controller
+ */
 @Controller
 public class ImageController {
     @Value("${web.upload-path}")

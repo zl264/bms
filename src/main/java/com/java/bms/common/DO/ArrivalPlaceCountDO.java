@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 到达地点以及其人数的DO类
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -219,6 +219,12 @@ public class CommonController {
         return "/common/lossPassword";
     }
 
+    /**
+     * 修改密码
+     * @param session
+     * @param request
+     * @return
+     */
     @RequestMapping("/common/updatePassword")
     public String commonUpdatePassword(HttpSession session,HttpServletRequest request){
         int commonId = Integer.parseInt(request.getParameter("commonId"));
@@ -298,6 +304,13 @@ public class CommonController {
     }
 
 
+    /**
+     * 搜索页面
+     * @param information
+     * @param model
+     * @param session
+     * @return
+     */
     @RequestMapping("/common/search")
     public String searchCongress(@RequestParam("information") String information, Model model, HttpSession session) {
         List<CongressVO> searchCongress = commonMapper.searchCongressByInformation(information);

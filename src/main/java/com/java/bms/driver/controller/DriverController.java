@@ -368,6 +368,14 @@ public class DriverController {
         //return "redirect:/driverMain";
     }
 
+    /**
+     * 司机设置接送时间
+     * @param pinkUpTimeStr
+     * @param congressId
+     * @param session
+     * @param model
+     * @return
+     */
     @RequestMapping("/driver/addTime")
     public String addTime(@RequestParam("pinkUpTime") String pinkUpTimeStr,@RequestParam("congressId") int congressId,
                           HttpSession session,Model model){

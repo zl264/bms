@@ -26,6 +26,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 参与者的控制类
+ */
 @Controller
 public class ParticipantController {
 

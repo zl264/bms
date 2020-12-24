@@ -21,6 +21,7 @@ import java.util.Map;
 
 /**
  * 对管理员登录的控制
+ * 管理普通用户
  */
 @Controller
 public class ManagerController {

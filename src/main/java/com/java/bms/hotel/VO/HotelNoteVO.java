@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 
+/**
+ * 预约酒店的VO类
+ * 预约成功的VO类
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

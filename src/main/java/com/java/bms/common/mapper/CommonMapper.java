@@ -65,10 +65,27 @@ public interface CommonMapper {
             "#{name},#{age},#{idCardNo},#{identity},#{sex},#{commonId},#{tel})")
     int createInformation(String username,String name,int age,String idCardNo,String identity,String sex,long commonId,String tel);
 
+    /**
+     * 更新用户信息
+     * @param username
+     * @param name
+     * @param age
+     * @param idCardNo
+     * @param identity
+     * @param sex
+     * @param commonId
+     * @param tel
+     * @return
+     */
     @Update("update commonUser set username = #{username} , name= #{name} ,  age= #{age} , idCardNo=#{idCardNo}," +
             " identity= #{identity} , sex= #{sex} ,tel=#{tel} where commonId = #{commonId}")
     int updateInformation(String username,String name,int age, String idCardNo, String identity,String sex, long commonId,String tel);
 
+    /**
+     * 通过用户名获取用户所有信息
+     * @param username
+     * @return
+     */
     @Select("select * from commonUser where username=#{username}")
     CommonUserVO  HaveInfomation(String username);
 
@@ -135,6 +152,11 @@ public interface CommonMapper {
     List<CommonUserAllInformationVO> getAllInformationParticipantIdByCongressId(int congressId);
 
 
+    /**
+     * 获取会议所有到达的用户地点
+     * @param congressId
+     * @return
+     */
     @Select("select arrivalPlace,count(arrivalPlace) num from congressNote " +
             "where congressId = #{congressId} " +
             "group by arrivalPlace ")

@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 验证码的DO类
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

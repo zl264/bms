@@ -12,6 +12,9 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 组织者对数据库操作的mapper接口
+ */
 @Mapper
 @Repository
 public interface OrganizerMapper {
@@ -237,6 +240,13 @@ public interface OrganizerMapper {
     int participantAssignedDriver(int commonId,int congressId,int driverId);
 
 
+    /**
+     * 设置司机接送地点
+     * @param congressId
+     * @param driverId
+     * @param place
+     * @return
+     */
     @Update("update congressDriver set place = #{place}" +
             " where congressId = #{congressId} and driverId = #{driverId}")
     int setPinkUpPlace(int congressId,int driverId,String place);
@@ -254,6 +264,13 @@ public interface OrganizerMapper {
             "and congressNote.congressId = userDriver.congressId ")
     List<CommonUserAllInformationVO> getList(int congressId, int driverId);
 
+    /**
+     * 设置司机接送地点
+     * @param congressId
+     * @param driverId
+     * @param place
+     * @return
+     */
     @Update("update congressDriver set Place = #{Place}" +
             " where congressId = #{congressId} and driverId = #{driverId}")
     int setDriverPlace(int congressId,int driverId,String place);

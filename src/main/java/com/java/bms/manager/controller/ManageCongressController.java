@@ -23,6 +23,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 管理员管理会议的controller
+ */
 @Controller
 public class ManageCongressController {
 

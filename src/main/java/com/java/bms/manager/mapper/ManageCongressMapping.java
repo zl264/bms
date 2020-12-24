@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * 管理会议的mapper
+ */
 @Mapper
 @Repository
 public interface ManageCongressMapping {

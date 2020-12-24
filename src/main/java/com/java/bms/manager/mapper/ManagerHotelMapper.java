@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * 管理酒店的mapper
+ */
 @Mapper
 @Repository
 public interface ManagerHotelMapper {

@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * 管理酒店的controller
+ */
 @Controller
 public class ManagerHotelController {
 

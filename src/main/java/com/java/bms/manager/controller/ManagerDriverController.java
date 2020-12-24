@@ -18,6 +18,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 管理员管理司机的controller
+ */
 @Controller
 public class ManagerDriverController {
 

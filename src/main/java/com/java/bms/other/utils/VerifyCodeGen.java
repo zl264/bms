@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Random;
 
+/**
+ * 验证码生成的类
+ */
 public class VerifyCodeGen {
 
     private static final String[] FONT_TYPES = { "\u5b8b\u4f53", "\u65b0\u5b8b\u4f53", "\u9ed1\u4f53", "\u6977\u4f53", "\u96b6\u4e66" };
@@ -26,14 +29,14 @@ public class VerifyCodeGen {
      * @param height
      */
     private static void fillBackground(Graphics graphics, int width, int height) {
-// 填充背景
+        // 填充背景
         graphics.setColor(Color.WHITE);
-//设置矩形坐标x y 为0
+        //设置矩形坐标x y 为0
         graphics.fillRect(0, 0, width, height);
 
-// 加入干扰线条
+        // 加入干扰线条
         for (int i = 0; i < 8; i++) {
-//设置随机颜色算法参数
+            //设置随机颜色算法参数
             graphics.setColor(RandomUtils.randomColor(40, 150));
             Random random = new Random();
             int x = random.nextInt(width);
@@ -61,7 +64,7 @@ public class VerifyCodeGen {
         String randomStr = RandomUtils.randomString(VALICATE_CODE_LENGTH);
         createCharacter(graphics, randomStr);
         graphics.dispose();
-//设置JPEG格式
+        //设置JPEG格式
         ImageIO.write(image, "JPEG", os);
         return randomStr;
     }
@@ -76,7 +79,7 @@ public class VerifyCodeGen {
     public VerifyCodeDO generate(int width, int height) {
         VerifyCodeDO verifyCode = null;
         try (
-//将流的初始化放到这里就不需要手动关闭流
+                //将流的初始化放到这里就不需要手动关闭流
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ) {
             String code = generate(width, height, baos);
@@ -99,12 +102,12 @@ public class VerifyCodeGen {
     private void createCharacter(Graphics g, String randomStr) {
         char[] charArray = randomStr.toCharArray();
         for (int i = 0; i < charArray.length; i++) {
-//设置RGB颜色算法参数
+            //设置RGB颜色算法参数
             g.setColor(new Color(50 + RandomUtils.nextInt(100),
                     50 + RandomUtils.nextInt(100), 50 + RandomUtils.nextInt(100)));
-//设置字体大小，类型
+            //设置字体大小，类型
             g.setFont(new Font(FONT_TYPES[RandomUtils.nextInt(FONT_TYPES.length)], Font.BOLD, 26));
-//设置x y 坐标
+            //设置x y 坐标
             g.drawString(String.valueOf(charArray[i]), 15 * i + 5, 19 + RandomUtils.nextInt(8));
         }
     }

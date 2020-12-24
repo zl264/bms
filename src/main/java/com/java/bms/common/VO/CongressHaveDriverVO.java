@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+/**
+ * 会议有的司机信息的VO类
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

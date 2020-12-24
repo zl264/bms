@@ -161,6 +161,12 @@ public class HotelController {
         return "/hotel/lossPassword";
     }
 
+    /**
+     * 酒店用户更换密码
+     * @param session
+     * @param request
+     * @return
+     */
     @RequestMapping("/hotel/updatePassword")
     public String hotelUpdatePassword(HttpSession session,HttpServletRequest request){
         int hotelId = Integer.parseInt(request.getParameter("hotelId"));
@@ -303,6 +309,10 @@ public class HotelController {
     @RequestMapping("/hotel/hotelLogin")
     public String hotelLogin(){ return "/hotel/hotelLogin"; }
 
+    /**
+     * 回到酒店主页面
+     * @return
+     */
     @RequestMapping("/hotel/main")
     public String main(){ return "/hotel/main"; }
 

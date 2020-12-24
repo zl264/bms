@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * 预约失败的VO类
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

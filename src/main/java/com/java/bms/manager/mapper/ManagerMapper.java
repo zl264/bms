@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * 对于管理员登录的数据库访问的控制
+ * 管理普通用户的mapper
  */
 @Mapper
 @Repository

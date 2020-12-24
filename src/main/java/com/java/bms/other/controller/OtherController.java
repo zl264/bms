@@ -9,10 +9,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * 验证码的controller
+ */
 @Controller
 public class OtherController {
 
-
+    /**
+     * 获取验证码
+     * @param request
+     * @param response
+     */
     @RequestMapping("/verifyCode")
     public void verifyCode(HttpServletRequest request, HttpServletResponse response) {
         VerifyCodeGen iVerifyCodeGen = new VerifyCodeGen();
